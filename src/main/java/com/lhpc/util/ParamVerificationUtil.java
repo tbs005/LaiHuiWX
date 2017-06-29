@@ -25,7 +25,7 @@ public class ParamVerificationUtil {
 		String endCityCode = request.getParameter("endCityCode");
 		String endAddress = request.getParameter("endAddress");
 		String price = request.getParameter("price");
-		String startTime = request.getParameter("startTime");
+		//String startTime = request.getParameter("startTime");
 		String carType = request.getParameter("carType");
 		String seats = request.getParameter("seats");
 		String strokeRoute = request.getParameter("strokeRoute");
@@ -36,7 +36,7 @@ public class ParamVerificationUtil {
 				&& StringUtil.isOrNotEmpty(endCityCode)
 				&& StringUtil.isOrNotEmpty(endAddress)
 				&& StringUtil.isOrNotEmpty(price)
-				&& StringUtil.isOrNotEmpty(startTime)
+				//&& StringUtil.isOrNotEmpty(startTime)
 				&& StringUtil.isOrNotEmpty(carType)
 				&& StringUtil.isOrNotEmpty(seats)
 				&& StringUtil.isOrNotEmpty(strokeRoute)) {
