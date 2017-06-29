@@ -46,4 +46,16 @@ public class ParamVerificationUtil {
 		return flag;
 	}
 
+	/**
+	 * 用户登录参数验证
+	 */
+	public static boolean userLogin(HttpServletRequest request) {
+		boolean flag = false;
+		String mobile = request.getParameter("mobile");
+		String code = request.getParameter("code");
+		if (StringUtil.isOrNotEmpty(mobile) && StringUtil.isOrNotEmpty(code))
+			flag = true;
+		return flag;
+	}
+
 }
