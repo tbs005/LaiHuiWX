@@ -93,5 +93,15 @@ public class ItineraryServiceImpl implements ItineraryService {
 		
 		return strokeMapper.updateByPrimaryKeySelective(stroke);
 	}
+
+	@Override
+	public List<Stroke> selectCrossCityList(Stroke stroke) {
+		return strokeMapper.selectCrossCityList(stroke);
+	}
+
+	@Override
+	public int selectCrossCityCount(Stroke stroke) {
+		return strokeMapper.selectCrossCityCount(stroke);
+	}
 	
 }

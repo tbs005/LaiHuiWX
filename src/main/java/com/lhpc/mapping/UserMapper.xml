@@ -6,13 +6,15 @@
     <result column="user_mobile" property="userMobile" jdbcType="VARCHAR" />
     <result column="user_name" property="userName" jdbcType="VARCHAR" />
     <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="car_type" property="carType" jdbcType="VARCHAR" />
+    <result column="car_license" property="carLicense" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="login_time" property="loginTime" jdbcType="TIMESTAMP" />
     <result column="wallet" property="wallet" jdbcType="DOUBLE" />
     <result column="user_status" property="userStatus" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    user_id, user_mobile, user_name, open_id, create_time, login_time, wallet, user_status
+    user_id, user_mobile, user_name, open_id, create_time, login_time, wallet, user_status,car_type,car_license
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -35,6 +37,12 @@
       </if>
       <if test="userMobile != null" >
         user_mobile,
+      </if>
+      <if test="carType != null" >
+        car_type,
+      </if>
+      <if test="carLicense != null" >
+        car_license,
       </if>
       <if test="userName != null" >
         user_name,
@@ -61,6 +69,12 @@
       </if>
       <if test="userMobile != null" >
         #{userMobile,jdbcType=VARCHAR},
+      </if>
+       <if test="carType != null" >
+        #{carType,jdbcType=VARCHAR},
+      </if>
+      <if test="carLicense != null" >
+        #{carLicense,jdbcType=VARCHAR},
       </if>
       <if test="userName != null" >
         #{userName,jdbcType=VARCHAR},

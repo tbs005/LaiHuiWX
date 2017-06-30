@@ -33,7 +33,6 @@ public class LoginInterceptor implements HandlerInterceptor {
 		// System.out.println("postHandle---");
 	}
 
-	// TODO 拦截
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object object) throws Exception {

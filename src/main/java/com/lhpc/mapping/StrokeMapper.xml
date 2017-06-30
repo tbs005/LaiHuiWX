@@ -36,6 +36,20 @@
     from wx_stroke
     where stroke_id = #{strokeId,jdbcType=INTEGER}
   </select>
+  <select id="selectCrossCityList" resultMap="BaseResultMap" parameterType="com.lhpc.model.Stroke" >
+    select 
+    <include refid="Base_Column_List" />
+    from wx_stroke
+    where is_enable = 1
+    group by start_city_code,end_city_code
+  </select>
+  <select id="selectCrossCityCount" resultType="java.lang.Integer" parameterType="com.lhpc.model.Stroke" >
+    select count(1)
+    from wx_stroke
+    where start_city_code = #{startCityCode,jdbcType=INTEGER} 
+    and end_city_code = #{endCityCode,jdbcType=INTEGER}
+    and is_enable = 1
+  </select>
   <select id="selectByUserIdAndIsEnable" resultMap="BaseResultMap" >
     select 
     <include refid="Base_Column_List" />

@@ -14,5 +14,9 @@ public interface ItineraryService {
 	public List<Stroke> selectStroke(int userId, int IsEnable);
 
 	public int  updateStroke(Stroke stroke);
+	
+	List<Stroke> selectCrossCityList(Stroke stroke);
+	
+	int selectCrossCityCount(Stroke stroke);
 
 }

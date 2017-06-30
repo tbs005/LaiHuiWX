@@ -65,5 +65,13 @@ public class ParamVerificationUtil {
 			flag = true;
 		return flag;
 	}
-
+	
+	/**
+	 * 跨城车辆参数验证
+	 */
+	public static boolean crossCity(HttpServletRequest request){
+		boolean flag = false;
+		request.getParameter("");
+		return flag;
+	}
 }
