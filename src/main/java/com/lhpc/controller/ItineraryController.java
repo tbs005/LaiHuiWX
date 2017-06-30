@@ -108,5 +108,6 @@ public class ItineraryController {
 			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR, "系统错误!");
 		}
 		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "行程结束成功!");
+		
 	}
 }
