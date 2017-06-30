@@ -13,6 +13,7 @@ import com.lhpc.service.IUserService;
 
 /**
  * 拦截器
+ * 
  * @author YangGuang
  */
 public class LoginInterceptor implements HandlerInterceptor {
@@ -20,12 +21,14 @@ public class LoginInterceptor implements HandlerInterceptor {
 	private HttpSession session;
 	@Autowired
 	private IUserService userService;
+
 	@Override
 	public void afterCompletion(HttpServletRequest request,
 			HttpServletResponse response, Object object, Exception arg3)
 			throws Exception {
 		// System.out.println("afterCompletion---");
 	}
+
 	@Override
 	public void postHandle(HttpServletRequest request,
 			HttpServletResponse response, Object object,
@@ -45,7 +48,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 				response.setContentType("application/json");
 				response.sendRedirect("/user/noLogin");
 				return false;
-			}else {
+			} else {
 				session.setAttribute("CURRENT_USER", user);
 				return true;
 			}

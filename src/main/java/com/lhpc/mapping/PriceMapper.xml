@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lhpc.dao.PriceMapper" >
+  <resultMap id="BaseResultMap" type="com.lhpc.model.Price" >
+    <id column="price_id" property="priceId" jdbcType="INTEGER" />
+    <result column="start_code" property="startCode" jdbcType="INTEGER" />
+    <result column="end_code" property="endCode" jdbcType="INTEGER" />
+    <result column="start_name" property="startName" jdbcType="VARCHAR" />
+    <result column="end_name" property="endName" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="is_enable" property="isEnable" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    price_id, start_code, end_code, start_name, end_name, price, create_time, update_time, 
+    is_enable
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from wx_price
+    where price_id = #{priceId,jdbcType=INTEGER}
+  </select>
+   <select id="select" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from wx_price
+    where start_code = #{startCode,jdbcType=INTEGER} and end_code = #{endCode,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from wx_price
+    where price_id = #{priceId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lhpc.model.Price" >
+    insert into wx_price (price_id, start_code, end_code, 
+      start_name, end_name, price, 
+      create_time, update_time, is_enable
+      )
+    values (#{priceId,jdbcType=INTEGER}, #{startCode,jdbcType=INTEGER}, #{endCode,jdbcType=INTEGER}, 
+      #{startName,jdbcType=VARCHAR}, #{endName,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{isEnable,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lhpc.model.Price" >
+    insert into wx_price
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="priceId != null" >
+        price_id,
+      </if>
+      <if test="startCode != null" >
+        start_code,
+      </if>
+      <if test="endCode != null" >
+        end_code,
+      </if>
+      <if test="startName != null" >
+        start_name,
+      </if>
+      <if test="endName != null" >
+        end_name,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isEnable != null" >
+        is_enable,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="priceId != null" >
+        #{priceId,jdbcType=INTEGER},
+      </if>
+      <if test="startCode != null" >
+        #{startCode,jdbcType=INTEGER},
+      </if>
+      <if test="endCode != null" >
+        #{endCode,jdbcType=INTEGER},
+      </if>
+      <if test="startName != null" >
+        #{startName,jdbcType=VARCHAR},
+      </if>
+      <if test="endName != null" >
+        #{endName,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isEnable != null" >
+        #{isEnable,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lhpc.model.Price" >
+    update wx_price
+    <set >
+      <if test="startCode != null" >
+        start_code = #{startCode,jdbcType=INTEGER},
+      </if>
+      <if test="endCode != null" >
+        end_code = #{endCode,jdbcType=INTEGER},
+      </if>
+      <if test="startName != null" >
+        start_name = #{startName,jdbcType=VARCHAR},
+      </if>
+      <if test="endName != null" >
+        end_name = #{endName,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isEnable != null" >
+        is_enable = #{isEnable,jdbcType=BIT},
+      </if>
+    </set>
+    where price_id = #{priceId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lhpc.model.Price" >
+    update wx_price
+    set start_code = #{startCode,jdbcType=INTEGER},
+      end_code = #{endCode,jdbcType=INTEGER},
+      start_name = #{startName,jdbcType=VARCHAR},
+      end_name = #{endName,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_enable = #{isEnable,jdbcType=BIT}
+    where price_id = #{priceId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -36,11 +36,17 @@
     from wx_stroke
     where stroke_id = #{strokeId,jdbcType=INTEGER}
   </select>
+  <select id="selectCrossCityList" resultMap="BaseResultMap" parameterType="com.lhpc.model.Stroke" >
+    select 
+    <include refid="Base_Column_List" />
+    from wx_stroke
+    where start_city_code = #{startCityCode,jdbcType=INTEGER} and end_city_code = #{endCityCode,jdbcType=INTEGER}
+  </select>
   <select id="selectByUserIdAndIsEnable" resultMap="BaseResultMap" >
     select 
     <include refid="Base_Column_List" />
     from wx_stroke
-    where user_id = #{userId,jdbcType=INTEGER} and is_enable = #{isEnable,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=INTEGER} and is_enable = #{isEnable,jdbcType=INTEGER} order by desc limit 1
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from wx_stroke
