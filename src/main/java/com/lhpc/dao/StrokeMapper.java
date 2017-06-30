@@ -18,6 +18,6 @@ public interface StrokeMapper {
     int updateByPrimaryKeySelective(Stroke record);
 
     int updateByPrimaryKey(Stroke record);
-
-	List<Stroke> selectByUserIdAndIsEnable(@Param("userId")int userId, @Param("isEnable")int isEnable);
+    
+    List<Stroke> selectByUserIdAndIsEnable(@Param("userId")int userId, @Param("isEnable")int isEnable);
 }

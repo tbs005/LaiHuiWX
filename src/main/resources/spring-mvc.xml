@@ -71,15 +71,14 @@
     <bean id="ossUtil" class="com.lhcx.utils.OssUtil">
         <property name="ossConfigure" ref="ossConfigure"/>
     </bean> -->
-    
-     <!-- 自定义登录拦截器 -->
-   <!--  <mvc:interceptors>
-        <mvc:interceptor>
-        	<mvc:mapping path="/**"/> 
-            <mvc:exclude-mapping path="/api/**"/>
-            <mvc:exclude-mapping path="/resource/**"/>
-            <bean class="com.lhcx.controller.LoginInterceptor" />
-        </mvc:interceptor>
-    </mvc:interceptors> -->
+
+	<!-- 自定义登录拦截器 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/wx/**" />
+			<mvc:exclude-mapping path="/resource/**" />
+			<bean class="com.lhpc.controller.LoginInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
 
 </beans>

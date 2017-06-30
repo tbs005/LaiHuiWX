@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lhpc.model.Image;
-import com.lhpc.service.impl.ImageServiceImpl;
+import com.lhpc.service.IImageService;
 import com.lhpc.util.GsonUtil;
 import com.lhpc.util.ResponseCodeUtil;
 
@@ -22,7 +22,7 @@ import com.lhpc.util.ResponseCodeUtil;
 public class ImageController {
 
 	@Autowired
-	private ImageServiceImpl imageService;//注入service
+	private IImageService imageService;//注入service
 	
 	private static Logger log = Logger.getLogger(ImageController.class);
 	
