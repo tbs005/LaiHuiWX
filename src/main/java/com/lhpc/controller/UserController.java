@@ -47,7 +47,7 @@ public class UserController {
 		try {
 			if (ParamVerificationUtil.userLogin(request)) {
 				String mobile = request.getParameter("mobile");
-				boolean isTelephone = RegExpValidatorUtils.IsTelephone(mobile);
+				boolean isTelephone = RegExpValidatorUtils.IsHandset(mobile);
 				if (isTelephone) {
 					String openID = request.getParameter("openID");
 					String userName = request.getParameter("userName");
@@ -89,7 +89,7 @@ public class UserController {
 	 * 未登录
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/user/noLogin", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/noLogin")
 	public ResponseEntity<String> noLogin() {
 		return GsonUtil.getJson(ResponseCodeUtil.NO_LOGIN, "您未登录,请先登录!");
 	}
