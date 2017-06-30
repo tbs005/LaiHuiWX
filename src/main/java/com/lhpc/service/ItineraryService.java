@@ -13,4 +13,6 @@ public interface ItineraryService {
 
 	public List<Stroke> selectStroke(int userId, int IsEnable);
 
+	public int  updateStroke(Stroke stroke);
+
 }

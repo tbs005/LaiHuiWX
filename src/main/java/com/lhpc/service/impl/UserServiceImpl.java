@@ -23,7 +23,6 @@ public class UserServiceImpl implements IUserService {
 		record.setCreateTime(new Date());
 		return userDao.insert(record);
 	}
-
 	@Override
 	public User selectByPrimaryKey(Integer userId) {
 		return userDao.selectByPrimaryKey(userId);

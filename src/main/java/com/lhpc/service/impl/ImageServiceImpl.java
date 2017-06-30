@@ -24,4 +24,5 @@ public class ImageServiceImpl implements IImageService {
 		return imageDao.selectImageList();
 	}
 
+
 }
