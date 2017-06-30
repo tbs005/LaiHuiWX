@@ -17,13 +17,13 @@ import com.lhpc.model.User;
 public class LoginInterceptor implements HandlerInterceptor {
 	@Autowired
 	private HttpSession session;
-
+	@Override
 	public void afterCompletion(HttpServletRequest request,
 			HttpServletResponse response, Object object, Exception arg3)
 			throws Exception {
 		// System.out.println("afterCompletion---");
 	}
-
+	@Override
 	public void postHandle(HttpServletRequest request,
 			HttpServletResponse response, Object object,
 			ModelAndView modelAndView) throws Exception {
@@ -31,6 +31,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 	}
 
 	// TODO 拦截
+	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object object) throws Exception {
 		User user = (User) session.getAttribute("CURRENT_USER");

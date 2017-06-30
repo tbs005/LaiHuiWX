@@ -21,10 +21,15 @@ public class ItineraryServiceImpl implements ItineraryService {
 	/**
 	 * 添加
 	 */
+	@Override
 	public boolean insertSelective (HttpServletRequest request){
 		Date time = new Date();
 		Stroke stroke = new Stroke();
 		String startCity = request.getParameter("startCity");
+		String startLongitude = request.getParameter("startLongitude");
+		String startLatitude = request.getParameter("startLatitude");
+		String endLongitude = request.getParameter("endLongitude");
+		String endLatitude = request.getParameter("endLatitude");
 		String startCityCode = request.getParameter("startCityCode");
 		String startAddress = request.getParameter("startAddress");
 		String endCity = request.getParameter("endCity");
@@ -43,6 +48,10 @@ public class ItineraryServiceImpl implements ItineraryService {
 			
 		}
 		stroke.setStartCity(startCity);
+		stroke.setStartLongitude(startLongitude);
+		stroke.setStartLatitude(startLatitude);
+		stroke.setEndLongitude(endLongitude);
+		stroke.setEndLatitude(endLatitude);
 		stroke.setStartCityCode(Integer.parseInt(startCityCode));
 		stroke.setStartAddress(startAddress);
 		stroke.setEndCity(endCity);
@@ -68,6 +77,7 @@ public class ItineraryServiceImpl implements ItineraryService {
 	/**
 	 * 根据用户ID和是否可用查询行程
 	 */
+	@Override
 	public List<Stroke> selectStroke(int userId, int IsEnable) {
 		
 		return strokeMapper.selectByUserIdAndIsEnable(userId,IsEnable);
@@ -77,6 +87,7 @@ public class ItineraryServiceImpl implements ItineraryService {
 	/**
 	 * 根据行程ID修改行程
 	 */
+	@Override
 	public int updateStroke(Stroke stroke) {
 
 		

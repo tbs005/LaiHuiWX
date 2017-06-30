@@ -18,15 +18,17 @@ public class UserServiceImpl implements IUserService {
 	@Autowired
 	private UserMapper userDao;
 	
+	@Override
 	public int insert(User record) {
 		record.setCreateTime(new Date());
 		return userDao.insert(record);
 	}
-
+	@Override
 	public User selectByPrimaryKey(Integer userId) {
 		return userDao.selectByPrimaryKey(userId);
 	}
 
+	@Override
 	public User selectByOpenID(String openID) {
 		return userDao.selectByOpenID(openID);
 	}

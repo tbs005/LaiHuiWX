@@ -19,6 +19,10 @@ public class ParamVerificationUtil {
 	public static boolean releaseItinerary(HttpServletRequest request) {
 		boolean flag = false;
 		String startCity = request.getParameter("startCity");
+		String startLongitude = request.getParameter("startLongitude");
+		String startLatitude = request.getParameter("startLatitude");
+		String endLongitude = request.getParameter("endLongitude");
+		String endLatitude = request.getParameter("endLatitude");
 		String startCityCode = request.getParameter("startCityCode");
 		String startAddress = request.getParameter("startAddress");
 		String endCity = request.getParameter("endCity");
@@ -30,6 +34,10 @@ public class ParamVerificationUtil {
 		String seats = request.getParameter("seats");
 		String strokeRoute = request.getParameter("strokeRoute");
 		if (StringUtil.isOrNotEmpty(startCity)
+				&& StringUtil.isOrNotEmpty(startLongitude)
+				&& StringUtil.isOrNotEmpty(startLatitude)
+				&& StringUtil.isOrNotEmpty(endLongitude)
+				&& StringUtil.isOrNotEmpty(endLatitude)
 				&& StringUtil.isOrNotEmpty(startAddress)
 				&& StringUtil.isOrNotEmpty(startCityCode)
 				&& StringUtil.isOrNotEmpty(endCity)
