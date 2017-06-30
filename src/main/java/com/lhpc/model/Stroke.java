@@ -13,11 +13,19 @@ public class Stroke {
 
     private String startAddress;
 
+    private String startLongitude;
+
+    private String startLatitude;
+
     private String endCity;
 
     private Integer endCityCode;
 
     private String endAddress;
+
+    private String endLongitude;
+
+    private String endLatitude;
 
     private Double price;
 
@@ -77,6 +85,22 @@ public class Stroke {
         this.startAddress = startAddress == null ? null : startAddress.trim();
     }
 
+    public String getStartLongitude() {
+        return startLongitude;
+    }
+
+    public void setStartLongitude(String startLongitude) {
+        this.startLongitude = startLongitude == null ? null : startLongitude.trim();
+    }
+
+    public String getStartLatitude() {
+        return startLatitude;
+    }
+
+    public void setStartLatitude(String startLatitude) {
+        this.startLatitude = startLatitude == null ? null : startLatitude.trim();
+    }
+
     public String getEndCity() {
         return endCity;
     }
@@ -99,6 +123,22 @@ public class Stroke {
 
     public void setEndAddress(String endAddress) {
         this.endAddress = endAddress == null ? null : endAddress.trim();
+    }
+
+    public String getEndLongitude() {
+        return endLongitude;
+    }
+
+    public void setEndLongitude(String endLongitude) {
+        this.endLongitude = endLongitude == null ? null : endLongitude.trim();
+    }
+
+    public String getEndLatitude() {
+        return endLatitude;
+    }
+
+    public void setEndLatitude(String endLatitude) {
+        this.endLatitude = endLatitude == null ? null : endLatitude.trim();
     }
 
     public Double getPrice() {

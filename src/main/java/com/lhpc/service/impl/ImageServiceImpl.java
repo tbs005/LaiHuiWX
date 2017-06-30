@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.lhpc.dao.ImageMapper;
 import com.lhpc.model.Image;
-import com.lhpc.service.ImageService;
+import com.lhpc.service.IImageService;
 
 /**
  * 轮播图service
@@ -15,7 +15,7 @@ import com.lhpc.service.ImageService;
  *
  */
 @Service
-public class ImageServiceImpl implements ImageService {
+public class ImageServiceImpl implements IImageService {
 
 	@Autowired
 	private ImageMapper imageDao;
