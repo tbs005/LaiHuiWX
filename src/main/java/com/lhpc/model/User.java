@@ -3,83 +3,103 @@ package com.lhpc.model;
 import java.util.Date;
 
 public class User {
-    private Integer userId;
+	private Integer userId;
 
-    private String userMobile;
+	private String userMobile;
 
-    private String userName;
+	private String userName;
 
-    private String openId;
+	private String openId;
 
-    private Date createTime;
+	private Date createTime;
 
-    private Date loginTime;
+	private Date loginTime;
 
-    private Double wallet;
+	private Double wallet;
 
-    private Integer userStatus;
+	private Integer userStatus;
 
-    public Integer getUserId() {
-        return userId;
-    }
+	private String carType;
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
+	private String carLicense;
 
-    public String getUserMobile() {
-        return userMobile;
-    }
+	public String getCarType() {
+		return carType;
+	}
 
-    public void setUserMobile(String userMobile) {
-        this.userMobile = userMobile == null ? null : userMobile.trim();
-    }
+	public void setCarType(String carType) {
+		this.carType = carType;
+	}
 
-    public String getUserName() {
-        return userName;
-    }
+	public String getCarLicense() {
+		return carLicense;
+	}
 
-    public void setUserName(String userName) {
-        this.userName = userName == null ? null : userName.trim();
-    }
+	public void setCarLicense(String carLicense) {
+		this.carLicense = carLicense;
+	}
 
-    public String getOpenId() {
-        return openId;
-    }
+	public Integer getUserId() {
+		return userId;
+	}
 
-    public void setOpenId(String openId) {
-        this.openId = openId == null ? null : openId.trim();
-    }
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+	public String getUserMobile() {
+		return userMobile;
+	}
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	public void setUserMobile(String userMobile) {
+		this.userMobile = userMobile == null ? null : userMobile.trim();
+	}
 
-    public Date getLoginTime() {
-        return loginTime;
-    }
+	public String getUserName() {
+		return userName;
+	}
 
-    public void setLoginTime(Date loginTime) {
-        this.loginTime = loginTime;
-    }
+	public void setUserName(String userName) {
+		this.userName = userName == null ? null : userName.trim();
+	}
 
-    public Double getWallet() {
-        return wallet;
-    }
+	public String getOpenId() {
+		return openId;
+	}
 
-    public void setWallet(Double wallet) {
-        this.wallet = wallet;
-    }
+	public void setOpenId(String openId) {
+		this.openId = openId == null ? null : openId.trim();
+	}
 
-    public Integer getUserStatus() {
-        return userStatus;
-    }
+	public Date getCreateTime() {
+		return createTime;
+	}
 
-    public void setUserStatus(Integer userStatus) {
-        this.userStatus = userStatus;
-    }
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getLoginTime() {
+		return loginTime;
+	}
+
+	public void setLoginTime(Date loginTime) {
+		this.loginTime = loginTime;
+	}
+
+	public Double getWallet() {
+		return wallet;
+	}
+
+	public void setWallet(Double wallet) {
+		this.wallet = wallet;
+	}
+
+	public Integer getUserStatus() {
+		return userStatus;
+	}
+
+	public void setUserStatus(Integer userStatus) {
+		this.userStatus = userStatus;
+	}
 }
