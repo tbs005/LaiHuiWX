@@ -22,4 +22,6 @@ public interface StrokeMapper {
     List<Stroke> selectByUserIdAndIsEnable(@Param("userId")int userId, @Param("isEnable")int isEnable);
     
     List<Stroke> selectCrossCityList(Stroke stroke);
+    
+    int selectCrossCityCount(Stroke stroke);
 }
