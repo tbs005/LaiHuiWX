@@ -9,14 +9,19 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.lhpc.model.User;
+import com.lhpc.service.IUserService;
 
 /**
  * 拦截器
+ * 
  * @author YangGuang
  */
 public class LoginInterceptor implements HandlerInterceptor {
 	@Autowired
 	private HttpSession session;
+
+	@Autowired
+	private IUserService userService;
 
 	@Override
 	public void afterCompletion(HttpServletRequest request,
@@ -32,15 +37,21 @@ public class LoginInterceptor implements HandlerInterceptor {
 		// System.out.println("postHandle---");
 	}
 
-	// TODO 拦截
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object object) throws Exception {
 		User user = (User) session.getAttribute("CURRENT_USER");
 		if (user == null) {
-			response.setContentType("application/json");
-			response.sendRedirect("/user/noLogin");
-			return false;
+			String openID = request.getParameter("openID");
+			user = userService.selectByOpenID(openID);
+			if (user == null) {
+				response.setContentType("application/json");
+				response.sendRedirect("/user/noLogin");
+				return false;
+			}else {
+				session.setAttribute("CURRENT_USER", user);
+				return true;
+			}
 		} else {
 			return true;
 		}

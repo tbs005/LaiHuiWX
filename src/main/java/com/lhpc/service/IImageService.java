@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.lhpc.model.Image;
 
-public interface ImageService {
+public interface IImageService {
 
 	List<Image> selectImageList();
 }
