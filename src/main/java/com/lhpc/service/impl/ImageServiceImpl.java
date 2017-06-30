@@ -19,9 +19,9 @@ public class ImageServiceImpl implements ImageService {
 
 	@Autowired
 	private ImageMapper imageDao;
-	@Override
 	public List<Image> selectImageList() {
 		return imageDao.selectImageList();
 	}
+
 
 }

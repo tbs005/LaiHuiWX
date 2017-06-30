@@ -1,5 +1,7 @@
 package com.lhpc.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -17,9 +19,10 @@ public class ItineraryServiceImpl implements ItineraryService {
 	@Autowired
 	private StrokeMapper strokeMapper;
 	/**
-	 * 车主发布行程
+	 * 添加
 	 */
 	public boolean insertSelective (HttpServletRequest request){
+		Date time = new Date();
 		Stroke stroke = new Stroke();
 		String startCity = request.getParameter("startCity");
 		String startCityCode = request.getParameter("startCityCode");
@@ -33,6 +36,12 @@ public class ItineraryServiceImpl implements ItineraryService {
 		String seats = request.getParameter("seats");
 		String strokeRoute = request.getParameter("strokeRoute");
 		String remark = request.getParameter("remark");
+		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try {
+			 time = sf.parse(startTime);
+		} catch (ParseException e) {
+			
+		}
 		stroke.setStartCity(startCity);
 		stroke.setStartCityCode(Integer.parseInt(startCityCode));
 		stroke.setStartAddress(startAddress);
@@ -48,7 +57,7 @@ public class ItineraryServiceImpl implements ItineraryService {
 		stroke.setUpdateTime(new Date());
 		stroke.setIsEnable(1);
 		stroke.setUserId(1);
-		stroke.setStartTime(new Date());
+		stroke.setStartTime(time);
 		boolean flag = false;
 		if (strokeMapper.insertSelective(stroke)>0) {
 			flag = true;
@@ -56,10 +65,22 @@ public class ItineraryServiceImpl implements ItineraryService {
 		return flag;
 	}
 
+	/**
+	 * 根据用户ID和是否可用查询行程
+	 */
 	public List<Stroke> selectStroke(int userId, int IsEnable) {
 		
 		return strokeMapper.selectByUserIdAndIsEnable(userId,IsEnable);
 		
+	}
+
+	/**
+	 * 根据行程ID修改行程
+	 */
+	public int updateStroke(Stroke stroke) {
+
+		
+		return strokeMapper.updateByPrimaryKeySelective(stroke);
 	}
 	
 }
