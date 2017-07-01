@@ -22,7 +22,6 @@ import com.lhpc.util.ResponseCodeUtil;
 
 /**
  * 用户登录
- * 
  * @author YangGuang
  *
  */
@@ -38,7 +37,7 @@ public class UserController {
 	private IUserService userService;
 
 	/**
-	 * 用户登录
+	 * 用户注册与登录
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/user/login", method = RequestMethod.POST)
@@ -86,11 +85,11 @@ public class UserController {
 	}
 
 	/**
-	 * 未登录
+	 * 未注册
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/user/noLogin")
 	public ResponseEntity<String> noLogin() {
-		return GsonUtil.getJson(ResponseCodeUtil.NO_LOGIN, "您未登录,请先登录!");
+		return GsonUtil.getJson(ResponseCodeUtil.NO_LOGIN, "您未注册,请先注册!");
 	}
 }
