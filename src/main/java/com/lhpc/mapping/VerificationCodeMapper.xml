@@ -1,16 +1,92 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.lhpc.dao.VerificationCodeMapper">
-	<resultMap id="BaseResultMap" type="com.lhpc.model.VerificationCode">
-		<id column="code_id" property="codeId" jdbcType="INTEGER" />
-		<result column="code" property="code" jdbcType="INTEGER" />
-		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
-		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-	</resultMap>
-	<sql id="Base_Column_List">
-		code_id, code, mobile, create_time
-	</sql>
-	<select id="selectByMobile" resultMap="BaseResultMap"
+
+<mapper namespace="com.lhpc.dao.VerificationCodeMapper" >
+  <resultMap id="BaseResultMap" type="com.lhpc.model.VerificationCode" >
+    <id column="code_id" property="codeId" jdbcType="INTEGER" />
+    <result column="code" property="code" jdbcType="INTEGER" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    code_id, code, mobile, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from wx_code
+    where code_id = #{codeId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByMobile" resultType="java.lang.Integer" parameterType="java.lang.String" >
+    select 
+  	count(*)
+    from wx_code
+    where mobile = #{mobile,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from wx_code
+    where code_id = #{codeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lhpc.model.VerificationCode" >
+    insert into wx_code (code_id, code, mobile, 
+      create_time)
+    values (#{codeId,jdbcType=INTEGER}, #{code,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lhpc.model.VerificationCode" >
+    insert into wx_code
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="codeId != null" >
+        code_id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="codeId != null" >
+        #{codeId,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=INTEGER},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lhpc.model.VerificationCode" >
+    update wx_code
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=INTEGER},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where code_id = #{codeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lhpc.model.VerificationCode" >
+    update wx_code
+    set code = #{code,jdbcType=INTEGER},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where code_id = #{codeId,jdbcType=INTEGER}
+  </update>
+  <select id="selectCodeByMobile" resultMap="BaseResultMap"
 		parameterType="java.lang.String">
 		select
 		<include refid="Base_Column_List" />
@@ -18,13 +94,4 @@
 		where mobile = #{mobile,jdbcType=VARCHAR}
 		order by create_time desc limit 1
 	</select>
-	<delete id="deleteByMobile" parameterType="java.lang.String">
-		delete from wx_code
-		where mobile = #{mobile,jdbcType=VARCHAR}
-	</delete>
-	<insert id="insert" parameterType="com.lhpc.model.VerificationCode">
-		insert into wx_code (code, mobile,create_time)
-		values ( #{code,jdbcType=INTEGER},
-		#{mobile,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
-	</insert>
 </mapper>

@@ -3,9 +3,19 @@ package com.lhpc.dao;
 import com.lhpc.model.VerificationCode;
 
 public interface VerificationCodeMapper {
-    int deleteByMobile(String mobile);
+    int deleteByPrimaryKey(Integer codeId);
 
-    int insert(VerificationCode verificationCode);
+    int insert(VerificationCode record);
 
-    VerificationCode selectByMobile(String mobile);
+    int insertSelective(VerificationCode record);
+
+    VerificationCode selectByPrimaryKey(Integer codeId);
+
+    int updateByPrimaryKeySelective(VerificationCode record);
+
+    int updateByPrimaryKey(VerificationCode record);
+
+	int  selectByMobile(String mobile);
+	
+	VerificationCode selectCodeByMobile(String mobile);
 }

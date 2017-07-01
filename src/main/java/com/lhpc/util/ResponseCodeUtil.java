@@ -14,6 +14,8 @@ public class ResponseCodeUtil {
 	public static final int NO_LOGIN = 4005;//用户未登录
 	public static final int LOGIN_ERROR = 4006;//登录失败
 	public static final int CODE_ERROR = 4007;//验证码不正确
+	public static final int CODE_BEYOND = 4008;//发送验证码超出
+	public static final int SMS_SEND_FAILED = 4009; //验证码发送失败
 	public static final int SYSTEM_ERROR = 5005;//系统错误
 	
 

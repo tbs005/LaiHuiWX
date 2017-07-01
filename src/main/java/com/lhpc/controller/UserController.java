@@ -57,7 +57,7 @@ public class UserController {
 					String code = request.getParameter("code");
 					//验证码是否正确
 					if (Integer.parseInt(code) == verificationCodeService
-							.selectByMobile(mobile).getCode()) {
+							.selectCodeByMobile(mobile).getCode()) {
 						//如果是司机,则需要这两个参数
 						if (request.getParameter("userType").equals("1")) {
 							if (ParamVerificationUtil.driverLogin(request)) {

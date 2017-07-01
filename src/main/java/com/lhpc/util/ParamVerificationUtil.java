@@ -84,4 +84,16 @@ public class ParamVerificationUtil {
 			flag = true;
 		return flag;
 	}
+
+	/**
+	 * 发送短信验证码参数验证
+	 */
+	public static boolean sendSmsCode(HttpServletRequest request) {
+		boolean flag = false;
+		String mobile = request.getParameter("mobile");
+		if (StringUtil.isOrNotEmpty(mobile) && Regex.isPhoneLegal(mobile))
+			flag = true;
+		return flag;
+	}
+
 }
