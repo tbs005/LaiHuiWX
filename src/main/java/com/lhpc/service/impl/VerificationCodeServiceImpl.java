@@ -30,8 +30,12 @@ public class VerificationCodeServiceImpl implements IVerificationCodeService {
 	@Override
 	public int selectSMS(String mobile) {
 		int count = 0;
-		
-			count = verificationCodeMapper.selectByMobile(mobile);
+			try {
+				count = verificationCodeMapper.selectByMobile(mobile);
+			} catch (Exception e) {
+				log.error(e.getMessage());
+			}
+			
 		
 		return count;
 	}
