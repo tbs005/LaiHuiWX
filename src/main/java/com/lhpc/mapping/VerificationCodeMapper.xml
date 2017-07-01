@@ -16,6 +16,12 @@
     from wx_code
     where code_id = #{codeId,jdbcType=INTEGER}
   </select>
+  <select id="selectByMobile" resultType="java.lang.Integer" parameterType="java.lang.String" >
+    select 
+  	count(*)
+    from wx_code
+    where mobile = #{mobile,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from wx_code
     where code_id = #{codeId,jdbcType=INTEGER}

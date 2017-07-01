@@ -14,4 +14,6 @@ public interface VerificationCodeMapper {
     int updateByPrimaryKeySelective(VerificationCode record);
 
     int updateByPrimaryKey(VerificationCode record);
+
+	int  selectByMobile(String mobile);
 }
