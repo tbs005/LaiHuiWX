@@ -78,9 +78,9 @@ public class ItineraryServiceImpl implements ItineraryService {
 	 * 根据用户ID和是否可用查询行程
 	 */
 	@Override
-	public List<Stroke> selectStroke(int userId, int IsEnable) {
+	public List<Stroke> selectStroke(int userId, int isEnable) {
 		
-		return strokeMapper.selectByUserIdAndIsEnable(userId,IsEnable);
+		return strokeMapper.selectByUserIdAndIsEnable(userId, isEnable);
 		
 	}
 
