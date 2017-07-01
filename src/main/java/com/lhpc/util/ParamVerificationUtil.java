@@ -61,17 +61,27 @@ public class ParamVerificationUtil {
 		boolean flag = false;
 		String mobile = request.getParameter("mobile");
 		String code = request.getParameter("code");
-		if (StringUtil.isOrNotEmpty(mobile) && StringUtil.isOrNotEmpty(code))
+		String userName = request.getParameter("userName");
+		String openID = request.getParameter("openID");
+		String userType = request.getParameter("userType");
+		if (StringUtil.isOrNotEmpty(mobile) && StringUtil.isOrNotEmpty(code)
+				&& StringUtil.isOrNotEmpty(userName)
+				&& StringUtil.isOrNotEmpty(openID)
+				&& StringUtil.isOrNotEmpty(userType))
 			flag = true;
 		return flag;
 	}
 
 	/**
-	 * 跨城车辆参数验证
+	 * 司机登录参数验证
 	 */
-	public static boolean crossCity(HttpServletRequest request) {
+	public static boolean driverLogin(HttpServletRequest request) {
 		boolean flag = false;
-		request.getParameter("");
+		String carType = request.getParameter("carType");
+		String carLicense = request.getParameter("carLicense");
+		if (StringUtil.isOrNotEmpty(carType)
+				&& StringUtil.isOrNotEmpty(carLicense))
+			flag = true;
 		return flag;
 	}
 

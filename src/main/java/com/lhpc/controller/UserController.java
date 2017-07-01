@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lhpc.model.User;
 import com.lhpc.service.IUserService;
+import com.lhpc.service.IVerificationCodeService;
 import com.lhpc.util.GsonUtil;
 import com.lhpc.util.ParamVerificationUtil;
 import com.lhpc.util.RegExpValidatorUtils;
@@ -22,6 +23,7 @@ import com.lhpc.util.ResponseCodeUtil;
 
 /**
  * 用户登录
+ * 
  * @author YangGuang
  *
  */
@@ -35,6 +37,8 @@ public class UserController {
 	private HttpServletRequest request;
 	@Autowired
 	private IUserService userService;
+	@Autowired
+	private IVerificationCodeService verificationCodeService;
 
 	/**
 	 * 用户注册与登录
@@ -44,26 +48,38 @@ public class UserController {
 	public ResponseEntity<String> sendPhoneCode(HttpServletRequest request,
 			User user) {
 		try {
+			//验证参数是否完整
 			if (ParamVerificationUtil.userLogin(request)) {
 				String mobile = request.getParameter("mobile");
+				//验证手机号格式
 				boolean isTelephone = RegExpValidatorUtils.IsHandset(mobile);
 				if (isTelephone) {
-					String openID = request.getParameter("openID");
-					String userName = request.getParameter("userName");
-					String userCode = request.getParameter("userCode");
 					String code = request.getParameter("code");
-					if (userCode.equals(code)) {
+					//验证码是否正确
+					if (Integer.parseInt(code) == verificationCodeService
+							.selectCodeByMobile(mobile).getCode()) {
+						//如果是司机,则需要这两个参数
+						if (request.getParameter("userType").equals("1")) {
+							if (ParamVerificationUtil.driverLogin(request)) {
+								user.setCarType(request.getParameter("carType"));
+								user.setCarLicense(request.getParameter("carLicense"));
+							}else {
+								return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS,
+										"参数不完整");
+							}
+						}
 						user.setUserMobile(mobile);
-						user.setOpenId(openID);
-						user.setUserName(userName);
+						user.setOpenId(request.getParameter("openID"));
+						user.setUserName(request.getParameter("userName"));
 						user.setCreateTime(new Date());
 						user.setLoginTime(new Date());
+						//把用户信息插入数据库
 						if (userService.insert(user) == 1)
 							return GsonUtil.getJson(ResponseCodeUtil.SUCCESS,
-									"登录成功");
+									"注册成功");
 						else
 							return GsonUtil.getJson(
-									ResponseCodeUtil.LOGIN_ERROR, "登录失败");
+									ResponseCodeUtil.LOGIN_ERROR, "注册失败");
 					} else {
 						return GsonUtil.getJson(ResponseCodeUtil.CODE_ERROR,
 								"验证码错误!");

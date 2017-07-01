@@ -2,7 +2,6 @@ package com.lhpc.service.impl;
 
 import java.util.Date;
 
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -77,6 +76,9 @@ public class VerificationCodeServiceImpl implements IVerificationCodeService {
 		return verificationCodeMapper.insertSelective(verificationCode);
 	}
 
-
+	@Override
+	public VerificationCode selectCodeByMobile(String mobile) {
+		return verificationCodeMapper.selectCodeByMobile(mobile);
+	} 
 
 }
