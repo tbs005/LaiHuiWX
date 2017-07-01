@@ -2,6 +2,7 @@ package com.lhpc.service.impl;
 
 import java.util.Date;
 
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -71,5 +72,7 @@ public class VerificationCodeServiceImpl implements IVerificationCodeService {
 		verificationCode.setCreateTime(new Date());
 		return verificationCodeMapper.insertSelective(verificationCode);
 	}
+
+
 
 }
