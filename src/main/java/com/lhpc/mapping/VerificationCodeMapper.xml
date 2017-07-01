@@ -11,14 +11,14 @@
 		code_id, code, mobile, create_time
 	</sql>
 	<select id="selectByMobile" resultMap="BaseResultMap"
-		parameterType="com.lhpc.model.VerificationCode">
+		parameterType="java.lang.String">
 		select
 		<include refid="Base_Column_List" />
 		from wx_code
 		where mobile = #{mobile,jdbcType=VARCHAR}
 		order by create_time desc limit 1
 	</select>
-	<delete id="deleteByMobile" parameterType="com.lhpc.model.VerificationCode">
+	<delete id="deleteByMobile" parameterType="java.lang.String">
 		delete from wx_code
 		where mobile = #{mobile,jdbcType=VARCHAR}
 	</delete>

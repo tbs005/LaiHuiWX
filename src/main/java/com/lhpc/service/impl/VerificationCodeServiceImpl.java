@@ -19,8 +19,8 @@ public class VerificationCodeServiceImpl implements IVerificationCodeService {
 	private VerificationCodeMapper verificationCodeDao;
 
 	@Override
-	public int deleteByMobile(VerificationCode verificationCode) {
-		return verificationCodeDao.deleteByMobile(verificationCode);
+	public int deleteByMobile(String mobile) {
+		return verificationCodeDao.deleteByMobile(mobile);
 	}
 
 	@Override
@@ -30,8 +30,8 @@ public class VerificationCodeServiceImpl implements IVerificationCodeService {
 	}
 
 	@Override
-	public VerificationCode selectByMobile(VerificationCode verificationCode) {
-		return verificationCodeDao.selectByMobile(verificationCode);
+	public VerificationCode selectByMobile(String mobile) {
+		return verificationCodeDao.selectByMobile(mobile);
 	} 
 	
 

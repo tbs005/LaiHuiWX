@@ -4,10 +4,10 @@ import com.lhpc.model.VerificationCode;
 
 public interface IVerificationCodeService {
 	
-	int deleteByMobile(VerificationCode verificationCode);
+	int deleteByMobile(String mobile);
 
     int insert(VerificationCode verificationCode);
 
-    VerificationCode selectByMobile(VerificationCode verificationCode);
+    VerificationCode selectByMobile(String mobile);
 
 }
