@@ -48,23 +48,25 @@ public class UserController {
 	public ResponseEntity<String> sendPhoneCode(HttpServletRequest request,
 			User user) {
 		try {
-			//验证参数是否完整
+			// 验证参数是否完整
 			if (ParamVerificationUtil.userLogin(request)) {
 				String mobile = request.getParameter("mobile");
-				//验证手机号格式
+				// 验证手机号格式
 				boolean isTelephone = RegExpValidatorUtils.IsHandset(mobile);
 				if (isTelephone) {
 					String code = request.getParameter("code");
-					//验证码是否正确
-					if (Integer.parseInt(code) == verificationCodeService
-							.selectCodeByMobile(mobile).getCode()) {
-						//如果是司机,则需要这两个参数
+					// 验证码是否正确
+					if (code == verificationCodeService.selectCodeByMobile(
+							mobile).getCode()) {
+						// 如果是司机,则需要这两个参数
 						if (request.getParameter("userType").equals("1")) {
 							if (ParamVerificationUtil.driverLogin(request)) {
 								user.setCarType(request.getParameter("carType"));
-								user.setCarLicense(request.getParameter("carLicense"));
-							}else {
-								return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS,
+								user.setCarLicense(request
+										.getParameter("carLicense"));
+							} else {
+								return GsonUtil.getJson(
+										ResponseCodeUtil.PARAMETER_MISS,
 										"参数不完整");
 							}
 						}
@@ -73,7 +75,7 @@ public class UserController {
 						user.setUserName(request.getParameter("userName"));
 						user.setCreateTime(new Date());
 						user.setLoginTime(new Date());
-						//把用户信息插入数据库
+						// 把用户信息插入数据库
 						if (userService.insert(user) == 1)
 							return GsonUtil.getJson(ResponseCodeUtil.SUCCESS,
 									"注册成功");

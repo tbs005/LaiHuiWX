@@ -11,7 +11,7 @@ public interface IVerificationCodeService {
 
 	public  int selectSMS(String mobile);
 	public ResponseEntity<String> sendSMS(HttpServletRequest request);
-	int insertSMS(int code, String mobile);
+	int insertSMS(String code, String mobile);
 	VerificationCode selectCodeByMobile(String mobile);
 
 }

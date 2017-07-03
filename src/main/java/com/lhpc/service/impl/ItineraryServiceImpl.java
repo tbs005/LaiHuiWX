@@ -13,11 +13,13 @@ import org.springframework.stereotype.Service;
 import com.lhpc.dao.StrokeMapper;
 import com.lhpc.model.Stroke;
 import com.lhpc.service.ItineraryService;
+
 @Service
 public class ItineraryServiceImpl implements ItineraryService {
 
 	@Autowired
 	private StrokeMapper strokeMapper;
+
 	/**
 	 * 添加
 	 */
@@ -42,9 +44,9 @@ public class ItineraryServiceImpl implements ItineraryService {
 		String remark = request.getParameter("remark");
 		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		try {
-			 time = sf.parse(startTime);
+			time = sf.parse(startTime);
 		} catch (ParseException e) {
-			
+
 		}
 		stroke.setStartCity(startCity);
 		stroke.setStartLongitude(startLongitude);
@@ -65,7 +67,7 @@ public class ItineraryServiceImpl implements ItineraryService {
 		stroke.setUserId(userId);
 		stroke.setStartTime(time);
 		boolean flag = false;
-		if (strokeMapper.insertSelective(stroke)>0) {
+		if (strokeMapper.insertSelective(stroke) > 0) {
 			flag = true;
 		}
 		return flag;
@@ -76,9 +78,9 @@ public class ItineraryServiceImpl implements ItineraryService {
 	 */
 	@Override
 	public List<Stroke> selectStroke(int userId, int isEnable) {
-		
+
 		return strokeMapper.selectByUserIdAndIsEnable(userId, isEnable);
-		
+
 	}
 
 	/**
@@ -87,7 +89,6 @@ public class ItineraryServiceImpl implements ItineraryService {
 	@Override
 	public int updateStroke(Stroke stroke) {
 
-		
 		return strokeMapper.updateByPrimaryKeySelective(stroke);
 	}
 
@@ -100,5 +101,5 @@ public class ItineraryServiceImpl implements ItineraryService {
 	public int selectCrossCityCount(Stroke stroke) {
 		return strokeMapper.selectCrossCityCount(stroke);
 	}
-	
+
 }

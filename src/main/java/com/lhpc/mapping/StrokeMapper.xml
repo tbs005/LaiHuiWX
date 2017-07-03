@@ -1,304 +1,319 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.lhpc.dao.StrokeMapper" >
-  <resultMap id="BaseResultMap" type="com.lhpc.model.Stroke" >
-    <id column="stroke_id" property="strokeId" jdbcType="INTEGER" />
-    <result column="user_id" property="userId" jdbcType="INTEGER" />
-    <result column="start_city" property="startCity" jdbcType="VARCHAR" />
-    <result column="start_city_code" property="startCityCode" jdbcType="INTEGER" />
-    <result column="start_address" property="startAddress" jdbcType="VARCHAR" />
-    <result column="start_longitude" property="startLongitude" jdbcType="VARCHAR" />
-    <result column="start_latitude" property="startLatitude" jdbcType="VARCHAR" />
-    <result column="end_city" property="endCity" jdbcType="VARCHAR" />
-    <result column="end_city_code" property="endCityCode" jdbcType="INTEGER" />
-    <result column="end_address" property="endAddress" jdbcType="VARCHAR" />
-    <result column="end_longitude" property="endLongitude" jdbcType="VARCHAR" />
-    <result column="end_latitude" property="endLatitude" jdbcType="VARCHAR" />
-    <result column="price" property="price" jdbcType="DOUBLE" />
-    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
-    <result column="car_type" property="carType" jdbcType="VARCHAR" />
-    <result column="seats" property="seats" jdbcType="INTEGER" />
-    <result column="stroke_route" property="strokeRoute" jdbcType="VARCHAR" />
-    <result column="remark" property="remark" jdbcType="VARCHAR" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="is_enable" property="isEnable" jdbcType="INTEGER" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    stroke_id, user_id, start_city, start_city_code, start_address, start_longitude, 
-    start_latitude, end_city, end_city_code, end_address, end_longitude, end_latitude, 
-    price, start_time, car_type, seats, stroke_route, remark, create_time, update_time, 
-    is_enable
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from wx_stroke
-    where stroke_id = #{strokeId,jdbcType=INTEGER}
-  </select>
-  <select id="selectCrossCityList" resultMap="BaseResultMap" parameterType="com.lhpc.model.Stroke" >
-    select 
-    <include refid="Base_Column_List" />
-    from wx_stroke
-    where is_enable = 1
-    group by start_city_code,end_city_code
-  </select>
-  <select id="selectCrossCityCount" resultType="java.lang.Integer" parameterType="com.lhpc.model.Stroke" >
-    select count(1)
-    from wx_stroke
-    where start_city_code = #{startCityCode,jdbcType=INTEGER} 
-    and end_city_code = #{endCityCode,jdbcType=INTEGER}
-    and is_enable = 1
-  </select>
-  <select id="selectByUserIdAndIsEnable" resultMap="BaseResultMap" >
-    select 
-    <include refid="Base_Column_List" />
-    from wx_stroke
-    where user_id = #{userId,jdbcType=INTEGER} and is_enable = #{isEnable,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from wx_stroke
-    where stroke_id = #{strokeId,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.lhpc.model.Stroke" >
-    insert into wx_stroke (stroke_id, user_id, start_city, 
-      start_city_code, start_address, start_longitude, 
-      start_latitude, end_city, end_city_code, 
-      end_address, end_longitude, end_latitude, 
-      price, start_time, car_type, 
-      seats, stroke_route, remark, 
-      create_time, update_time, is_enable
-      )
-    values (#{strokeId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{startCity,jdbcType=VARCHAR}, 
-      #{startCityCode,jdbcType=INTEGER}, #{startAddress,jdbcType=VARCHAR}, #{startLongitude,jdbcType=VARCHAR}, 
-      #{startLatitude,jdbcType=VARCHAR}, #{endCity,jdbcType=VARCHAR}, #{endCityCode,jdbcType=INTEGER}, 
-      #{endAddress,jdbcType=VARCHAR}, #{endLongitude,jdbcType=VARCHAR}, #{endLatitude,jdbcType=VARCHAR}, 
-      #{price,jdbcType=DOUBLE}, #{startTime,jdbcType=TIMESTAMP}, #{carType,jdbcType=VARCHAR}, 
-      #{seats,jdbcType=INTEGER}, #{strokeRoute,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{isEnable,jdbcType=INTEGER}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.lhpc.model.Stroke" >
-    insert into wx_stroke
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="strokeId != null" >
-        stroke_id,
-      </if>
-      <if test="userId != null" >
-        user_id,
-      </if>
-      <if test="startCity != null" >
-        start_city,
-      </if>
-      <if test="startCityCode != null" >
-        start_city_code,
-      </if>
-      <if test="startAddress != null" >
-        start_address,
-      </if>
-      <if test="startLongitude != null" >
-        start_longitude,
-      </if>
-      <if test="startLatitude != null" >
-        start_latitude,
-      </if>
-      <if test="endCity != null" >
-        end_city,
-      </if>
-      <if test="endCityCode != null" >
-        end_city_code,
-      </if>
-      <if test="endAddress != null" >
-        end_address,
-      </if>
-      <if test="endLongitude != null" >
-        end_longitude,
-      </if>
-      <if test="endLatitude != null" >
-        end_latitude,
-      </if>
-      <if test="price != null" >
-        price,
-      </if>
-      <if test="startTime != null" >
-        start_time,
-      </if>
-      <if test="carType != null" >
-        car_type,
-      </if>
-      <if test="seats != null" >
-        seats,
-      </if>
-      <if test="strokeRoute != null" >
-        stroke_route,
-      </if>
-      <if test="remark != null" >
-        remark,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
-      </if>
-      <if test="isEnable != null" >
-        is_enable,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="strokeId != null" >
-        #{strokeId,jdbcType=INTEGER},
-      </if>
-      <if test="userId != null" >
-        #{userId,jdbcType=INTEGER},
-      </if>
-      <if test="startCity != null" >
-        #{startCity,jdbcType=VARCHAR},
-      </if>
-      <if test="startCityCode != null" >
-        #{startCityCode,jdbcType=INTEGER},
-      </if>
-      <if test="startAddress != null" >
-        #{startAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="startLongitude != null" >
-        #{startLongitude,jdbcType=VARCHAR},
-      </if>
-      <if test="startLatitude != null" >
-        #{startLatitude,jdbcType=VARCHAR},
-      </if>
-      <if test="endCity != null" >
-        #{endCity,jdbcType=VARCHAR},
-      </if>
-      <if test="endCityCode != null" >
-        #{endCityCode,jdbcType=INTEGER},
-      </if>
-      <if test="endAddress != null" >
-        #{endAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="endLongitude != null" >
-        #{endLongitude,jdbcType=VARCHAR},
-      </if>
-      <if test="endLatitude != null" >
-        #{endLatitude,jdbcType=VARCHAR},
-      </if>
-      <if test="price != null" >
-        #{price,jdbcType=DOUBLE},
-      </if>
-      <if test="startTime != null" >
-        #{startTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="carType != null" >
-        #{carType,jdbcType=VARCHAR},
-      </if>
-      <if test="seats != null" >
-        #{seats,jdbcType=INTEGER},
-      </if>
-      <if test="strokeRoute != null" >
-        #{strokeRoute,jdbcType=VARCHAR},
-      </if>
-      <if test="remark != null" >
-        #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="isEnable != null" >
-        #{isEnable,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.lhpc.model.Stroke" >
-    update wx_stroke
-    <set >
-      <if test="userId != null" >
-        user_id = #{userId,jdbcType=INTEGER},
-      </if>
-      <if test="startCity != null" >
-        start_city = #{startCity,jdbcType=VARCHAR},
-      </if>
-      <if test="startCityCode != null" >
-        start_city_code = #{startCityCode,jdbcType=INTEGER},
-      </if>
-      <if test="startAddress != null" >
-        start_address = #{startAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="startLongitude != null" >
-        start_longitude = #{startLongitude,jdbcType=VARCHAR},
-      </if>
-      <if test="startLatitude != null" >
-        start_latitude = #{startLatitude,jdbcType=VARCHAR},
-      </if>
-      <if test="endCity != null" >
-        end_city = #{endCity,jdbcType=VARCHAR},
-      </if>
-      <if test="endCityCode != null" >
-        end_city_code = #{endCityCode,jdbcType=INTEGER},
-      </if>
-      <if test="endAddress != null" >
-        end_address = #{endAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="endLongitude != null" >
-        end_longitude = #{endLongitude,jdbcType=VARCHAR},
-      </if>
-      <if test="endLatitude != null" >
-        end_latitude = #{endLatitude,jdbcType=VARCHAR},
-      </if>
-      <if test="price != null" >
-        price = #{price,jdbcType=DOUBLE},
-      </if>
-      <if test="startTime != null" >
-        start_time = #{startTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="carType != null" >
-        car_type = #{carType,jdbcType=VARCHAR},
-      </if>
-      <if test="seats != null" >
-        seats = #{seats,jdbcType=INTEGER},
-      </if>
-      <if test="strokeRoute != null" >
-        stroke_route = #{strokeRoute,jdbcType=VARCHAR},
-      </if>
-      <if test="remark != null" >
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="isEnable != null" >
-        is_enable = #{isEnable,jdbcType=INTEGER},
-      </if>
-    </set>
-    where stroke_id = #{strokeId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.lhpc.model.Stroke" >
-    update wx_stroke
-    set user_id = #{userId,jdbcType=INTEGER},
-      start_city = #{startCity,jdbcType=VARCHAR},
-      start_city_code = #{startCityCode,jdbcType=INTEGER},
-      start_address = #{startAddress,jdbcType=VARCHAR},
-      start_longitude = #{startLongitude,jdbcType=VARCHAR},
-      start_latitude = #{startLatitude,jdbcType=VARCHAR},
-      end_city = #{endCity,jdbcType=VARCHAR},
-      end_city_code = #{endCityCode,jdbcType=INTEGER},
-      end_address = #{endAddress,jdbcType=VARCHAR},
-      end_longitude = #{endLongitude,jdbcType=VARCHAR},
-      end_latitude = #{endLatitude,jdbcType=VARCHAR},
-      price = #{price,jdbcType=DOUBLE},
-      start_time = #{startTime,jdbcType=TIMESTAMP},
-      car_type = #{carType,jdbcType=VARCHAR},
-      seats = #{seats,jdbcType=INTEGER},
-      stroke_route = #{strokeRoute,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      is_enable = #{isEnable,jdbcType=INTEGER}
-    where stroke_id = #{strokeId,jdbcType=INTEGER}
-  </update>
+<mapper namespace="com.lhpc.dao.StrokeMapper">
+	<resultMap id="BaseResultMap" type="com.lhpc.model.Stroke">
+		<id column="stroke_id" property="strokeId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="start_city" property="startCity" jdbcType="VARCHAR" />
+		<result column="start_city_code" property="startCityCode"
+			jdbcType="INTEGER" />
+		<result column="start_address" property="startAddress"
+			jdbcType="VARCHAR" />
+		<result column="start_longitude" property="startLongitude"
+			jdbcType="VARCHAR" />
+		<result column="start_latitude" property="startLatitude"
+			jdbcType="VARCHAR" />
+		<result column="end_city" property="endCity" jdbcType="VARCHAR" />
+		<result column="end_city_code" property="endCityCode" jdbcType="INTEGER" />
+		<result column="end_address" property="endAddress" jdbcType="VARCHAR" />
+		<result column="end_longitude" property="endLongitude"
+			jdbcType="VARCHAR" />
+		<result column="end_latitude" property="endLatitude" jdbcType="VARCHAR" />
+		<result column="price" property="price" jdbcType="DOUBLE" />
+		<result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+		<result column="car_type" property="carType" jdbcType="VARCHAR" />
+		<result column="seats" property="seats" jdbcType="INTEGER" />
+		<result column="stroke_route" property="strokeRoute" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="is_enable" property="isEnable" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		stroke_id, user_id, start_city, start_city_code, start_address, start_longitude,
+		start_latitude, end_city, end_city_code, end_address, end_longitude,
+		end_latitude,
+		price, start_time, car_type, seats, stroke_route, remark, create_time,
+		update_time,
+		is_enable
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from wx_stroke
+		where stroke_id = #{strokeId,jdbcType=INTEGER}
+	</select>
+	<select id="selectCrossCityList" resultMap="BaseResultMap"
+		parameterType="com.lhpc.model.Stroke">
+		select
+		<include refid="Base_Column_List" />
+		from wx_stroke
+		where is_enable = 1
+		group by start_city_code,end_city_code
+	</select>
+	<select id="selectCrossCityCount" resultType="java.lang.Integer"
+		parameterType="com.lhpc.model.Stroke">
+		select count(1)
+		from wx_stroke
+		where start_city_code = #{startCityCode,jdbcType=INTEGER}
+		and end_city_code = #{endCityCode,jdbcType=INTEGER}
+		and is_enable = 1
+	</select>
+	<select id="selectByUserIdAndIsEnable" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from wx_stroke
+		where user_id = #{userId,jdbcType=INTEGER} and is_enable =
+		#{isEnable,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from wx_stroke
+		where stroke_id = #{strokeId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.lhpc.model.Stroke">
+		insert into wx_stroke (stroke_id, user_id, start_city,
+		start_city_code, start_address, start_longitude,
+		start_latitude, end_city, end_city_code,
+		end_address, end_longitude, end_latitude,
+		price, start_time, car_type,
+		seats, stroke_route, remark,
+		create_time, update_time, is_enable
+		)
+		values (#{strokeId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER},
+		#{startCity,jdbcType=VARCHAR},
+		#{startCityCode,jdbcType=INTEGER}, #{startAddress,jdbcType=VARCHAR}, #{startLongitude,jdbcType=VARCHAR},
+		#{startLatitude,jdbcType=VARCHAR}, #{endCity,jdbcType=VARCHAR},
+		#{endCityCode,jdbcType=INTEGER},
+		#{endAddress,jdbcType=VARCHAR}, #{endLongitude,jdbcType=VARCHAR}, #{endLatitude,jdbcType=VARCHAR},
+		#{price,jdbcType=DOUBLE}, #{startTime,jdbcType=TIMESTAMP},
+		#{carType,jdbcType=VARCHAR},
+		#{seats,jdbcType=INTEGER}, #{strokeRoute,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+		#{isEnable,jdbcType=INTEGER}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.lhpc.model.Stroke">
+		insert into wx_stroke
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="strokeId != null">
+				stroke_id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="startCity != null">
+				start_city,
+			</if>
+			<if test="startCityCode != null">
+				start_city_code,
+			</if>
+			<if test="startAddress != null">
+				start_address,
+			</if>
+			<if test="startLongitude != null">
+				start_longitude,
+			</if>
+			<if test="startLatitude != null">
+				start_latitude,
+			</if>
+			<if test="endCity != null">
+				end_city,
+			</if>
+			<if test="endCityCode != null">
+				end_city_code,
+			</if>
+			<if test="endAddress != null">
+				end_address,
+			</if>
+			<if test="endLongitude != null">
+				end_longitude,
+			</if>
+			<if test="endLatitude != null">
+				end_latitude,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="startTime != null">
+				start_time,
+			</if>
+			<if test="carType != null">
+				car_type,
+			</if>
+			<if test="seats != null">
+				seats,
+			</if>
+			<if test="strokeRoute != null">
+				stroke_route,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="isEnable != null">
+				is_enable,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="strokeId != null">
+				#{strokeId,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="startCity != null">
+				#{startCity,jdbcType=VARCHAR},
+			</if>
+			<if test="startCityCode != null">
+				#{startCityCode,jdbcType=INTEGER},
+			</if>
+			<if test="startAddress != null">
+				#{startAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="startLongitude != null">
+				#{startLongitude,jdbcType=VARCHAR},
+			</if>
+			<if test="startLatitude != null">
+				#{startLatitude,jdbcType=VARCHAR},
+			</if>
+			<if test="endCity != null">
+				#{endCity,jdbcType=VARCHAR},
+			</if>
+			<if test="endCityCode != null">
+				#{endCityCode,jdbcType=INTEGER},
+			</if>
+			<if test="endAddress != null">
+				#{endAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="endLongitude != null">
+				#{endLongitude,jdbcType=VARCHAR},
+			</if>
+			<if test="endLatitude != null">
+				#{endLatitude,jdbcType=VARCHAR},
+			</if>
+			<if test="price != null">
+				#{price,jdbcType=DOUBLE},
+			</if>
+			<if test="startTime != null">
+				#{startTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="carType != null">
+				#{carType,jdbcType=VARCHAR},
+			</if>
+			<if test="seats != null">
+				#{seats,jdbcType=INTEGER},
+			</if>
+			<if test="strokeRoute != null">
+				#{strokeRoute,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="isEnable != null">
+				#{isEnable,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.lhpc.model.Stroke">
+		update wx_stroke
+		<set>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="startCity != null">
+				start_city = #{startCity,jdbcType=VARCHAR},
+			</if>
+			<if test="startCityCode != null">
+				start_city_code = #{startCityCode,jdbcType=INTEGER},
+			</if>
+			<if test="startAddress != null">
+				start_address = #{startAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="startLongitude != null">
+				start_longitude = #{startLongitude,jdbcType=VARCHAR},
+			</if>
+			<if test="startLatitude != null">
+				start_latitude = #{startLatitude,jdbcType=VARCHAR},
+			</if>
+			<if test="endCity != null">
+				end_city = #{endCity,jdbcType=VARCHAR},
+			</if>
+			<if test="endCityCode != null">
+				end_city_code = #{endCityCode,jdbcType=INTEGER},
+			</if>
+			<if test="endAddress != null">
+				end_address = #{endAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="endLongitude != null">
+				end_longitude = #{endLongitude,jdbcType=VARCHAR},
+			</if>
+			<if test="endLatitude != null">
+				end_latitude = #{endLatitude,jdbcType=VARCHAR},
+			</if>
+			<if test="price != null">
+				price = #{price,jdbcType=DOUBLE},
+			</if>
+			<if test="startTime != null">
+				start_time = #{startTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="carType != null">
+				car_type = #{carType,jdbcType=VARCHAR},
+			</if>
+			<if test="seats != null">
+				seats = #{seats,jdbcType=INTEGER},
+			</if>
+			<if test="strokeRoute != null">
+				stroke_route = #{strokeRoute,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="isEnable != null">
+				is_enable = #{isEnable,jdbcType=INTEGER},
+			</if>
+		</set>
+		where stroke_id = #{strokeId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.lhpc.model.Stroke">
+		update wx_stroke
+		set user_id = #{userId,jdbcType=INTEGER},
+		start_city = #{startCity,jdbcType=VARCHAR},
+		start_city_code = #{startCityCode,jdbcType=INTEGER},
+		start_address = #{startAddress,jdbcType=VARCHAR},
+		start_longitude = #{startLongitude,jdbcType=VARCHAR},
+		start_latitude = #{startLatitude,jdbcType=VARCHAR},
+		end_city = #{endCity,jdbcType=VARCHAR},
+		end_city_code = #{endCityCode,jdbcType=INTEGER},
+		end_address = #{endAddress,jdbcType=VARCHAR},
+		end_longitude = #{endLongitude,jdbcType=VARCHAR},
+		end_latitude = #{endLatitude,jdbcType=VARCHAR},
+		price = #{price,jdbcType=DOUBLE},
+		start_time = #{startTime,jdbcType=TIMESTAMP},
+		car_type = #{carType,jdbcType=VARCHAR},
+		seats = #{seats,jdbcType=INTEGER},
+		stroke_route = #{strokeRoute,jdbcType=VARCHAR},
+		remark = #{remark,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		update_time = #{updateTime,jdbcType=TIMESTAMP},
+		is_enable = #{isEnable,jdbcType=INTEGER}
+		where stroke_id = #{strokeId,jdbcType=INTEGER}
+	</update>
 </mapper>

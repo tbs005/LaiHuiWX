@@ -16,6 +16,7 @@ import com.lhpc.service.IVerificationCodeService;
 import com.lhpc.util.GsonUtil;
 import com.lhpc.util.ResponseCodeUtil;
 import com.lhpc.util.SendSMSUtil;
+
 @Service
 public class VerificationCodeServiceImpl implements IVerificationCodeService {
 	private static Logger log = Logger
@@ -29,13 +30,12 @@ public class VerificationCodeServiceImpl implements IVerificationCodeService {
 	@Override
 	public int selectSMS(String mobile) {
 		int count = 0;
-			try {
-				count = verificationCodeMapper.selectByMobile(mobile);
-			} catch (Exception e) {
-				log.error(e.getMessage());
-			}
-			
-		
+		try {
+			count = verificationCodeMapper.selectByMobile(mobile);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+
 		return count;
 	}
 
@@ -57,7 +57,7 @@ public class VerificationCodeServiceImpl implements IVerificationCodeService {
 			return GsonUtil.getJson(ResponseCodeUtil.SMS_SEND_FAILED,
 					"验证码发送失败，请校验您输入的手机号是否正确！");
 		}
-		int execteNum = insertSMS(Integer.parseInt(rand), mobile);
+		int execteNum = insertSMS(rand, mobile);
 		if (execteNum == 0) {
 			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR, "服务器错误!");
 		}
@@ -68,7 +68,7 @@ public class VerificationCodeServiceImpl implements IVerificationCodeService {
 	 * 插入数据
 	 */
 	@Override
-	public int insertSMS(int code, String mobile) {
+	public int insertSMS(String code, String mobile) {
 		VerificationCode verificationCode = new VerificationCode();
 		verificationCode.setCode(code);
 		verificationCode.setMobile(mobile);
@@ -79,6 +79,6 @@ public class VerificationCodeServiceImpl implements IVerificationCodeService {
 	@Override
 	public VerificationCode selectCodeByMobile(String mobile) {
 		return verificationCodeMapper.selectCodeByMobile(mobile);
-	} 
+	}
 
 }
