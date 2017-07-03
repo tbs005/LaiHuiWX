@@ -4,7 +4,7 @@
 <mapper namespace="com.lhpc.dao.VerificationCodeMapper" >
   <resultMap id="BaseResultMap" type="com.lhpc.model.VerificationCode" >
     <id column="code_id" property="codeId" jdbcType="INTEGER" />
-    <result column="code" property="code" jdbcType="INTEGER" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
     <result column="mobile" property="mobile" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -17,6 +17,7 @@
     from wx_code
     where code_id = #{codeId,jdbcType=INTEGER}
   </select>
+  <!-- 根据手机号查询验证码次数 -->
   <select id="selectByMobile" resultType="java.lang.Integer" parameterType="java.lang.String" >
     select 
   	count(*)
@@ -27,10 +28,15 @@
     delete from wx_code
     where code_id = #{codeId,jdbcType=INTEGER}
   </delete>
+  <!-- 根据时间删除数据(一天前的数据) -->
+  <delete id="deleteByTime" >
+    delete from wx_code
+    where create_time  &lt;= #{createTime,jdbcType=TIMESTAMP}
+  </delete>
   <insert id="insert" parameterType="com.lhpc.model.VerificationCode" >
     insert into wx_code (code_id, code, mobile, 
       create_time)
-    values (#{codeId,jdbcType=INTEGER}, #{code,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR}, 
+    values (#{codeId,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.lhpc.model.VerificationCode" >
@@ -54,7 +60,7 @@
         #{codeId,jdbcType=INTEGER},
       </if>
       <if test="code != null" >
-        #{code,jdbcType=INTEGER},
+        #{code,jdbcType=VARCHAR},
       </if>
       <if test="mobile != null" >
         #{mobile,jdbcType=VARCHAR},
@@ -68,7 +74,7 @@
     update wx_code
     <set >
       <if test="code != null" >
-        code = #{code,jdbcType=INTEGER},
+        code = #{code,jdbcType=VARCHAR},
       </if>
       <if test="mobile != null" >
         mobile = #{mobile,jdbcType=VARCHAR},
@@ -81,7 +87,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.lhpc.model.VerificationCode" >
     update wx_code
-    set code = #{code,jdbcType=INTEGER},
+    set code = #{code,jdbcType=VARCHAR},
       mobile = #{mobile,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where code_id = #{codeId,jdbcType=INTEGER}

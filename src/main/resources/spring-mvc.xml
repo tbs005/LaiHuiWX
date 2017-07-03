@@ -1,76 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
                         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
                         http://www.springframework.org/schema/context
                         http://www.springframework.org/schema/context/spring-context-4.0.xsd
                         http://www.springframework.org/schema/mvc
-                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
-    <!-- ①：对web包中的所有类进行扫描，以完成Bean创建和自动依赖注入的功能 -->
-    <context:component-scan base-package="com.lhpc" >
-    	<context:exclude-filter type ="annotation" expression= "org.springframework.stereotype.Service" />
-	</context:component-scan > 
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+                        http://www.springframework.org/schema/task
+                        http://www.springframework.org/schema/task/spring-task-4.0.xsd">
 
-    <!-- ②：启动Spring MVC的注解功能 -->
-    <mvc:annotation-driven />
+
+	<!-- ①：对web包中的所有类进行扫描，以完成Bean创建和自动依赖注入的功能 -->
+	<context:component-scan base-package="com.lhpc">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Service" />
+	</context:component-scan>
+
+	<!-- ②：启动Spring MVC的注解功能 -->
+	<mvc:annotation-driven />
 
 	<mvc:default-servlet-handler />
 
-    <!--开启对静态资源文件的访问 -->
-    <mvc:resources location="/resource/" mapping="/resource/**"/>
-    <!--文件下载位置 -->
-    <mvc:resources mapping="/upload/**" location="/upload/" />
+	<!--开启对静态资源文件的访问 -->
+	<mvc:resources location="/resource/" mapping="/resource/**" />
+	<!--文件下载位置 -->
+	<mvc:resources mapping="/upload/**" location="/upload/" />
 
 
-    <!--避免IE执行AJAX时，返回JSON出现下载文件 -->
-    <bean id="mappingJacksonHttpMessageConverter"
-          class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-        <property name="supportedMediaTypes">
-            <list>
-                <value>text/html;charset=UTF-8</value>
-            </list>
-        </property>
-    </bean>
-    <!-- 启动SpringMVC的注解功能，完成请求和注解POJO的映射 -->
-    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-        <property name="messageConverters">
-            <list>
-                <ref bean="mappingJacksonHttpMessageConverter"/> <!-- JSON转换器 -->
-            </list>
-        </property>
-    </bean>
+	<!--避免IE执行AJAX时，返回JSON出现下载文件 -->
+	<bean id="mappingJacksonHttpMessageConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/html;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+	<!-- 启动SpringMVC的注解功能，完成请求和注解POJO的映射 -->
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="mappingJacksonHttpMessageConverter" /> <!-- JSON转换器 -->
+			</list>
+		</property>
+	</bean>
 
 
-    <!-- 定义跳转的文件的前后缀 ，视图模式配置 -->
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/jsp/" />
-        <property name="suffix" value=".jsp"/>
-    </bean>
+	<!-- 定义跳转的文件的前后缀 ，视图模式配置 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
 
-    <!-- 文件上传配置 -->
-    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <!-- 默认编码 -->
-        <property name="defaultEncoding" value="UTF-8"/>
-        <!-- 上传文件大小限制为31M，31*1024*1024 -->
-        <property name="maxUploadSize" value="32505856"/>
-        <!-- 内存中的最大值 -->
-        <property name="maxInMemorySize" value="4096"/>
-    </bean>
-    
-      <!--oss图片管理-->
-    <!-- <bean id="ossConfigure" class="com.lhcx.utils.OssConfigure">
-        <property name="accessKeyId" value="LTAIBylxOP12jqp2"/>
-        <property name="accessKeySecret" value="mkjn9cKyGx8mxG0tvMUyO7ceRTIw61"/>
-        <property name="accessUrl" value="https://laihuichuxingoss.oss-cn-qingdao.aliyuncs.com/"/>
-        <property name="bucketName" value="laihuichuxingoss"/>
-        <property name="endpoint" value="http://oss-cn-qingdao.aliyuncs.com"/>
-    </bean>
-    <bean id="ossUtil" class="com.lhcx.utils.OssUtil">
-        <property name="ossConfigure" ref="ossConfigure"/>
-    </bean> -->
+	<!-- 文件上传配置 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 默认编码 -->
+		<property name="defaultEncoding" value="UTF-8" />
+		<!-- 上传文件大小限制为31M，31*1024*1024 -->
+		<property name="maxUploadSize" value="32505856" />
+		<!-- 内存中的最大值 -->
+		<property name="maxInMemorySize" value="4096" />
+	</bean>
+
+	<!--oss图片管理 -->
+	<!-- <bean id="ossConfigure" class="com.lhcx.utils.OssConfigure"> <property 
+		name="accessKeyId" value="LTAIBylxOP12jqp2"/> <property name="accessKeySecret" 
+		value="mkjn9cKyGx8mxG0tvMUyO7ceRTIw61"/> <property name="accessUrl" value="https://laihuichuxingoss.oss-cn-qingdao.aliyuncs.com/"/> 
+		<property name="bucketName" value="laihuichuxingoss"/> <property name="endpoint" 
+		value="http://oss-cn-qingdao.aliyuncs.com"/> </bean> <bean id="ossUtil" class="com.lhcx.utils.OssUtil"> 
+		<property name="ossConfigure" ref="ossConfigure"/> </bean> -->
 
 	<!-- 自定义登录拦截器 -->
 	<mvc:interceptors>
@@ -80,5 +84,20 @@
 			<bean class="com.lhpc.controller.LoginInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
+
+	<!-- 增加定时任务插件 -->
+	<context:annotation-config></context:annotation-config>
+	<!-- spring 扫描注解配置 -->
+	<context:component-scan base-package="com.jieli.plugins.timetask">
+	</context:component-scan>
+	<!-- 增加定时任务插件 -->
+	<context:annotation-config></context:annotation-config>
+	<!-- spring 扫描注解配置 -->
+	<context:component-scan base-package="com.jieli.plugins.timetask">
+	</context:component-scan>
+	<!-- 开启这个配置 spring才能识别@Scheduled注解 -->
+	<task:annotation-driven scheduler="qbScheduler"
+		mode="proxy" />
+	<task:scheduler id="qbScheduler" pool-size="10" />
 
 </beans>

@@ -1,5 +1,9 @@
 package com.lhpc.dao;
 
+import java.util.Date;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.lhpc.model.VerificationCode;
 
 public interface VerificationCodeMapper {
@@ -18,4 +22,6 @@ public interface VerificationCodeMapper {
 	int  selectByMobile(String mobile);
 	
 	VerificationCode selectCodeByMobile(String mobile);
+
+	void deleteByTime(@Param("createTime") Date createTime);
 }

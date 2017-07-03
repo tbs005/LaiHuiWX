@@ -5,7 +5,7 @@ import java.util.Date;
 public class VerificationCode {
     private Integer codeId;
 
-    private Integer code;
+    private String code;
 
     private String mobile;
 
@@ -19,15 +19,16 @@ public class VerificationCode {
         this.codeId = codeId;
     }
 
-    public Integer getCode() {
-        return code;
-    }
+   
+    public String getCode() {
+		return code;
+	}
 
-    public void setCode(Integer code) {
-        this.code = code;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    public String getMobile() {
+	public String getMobile() {
         return mobile;
     }
 
