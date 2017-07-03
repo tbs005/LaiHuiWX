@@ -70,11 +70,6 @@ public class SendSMSUtil {
                 JSONObject object = JSONObject.parseObject(result);
                 System.out.println("object信息：" + object);
                 if (object.getIntValue("error_code") == 0) {
-                    JSONObject jsonObject = object.getJSONObject("result");
-                    int fee = jsonObject.getIntValue("fee");
-                    int count = jsonObject.getIntValue("count");
-                    String sid = jsonObject.getString("sid");
-                    System.out.println(object.get("result"));
                     flag = true;
                 } else {
                     System.out.println(object.get("error_code") + ":" + object.get("reason"));
@@ -204,7 +199,8 @@ public class SendSMSUtil {
         return result;
     }
    
-    public static boolean sendSMS(String mobile,int tpl_id,String tpl_value)
+    @SuppressWarnings("unused")
+	public static boolean sendSMS(String mobile,int tpl_id,String tpl_value)
     {
         boolean isSuccess=false;
         String result=sendSMStoServer(mobile, tpl_id, tpl_value);
@@ -237,8 +233,4 @@ public class SendSMSUtil {
         String code="#code#="+rand;
         sendSMS("15738961936",29230,code);
     }
-
-	
-
-	
 }

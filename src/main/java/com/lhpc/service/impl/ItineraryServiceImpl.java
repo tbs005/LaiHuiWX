@@ -22,7 +22,7 @@ public class ItineraryServiceImpl implements ItineraryService {
 	 * 添加
 	 */
 	@Override
-	public boolean insertSelective (HttpServletRequest request){
+	public boolean insertSelective (HttpServletRequest request,int userId){
 		Date time = new Date();
 		Stroke stroke = new Stroke();
 		String startCity = request.getParameter("startCity");
@@ -37,7 +37,6 @@ public class ItineraryServiceImpl implements ItineraryService {
 		String endAddress = request.getParameter("endAddress");
 		String price = request.getParameter("price");
 		String startTime = request.getParameter("startTime");
-		String carType = request.getParameter("carType");
 		String seats = request.getParameter("seats");
 		String strokeRoute = request.getParameter("strokeRoute");
 		String remark = request.getParameter("remark");
@@ -57,15 +56,13 @@ public class ItineraryServiceImpl implements ItineraryService {
 		stroke.setEndCity(endCity);
 		stroke.setEndCityCode(Integer.parseInt(endCityCode));
 		stroke.setEndAddress(endAddress);
-		stroke.setCarType(carType);
 		stroke.setSeats(Integer.parseInt(seats));
 		stroke.setStrokeRoute(strokeRoute);
 		stroke.setPrice(Double.parseDouble(price));
 		stroke.setRemark(remark);
 		stroke.setCreateTime(new Date());
-		stroke.setUpdateTime(new Date());
 		stroke.setIsEnable(1);
-		stroke.setUserId(1);
+		stroke.setUserId(userId);
 		stroke.setStartTime(time);
 		boolean flag = false;
 		if (strokeMapper.insertSelective(stroke)>0) {

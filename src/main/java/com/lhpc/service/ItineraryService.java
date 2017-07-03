@@ -9,7 +9,7 @@ import com.lhpc.model.Stroke;
 
 public interface ItineraryService {
 	
-	public boolean insertSelective (HttpServletRequest request);
+	public boolean insertSelective (HttpServletRequest request,int userId);
 
 	public List<Stroke> selectStroke(int userId, int IsEnable);
 

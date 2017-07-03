@@ -12,7 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.lhpc.model.Price;
 import com.lhpc.model.Stroke;
+import com.lhpc.model.User;
 import com.lhpc.service.IPriceService;
 import com.lhpc.service.ItineraryService;
 import com.lhpc.util.DateUtil;
@@ -43,11 +46,13 @@ import com.lhpc.util.StringUtil;
 @Controller
 @RequestMapping(value = "/wx")
 public class ItineraryController {
-
+	private static Logger log = Logger.getLogger(ItineraryController.class);
 	@Autowired
 	private ItineraryService itineraryService;
 	@Autowired
 	private IPriceService priceService;
+	@Autowired
+	private HttpSession session;
 
 	/**
 	 * 查询前一个行程
@@ -57,9 +62,11 @@ public class ItineraryController {
 	public ResponseEntity<String> select(HttpServletRequest request) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<Stroke> strokeList = new ArrayList<Stroke>();
+		User user = (User)session.getAttribute("CURRENT_USER");
 		try {
-			strokeList = itineraryService.selectStroke(1, 0);
+			strokeList = itineraryService.selectStroke(user.getUserId(), 0);
 		} catch (Exception e) {
+			log.error(e.getMessage());
 			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR, "系统错误!");
 		}
 		if (strokeList.size() < 0) {
@@ -85,7 +92,8 @@ public class ItineraryController {
 	@RequestMapping(value = "/release/itinerary", method = RequestMethod.POST)
 	public ResponseEntity<String> releaseItinerary(HttpServletRequest request) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		if (itineraryService.selectStroke(1, 1).size() > 0) {
+		User user = (User)session.getAttribute("CURRENT_USER");
+		if (itineraryService.selectStroke(user.getUserId(), 1).size() > 0) {
 			return GsonUtil.getJson(ResponseCodeUtil.UNFINISHED_TRIP,
 					"你有未完成行程!");
 		}
@@ -94,15 +102,20 @@ public class ItineraryController {
 			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS, "参数不完整");
 		}
 
-		boolean success = itineraryService.insertSelective(request);
+		boolean success = itineraryService.insertSelective(request,user.getUserId());
 		if (!success) {
 			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR, "系统错误!");
 		}
-		stroke = itineraryService.selectStroke(1, 1).get(0);
-		map.put("stroke", stroke);
+		stroke = itineraryService.selectStroke(user.getUserId(), 1).get(0);
+		map.put("userName", user.getUserName());
+		map.put("carType", user.getCarType());
+		map.put("startAddress", stroke.getStartAddress());
+		map.put("endAddress", stroke.getEndAddress());
+		map.put("strokeRoute", stroke.getStrokeRoute());
+		map.put("remark", stroke.getRemark());
+		map.put("price", stroke.getPrice());
+		map.put("seats", stroke.getSeats());
 		map.put("startTime", DateUtil.date2String(stroke.getStartTime()));
-		map.put("createTime", DateUtil.date2String(stroke.getCreateTime()));
-		map.put("updateTime", DateUtil.date2String(stroke.getUpdateTime()));
 		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "行程发布成功!", map);
 
 	}
@@ -115,9 +128,11 @@ public class ItineraryController {
 	public ResponseEntity<String> unfinishedItinerary(HttpServletRequest request) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<Stroke> strokeList = new ArrayList<Stroke>();
+		User user = (User)session.getAttribute("CURRENT_USER");
 		try {
-			strokeList = itineraryService.selectStroke(1, 1);
+			strokeList = itineraryService.selectStroke(user.getUserId(), 1);
 		} catch (Exception e) {
+			log.error(e.getMessage());
 			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR, "系统错误!");
 		}
 		if (strokeList.size() < 0) {
@@ -182,7 +197,7 @@ public class ItineraryController {
 				person = Integer.parseInt(booking_seats);
 			} catch (NumberFormatException e) {
 				person = 1;
-				e.printStackTrace();
+				log.error(e.getMessage());
 			}
 		}
 		String result = "";
@@ -203,7 +218,7 @@ public class ItineraryController {
 				result = result + line;
 			}
 		} catch (Exception e) {
-			// System.out.println(e.getMessage());
+			log.error(e.getMessage());
 		}
 		JSONObject dataObject = JSONObject.parseObject(result);
 		JSONArray dataArray = dataObject.getJSONArray("results");
