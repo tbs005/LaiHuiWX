@@ -16,6 +16,7 @@ import com.lhpc.service.IVerificationCodeService;
 import com.lhpc.util.GsonUtil;
 import com.lhpc.util.ResponseCodeUtil;
 import com.lhpc.util.SendSMSUtil;
+
 @Service
 public class VerificationCodeServiceImpl implements IVerificationCodeService {
 	private static Logger log = Logger
@@ -29,13 +30,12 @@ public class VerificationCodeServiceImpl implements IVerificationCodeService {
 	@Override
 	public int selectSMS(String mobile) {
 		int count = 0;
-			try {
-				count = verificationCodeMapper.selectByMobile(mobile);
-			} catch (Exception e) {
-				log.error(e.getMessage());
-			}
-			
-		
+		try {
+			count = verificationCodeMapper.selectByMobile(mobile);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+
 		return count;
 	}
 
@@ -79,6 +79,6 @@ public class VerificationCodeServiceImpl implements IVerificationCodeService {
 	@Override
 	public VerificationCode selectCodeByMobile(String mobile) {
 		return verificationCodeMapper.selectCodeByMobile(mobile);
-	} 
+	}
 
 }

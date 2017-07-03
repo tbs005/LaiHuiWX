@@ -3,24 +3,23 @@ package com.lhpc.model;
 import java.util.Date;
 
 public class VerificationCode {
-    private Integer codeId;
+	private Integer codeId;
 
-    private String code;
+	private String code;
 
-    private String mobile;
+	private String mobile;
 
-    private Date createTime;
+	private Date createTime;
 
-    public Integer getCodeId() {
-        return codeId;
-    }
+	public Integer getCodeId() {
+		return codeId;
+	}
 
-    public void setCodeId(Integer codeId) {
-        this.codeId = codeId;
-    }
+	public void setCodeId(Integer codeId) {
+		this.codeId = codeId;
+	}
 
-   
-    public String getCode() {
+	public String getCode() {
 		return code;
 	}
 
@@ -29,18 +28,18 @@ public class VerificationCode {
 	}
 
 	public String getMobile() {
-        return mobile;
-    }
+		return mobile;
+	}
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile == null ? null : mobile.trim();
-    }
+	public void setMobile(String mobile) {
+		this.mobile = mobile == null ? null : mobile.trim();
+	}
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+	public Date getCreateTime() {
+		return createTime;
+	}
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 }

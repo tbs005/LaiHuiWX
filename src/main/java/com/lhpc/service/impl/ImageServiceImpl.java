@@ -11,6 +11,7 @@ import com.lhpc.service.IImageService;
 
 /**
  * 轮播图service
+ * 
  * @author YangGuang
  *
  */
@@ -19,10 +20,10 @@ public class ImageServiceImpl implements IImageService {
 
 	@Autowired
 	private ImageMapper imageDao;
+
 	@Override
 	public List<Image> selectImageList() {
 		return imageDao.selectImageList();
 	}
-
 
 }
