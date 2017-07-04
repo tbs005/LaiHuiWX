@@ -37,38 +37,47 @@ public class PassengerServiceImpl implements IPassengerService {
 
 	@Override
 	public ResponseEntity<String> scheduled(Booked booked) {
+		Stroke stroke = new Stroke();
+		stroke.setStrokeId(booked.getStrokeId());
+		try {
+			strokeMapper.updateByPrimaryKeySelective(stroke);
+		} catch (Exception e) {
+			logger.error("访问次数修改异常 ----------------- ");
+			logger.error(e.getMessage());
+		}
 		Map<String, Object> map = new HashMap<String, Object>();
 		User user = (User) session.getAttribute("CURRENT_USER");
 		booked.setUserId(user.getUserId());
 		booked.setBookedTime(new Date());
 		List<Booked> bookedList = bookedMapper.selectBystrokeId(
-				user.getUserId(), booked.getStrokeId(),1);
+				user.getUserId(), booked.getStrokeId(), 1);
 		if (bookedList.size() > 0) {
 			return GsonUtil.getJson(ResponseCodeUtil.BOOKING_REPEAT,
 					"你已经预定过该车单了,请预定其它车单!");
 		}
-		Stroke stroke = strokeMapper.selectByPrimaryKey(booked.getStrokeId());
-		if (stroke.getSeats()<booked.getBookedSeats()) {
+		stroke = strokeMapper.selectByPrimaryKey(booked.getStrokeId());
+		if (stroke.getSeats() < booked.getBookedSeats()) {
 			return GsonUtil.getJson(ResponseCodeUtil.SEAT_LACK,
 					"该车单座位不足,请重新选择其它车单!");
 		}
 		int count = bookedMapper.insertSelective(booked);
 		if (count == 0) {
-			logger.error("预定行程插入数据失败 ");
+			logger.error("预定行程插入数据失败 ------------------ ");
 			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR, "系统错误!");
 		}
-		 
+
 		User driver = new User();
 		try {
-			
+
 			driver = userMapper.selectByPrimaryKey(stroke.getUserId());
 		} catch (Exception e) {
-			logger.error("查询数据失败 --------------" + e.getMessage());
+			logger.error("查询数据失败 -------------------- ");
+			logger.error(e.getMessage());
 			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR, "系统错误!");
 		}
 		map.put("driverMobile", driver.getUserMobile());
-		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "预订成功,请尽快与车主联系!",
-				map);
+		return GsonUtil
+				.getJson(ResponseCodeUtil.SUCCESS, "预订成功,请尽快与车主联系!", map);
 	}
 
 }
