@@ -24,6 +24,8 @@ public interface StrokeMapper {
     List<Stroke> selectCrossCityList(Stroke stroke);
     
     int selectCrossCityCount(Stroke stroke);
+    
+    int selectCount(Stroke stroke);
 
-	
+    List<Stroke> selectSearchStrokeList(Stroke stroke);
 }

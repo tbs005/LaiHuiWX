@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.http.ResponseEntity;
+
 import com.lhpc.model.Stroke;
 
 
@@ -18,5 +20,7 @@ public interface ItineraryService {
 	List<Stroke> selectCrossCityList(Stroke stroke);
 	
 	int selectCrossCityCount(Stroke stroke);
+	
+	ResponseEntity<String> selectSearchStrokeList(Stroke stroke,HttpServletRequest request);
 
 }

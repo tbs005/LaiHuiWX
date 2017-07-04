@@ -28,11 +28,14 @@
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
 		<result column="is_enable" property="isEnable" jdbcType="INTEGER" />
+		<result column="access_count" property="accessCount" jdbcType="INTEGER" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		stroke_id, user_id, start_city, start_city_code, start_address, start_longitude,
-		start_latitude, end_city, end_city_code, end_address, end_longitude,
-		end_latitude,
+		stroke_id, user_id, start_city, start_city_code,
+		start_address, start_longitude,
+		start_latitude, end_city,
+		end_city_code, end_address, end_longitude,
+		end_latitude,access_count,
 		price, start_time, car_type, seats, stroke_route, remark, create_time,
 		update_time,
 		is_enable
@@ -49,46 +52,81 @@
 		select
 		<include refid="Base_Column_List" />
 		from wx_stroke
-		where is_enable = 1
-		group by start_city_code,end_city_code
+		where is_enable = 1 and start_city_code =
+		#{startCityCode,jdbcType=INTEGER}
+		group by
+		start_city_code,end_city_code
+	</select>
+
+	<select id="selectSearchStrokeList" resultMap="BaseResultMap"
+		parameterType="com.lhpc.model.Stroke">
+		select
+		a.stroke_id,a.start_time,a.start_city,a.end_city,a.start_address,a.end_address,a.stroke_route,a.remark,a.price,
+		a.seats,b.user_name as userName,b.car_type,a.user_id
+		from wx_stroke a
+		join wx_user b on a.user_id = b.user_id
+		where a.is_enable = 1 and
+		a.start_city_code = #{startCityCode,jdbcType=INTEGER}
+		and
+		a.end_city_code = #{endCityCode,jdbcType=INTEGER}
+		limit #{page},#{size}
 	</select>
 	<select id="selectCrossCityCount" resultType="java.lang.Integer"
 		parameterType="com.lhpc.model.Stroke">
 		select count(1)
 		from wx_stroke
-		where start_city_code = #{startCityCode,jdbcType=INTEGER}
-		and end_city_code = #{endCityCode,jdbcType=INTEGER}
+		where start_city_code =
+		#{startCityCode,jdbcType=INTEGER}
+		and end_city_code =
+		#{endCityCode,jdbcType=INTEGER}
 		and is_enable = 1
+	</select>
+	<select id="selectCount" resultType="java.lang.Integer"
+		parameterType="com.lhpc.model.Stroke">
+		select count(1)
+		from wx_stroke
+		where user_id =
+		#{userId,jdbcType=INTEGER}
 	</select>
 	<select id="selectByUserIdAndIsEnable" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from wx_stroke
-		where user_id = #{userId,jdbcType=INTEGER} and is_enable =
+		where user_id = #{userId,jdbcType=INTEGER} and is_enable
+		=
 		#{isEnable,jdbcType=INTEGER}
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from wx_stroke
+		delete from
+		wx_stroke
 		where stroke_id = #{strokeId,jdbcType=INTEGER}
 	</delete>
 	<insert id="insert" parameterType="com.lhpc.model.Stroke">
-		insert into wx_stroke (stroke_id, user_id, start_city,
-		start_city_code, start_address, start_longitude,
+		insert into wx_stroke
+		(stroke_id, user_id, start_city,
+		start_city_code, start_address,
+		start_longitude,
 		start_latitude, end_city, end_city_code,
-		end_address, end_longitude, end_latitude,
+		end_address,
+		end_longitude, end_latitude,
 		price, start_time, car_type,
-		seats, stroke_route, remark,
+		seats,
+		stroke_route, remark,
 		create_time, update_time, is_enable
 		)
-		values (#{strokeId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER},
+		values
+		(#{strokeId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER},
 		#{startCity,jdbcType=VARCHAR},
-		#{startCityCode,jdbcType=INTEGER}, #{startAddress,jdbcType=VARCHAR}, #{startLongitude,jdbcType=VARCHAR},
+		#{startCityCode,jdbcType=INTEGER},
+		#{startAddress,jdbcType=VARCHAR}, #{startLongitude,jdbcType=VARCHAR},
 		#{startLatitude,jdbcType=VARCHAR}, #{endCity,jdbcType=VARCHAR},
 		#{endCityCode,jdbcType=INTEGER},
-		#{endAddress,jdbcType=VARCHAR}, #{endLongitude,jdbcType=VARCHAR}, #{endLatitude,jdbcType=VARCHAR},
+		#{endAddress,jdbcType=VARCHAR},
+		#{endLongitude,jdbcType=VARCHAR}, #{endLatitude,jdbcType=VARCHAR},
 		#{price,jdbcType=DOUBLE}, #{startTime,jdbcType=TIMESTAMP},
 		#{carType,jdbcType=VARCHAR},
-		#{seats,jdbcType=INTEGER}, #{strokeRoute,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+		#{seats,jdbcType=INTEGER},
+		#{strokeRoute,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
 		#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
 		#{isEnable,jdbcType=INTEGER}
 		)
@@ -295,25 +333,41 @@
 	<update id="updateByPrimaryKey" parameterType="com.lhpc.model.Stroke">
 		update wx_stroke
 		set user_id = #{userId,jdbcType=INTEGER},
-		start_city = #{startCity,jdbcType=VARCHAR},
-		start_city_code = #{startCityCode,jdbcType=INTEGER},
-		start_address = #{startAddress,jdbcType=VARCHAR},
-		start_longitude = #{startLongitude,jdbcType=VARCHAR},
-		start_latitude = #{startLatitude,jdbcType=VARCHAR},
-		end_city = #{endCity,jdbcType=VARCHAR},
-		end_city_code = #{endCityCode,jdbcType=INTEGER},
-		end_address = #{endAddress,jdbcType=VARCHAR},
-		end_longitude = #{endLongitude,jdbcType=VARCHAR},
-		end_latitude = #{endLatitude,jdbcType=VARCHAR},
+		start_city =
+		#{startCity,jdbcType=VARCHAR},
+		start_city_code =
+		#{startCityCode,jdbcType=INTEGER},
+		start_address =
+		#{startAddress,jdbcType=VARCHAR},
+		start_longitude =
+		#{startLongitude,jdbcType=VARCHAR},
+		start_latitude =
+		#{startLatitude,jdbcType=VARCHAR},
+		end_city =
+		#{endCity,jdbcType=VARCHAR},
+		end_city_code =
+		#{endCityCode,jdbcType=INTEGER},
+		end_address =
+		#{endAddress,jdbcType=VARCHAR},
+		end_longitude =
+		#{endLongitude,jdbcType=VARCHAR},
+		end_latitude =
+		#{endLatitude,jdbcType=VARCHAR},
 		price = #{price,jdbcType=DOUBLE},
 		start_time = #{startTime,jdbcType=TIMESTAMP},
-		car_type = #{carType,jdbcType=VARCHAR},
+		car_type =
+		#{carType,jdbcType=VARCHAR},
 		seats = #{seats,jdbcType=INTEGER},
 		stroke_route = #{strokeRoute,jdbcType=VARCHAR},
-		remark = #{remark,jdbcType=VARCHAR},
-		create_time = #{createTime,jdbcType=TIMESTAMP},
-		update_time = #{updateTime,jdbcType=TIMESTAMP},
-		is_enable = #{isEnable,jdbcType=INTEGER}
-		where stroke_id = #{strokeId,jdbcType=INTEGER}
+		remark =
+		#{remark,jdbcType=VARCHAR},
+		create_time =
+		#{createTime,jdbcType=TIMESTAMP},
+		update_time =
+		#{updateTime,jdbcType=TIMESTAMP},
+		is_enable =
+		#{isEnable,jdbcType=INTEGER}
+		where stroke_id =
+		#{strokeId,jdbcType=INTEGER}
 	</update>
 </mapper>
