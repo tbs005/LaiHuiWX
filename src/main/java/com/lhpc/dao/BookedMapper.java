@@ -1,5 +1,9 @@
 package com.lhpc.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.lhpc.model.Booked;
 
 public interface BookedMapper {
@@ -14,4 +18,6 @@ public interface BookedMapper {
     int updateByPrimaryKeySelective(Booked record);
 
     int updateByPrimaryKey(Booked record);
+
+	List<Booked> selectBystrokeId(@Param("userId")Integer userId, @Param("strokeId")Integer strokeId,@Param("isEnable") Integer isEnable);
 }

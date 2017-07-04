@@ -18,4 +18,7 @@ public class StringUtil {
 			flag = true;
 		return flag;
 	}
+	
+	
+	
 }
