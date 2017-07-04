@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -181,15 +180,6 @@ public class ItineraryController {
 		String endCode = request.getParameter("endCode");
 		List<Price> pricesList = priceService.select4startCode(startCode,
 				endCode);
-		if (pricesList.size() > 0) {
-			double price = pricesList.get(0).getPrice();
-			resultObject.put("price", price);
-			return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "价格获取成功",
-					resultObject);
-		}
-		String origin_location = request.getParameter("origin_location");
-		String destination_location = request
-				.getParameter("destination_location");
 		String booking_seats = request.getParameter("booking_seats");
 		int person = 1;
 		if (booking_seats != null && !booking_seats.isEmpty()) {
@@ -200,6 +190,15 @@ public class ItineraryController {
 				log.error(e.getMessage());
 			}
 		}
+		if (pricesList.size() > 0) {
+			double price = pricesList.get(0).getPrice();
+			resultObject.put("price", price*person);
+			return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "价格获取成功",
+					resultObject);
+		}
+		String origin_location = request.getParameter("origin_location");
+		String destination_location = request
+				.getParameter("destination_location");
 		String result = "";
 
 		URL file_url = null;
@@ -225,21 +224,9 @@ public class ItineraryController {
 		if (dataArray.size() > 0) {
 			JSONObject nowObject = dataArray.getJSONObject(0);
 			int distance = nowObject.getIntValue("distance");
-			int duration = nowObject.getIntValue("duration");
-
 			double price = distance * 3.3 / 10000f;
-
 			double last_price = price * person;
-			DecimalFormat df = new DecimalFormat("######0.00");
-			double average = price * 1000f / distance;
-			resultObject.put("price",
-					new BigDecimal(price).setScale(2, BigDecimal.ROUND_HALF_UP)
-							.toString());
-			resultObject.put("total_price", new BigDecimal(last_price)
-					.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-			resultObject.put("cost_time", duration / 60 + "分钟");
-			resultObject.put("distance", distance / 1000);
-			resultObject.put("average", new BigDecimal(df.format(average))
+			resultObject.put("price", new BigDecimal(last_price)
 					.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		}
 
