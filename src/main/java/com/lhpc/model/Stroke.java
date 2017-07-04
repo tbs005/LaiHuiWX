@@ -44,8 +44,48 @@ public class Stroke {
     private Date updateTime;
 
     private Integer isEnable;
+    
+    private int page;
+    
+    private int size;
+    
+    private int accessCount;
+    
+    public int getAccessCount() {
+		return accessCount;
+	}
 
-    public Integer getStrokeId() {
+	public void setAccessCount(int accessCount) {
+		this.accessCount = accessCount;
+	}
+
+	private String userName;
+    
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public int getPage() {
+		return page;
+	}
+
+	public void setPage(int page) {
+		this.page = page;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	public Integer getStrokeId() {
         return strokeId;
     }
 

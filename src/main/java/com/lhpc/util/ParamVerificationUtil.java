@@ -96,4 +96,21 @@ public class ParamVerificationUtil {
 		return flag;
 	}
 
+	/**
+	 * 乘客查询车主行程列表
+	 */
+	public static boolean selectSearchStrokeList(HttpServletRequest request) {
+		boolean flag = false;
+		String startCityCode = request.getParameter("startCityCode");
+		String endCityCode = request.getParameter("endCityCode");
+		String page = request.getParameter("page");
+		String size = request.getParameter("size");
+		if (StringUtil.isOrNotEmpty(startCityCode)
+				&& StringUtil.isOrNotEmpty(endCityCode)
+				&& StringUtil.isOrNotEmpty(page)
+				&& StringUtil.isOrNotEmpty(size))
+			flag = true;
+		return flag;
+	}
+
 }
