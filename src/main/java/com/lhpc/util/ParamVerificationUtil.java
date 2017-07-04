@@ -96,4 +96,27 @@ public class ParamVerificationUtil {
 		return flag;
 	}
 
+	/**
+	 * 乘客预定行程参数验证
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public static boolean scheduledTravel(HttpServletRequest request) {
+		boolean flag = false;
+
+		String strokeId = request.getParameter("strokeId");// 车主行程ID
+		String bookedSeats = request.getParameter("bookedSeats");// 预定座位
+		String upAddress = request.getParameter("upAddress");// 上车地址
+		String downAddress = request.getParameter("downAddress");// 下车地址
+		if (StringUtil.isOrNotEmpty(strokeId)
+				&& StringUtil.isOrNotEmpty(bookedSeats)
+				&& StringUtil.isOrNotEmpty(upAddress)
+				&& StringUtil.isOrNotEmpty(downAddress)) {
+			flag = true;
+		}
+
+		return flag;
+	}
+
 }
