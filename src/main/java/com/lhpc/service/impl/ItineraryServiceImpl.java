@@ -46,6 +46,7 @@ public class ItineraryServiceImpl implements ItineraryService {
 		String endCityCode = request.getParameter("endCityCode");
 		String endAddress = request.getParameter("endAddress");
 		String price = request.getParameter("price");
+		String carType = request.getParameter("carType");
 		String startTime = request.getParameter("startTime");
 		String seats = request.getParameter("seats");
 		String strokeRoute = request.getParameter("strokeRoute");
@@ -66,6 +67,7 @@ public class ItineraryServiceImpl implements ItineraryService {
 		stroke.setEndCity(endCity);
 		stroke.setEndCityCode(Integer.parseInt(endCityCode));
 		stroke.setEndAddress(endAddress);
+		stroke.setCarType(carType);
 		stroke.setSeats(Integer.parseInt(seats));
 		stroke.setStrokeRoute(strokeRoute);
 		stroke.setPrice(Double.parseDouble(price));
