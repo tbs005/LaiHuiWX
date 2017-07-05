@@ -46,4 +46,13 @@ public class GsonUtil {
 		responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
 		return responseHeaders;
 	}
+
+	/**
+	 * 将Json数据解析成相应的映射对象
+	 */
+	public static <T> T parseJsonWithGson(String jsonData, Class<T> type) {
+		Gson gson = new Gson();
+		T result = gson.fromJson(jsonData, type);
+		return result;
+	}
 }
