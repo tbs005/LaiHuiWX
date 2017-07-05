@@ -264,6 +264,14 @@
 			</if>
 		</trim>
 	</insert>
+	<!-- 更新访问次数 -->
+	<update id="update4AccessCount">
+	update wx_stroke
+	<set>
+	access_count = access_count + 1
+	</set>
+	where stroke_id = #{strokeId,jdbcType=INTEGER}
+	</update>
 	<update id="updateByPrimaryKeySelective" parameterType="com.lhpc.model.Stroke">
 		update wx_stroke
 		<set>
@@ -327,6 +335,7 @@
 			<if test="isEnable != null">
 				is_enable = #{isEnable,jdbcType=INTEGER},
 			</if>
+			
 		</set>
 		where stroke_id = #{strokeId,jdbcType=INTEGER}
 	</update>

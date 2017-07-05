@@ -28,7 +28,6 @@ public class Booked {
 	private Integer unbookedId;
 
 	private Integer isEnable;
-	private Integer seats;
 
 	public Integer getBookedId() {
 		return bookedId;

@@ -9,6 +9,11 @@ public class ConfigUtil {
 	public static final String WX_APP_ID = "wxd6d79c4ca0fef838";// 公众号id
 
 	public static final String WX_SECRET_KEY = "bace843875970ae9a941dcb6dbe16e6d";// 公众号秘钥
+	
+	public static final String API_ADD_TEMPLATE_URL = "https://api.weixin.qq.com/cgi-bin/template/api_add_template";//获取微信消息模板URL
+	public static final String GET_ALL_PRIVATE_TEMPLATE_URL = "https://api.weixin.qq.com/cgi-bin/template/get_all_private_template";//获取微信消息模板列表URL
+	public static final String DEL_PRIVATE_TEMPLATE_URL = "https://api.weixin.qq.com/cgi-bin/template/del_private_template";//删除微信消息模板URL
+	public static final String SEND_URL = "https://api.weixin.qq.com/cgi-bin/message/template/send";//获取微信消息模板URL
 
 	/**
 	 * 聚合短信验证码配置
