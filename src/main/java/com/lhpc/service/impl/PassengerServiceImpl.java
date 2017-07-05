@@ -38,9 +38,9 @@ public class PassengerServiceImpl implements IPassengerService {
 	@Override
 	public ResponseEntity<String> scheduled(Booked booked) {
 		Stroke stroke = new Stroke();
-		stroke.setStrokeId(booked.getStrokeId());
+		
 		try {
-			strokeMapper.updateByPrimaryKeySelective(stroke);
+			strokeMapper.update4AccessCount(booked.getStrokeId());
 		} catch (Exception e) {
 			logger.error("访问次数修改异常 ----------------- ");
 			logger.error(e.getMessage());

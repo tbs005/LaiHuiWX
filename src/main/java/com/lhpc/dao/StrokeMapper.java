@@ -28,4 +28,6 @@ public interface StrokeMapper {
     int selectCount(Stroke stroke);
 
     List<Stroke> selectSearchStrokeList(Stroke stroke);
+
+	int update4AccessCount(@Param("strokeId")Integer strokeId);
 }
