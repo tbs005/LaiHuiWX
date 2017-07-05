@@ -19,6 +19,19 @@ public class StringUtil {
 		return flag;
 	}
 	
-	
+	/**
+	 * 验证字符串并根据情形返回数据
+	 * @param input 传入的字符串
+	 * @return
+	 */
+	 public static String checkNull(String input) {
+	        String result = "";
+	        if (input == null || input.trim().equals("") || input.trim().equals("null") || input.trim().equals("NULL")) {
+	            result = "";
+	        } else {
+	            result = input;
+	        }
+	        return result;
+	    }
 	
 }

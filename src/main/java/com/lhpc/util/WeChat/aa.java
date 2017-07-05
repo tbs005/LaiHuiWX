@@ -1,12 +1,5 @@
 package com.lhpc.util.WeChat;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import net.sf.json.JSONObject;
-
-import org.apache.log4j.spi.LoggerFactory;
 
 public class aa {
     
