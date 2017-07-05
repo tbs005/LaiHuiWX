@@ -237,4 +237,17 @@
 		where booked_id =
 		#{bookedId,jdbcType=INTEGER}
 	</update>
+	<select id="selectBookedByStrokeId" resultMap="BaseResultMap">
+		select
+		t1.booked_id bookedid,
+		t1.user_id userid,
+	    t2.user_name username,
+	    t2.user_mobile usermobile,
+	    t1.up_address upaddress,
+		t1.down_address downaddress,
+		t1.booked_seats bookedseats
+		from wx_booked t1, wx_user t2
+		where t1.user_id=t2.user_id and t1.is_enable!=0 and t1.stroke_id = 
+		#{strokeId,jdbcType=INTEGER}
+	</select>
 </mapper>

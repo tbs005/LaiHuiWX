@@ -3,6 +3,7 @@ package com.lhpc.service.impl;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import com.lhpc.dao.BookedMapper;
 import com.lhpc.dao.StrokeMapper;
+import com.lhpc.dao.UserMapper;
 import com.lhpc.model.Booked;
 import com.lhpc.model.Stroke;
 import com.lhpc.model.User;
@@ -34,6 +36,8 @@ public class ItineraryServiceImpl implements ItineraryService {
 	@Autowired
 	private BookedMapper bookedMapper;
 
+	@Autowired
+	private UserMapper userMapper;
 	/**
 	 * 添加
 	 */
@@ -179,6 +183,7 @@ public class ItineraryServiceImpl implements ItineraryService {
 			if (list.size() > 0) {
 				for (Stroke stroke1 : list) {
 					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("strokeId", stroke1.getStrokeId());
 					map.put("route",
 							stroke1.getStartCity() + "--"
 									+ stroke1.getEndCity());
@@ -204,6 +209,7 @@ public class ItineraryServiceImpl implements ItineraryService {
 				for (Booked booked : bookedList) {
 					Stroke stroke1 = strokeMapper.selectByPrimaryKey(booked.getStrokeId());
 					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("strokeId", stroke1);
 					map.put("route",
 							stroke1.getStartCity() + "--"
 									+ stroke1.getEndCity());
@@ -216,5 +222,68 @@ public class ItineraryServiceImpl implements ItineraryService {
 			}
 		}
 		return resultList;
+	}
+
+	/**
+	 * 根据行程ID获取 车主 的行程详情
+	 */
+	@Override
+	public Map<String, Object> getDriverItineraryInfo(String strokeId) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		Stroke stroke = strokeMapper.selectByPrimaryKey(Integer.parseInt(strokeId));
+		resultMap.put("accessCount", stroke.getAccessCount());
+		resultMap.put("seats", stroke.getSeats());
+		List<Booked> bookeds = bookedMapper.selectBookedByStrokeId(Integer.parseInt(strokeId));
+		List<Map<String,Object>> resultBookeds = new ArrayList<Map<String,Object>>();
+		for(Booked booked:bookeds){
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("bookedId", booked.getBookedId());
+			map.put("userName", booked.getUserName());
+			map.put("userMobile", booked.getUserMobile());
+			map.put("upAddress", booked.getUpAddress());
+			map.put("downAddress", booked.getDownAddress());
+			map.put("bookedSeats", booked.getBookedSeats());
+			resultBookeds.add(map);
+		}
+		resultMap.put("bookeds", resultBookeds);
+		
+		return resultMap;
+	}
+	/**
+	 * 根据行程ID获取 乘客 的行程详情
+	 */
+	@Override
+	public Map<String, Object> getPassengerItineraryInfo(String strokeId) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		//查询车主行程详情
+		Stroke stroke = strokeMapper.selectByPrimaryKey(Integer.parseInt(strokeId));
+		resultMap.put("strokeId", stroke.getStrokeId());
+		resultMap.put("userId", stroke.getUserId());
+		User user = userMapper.selectByPrimaryKey(stroke.getUserId());
+		resultMap.put("userName", user!=null?user.getUserName():"");
+		resultMap.put("carType", user!=null?user.getCarType():"");
+		resultMap.put("userMobile", user!=null?user.getUserMobile():"");
+		//发车时间处理
+		Date startTime = stroke.getStartTime();
+		Calendar calendar = Calendar.getInstance(); 
+		calendar.setTime(startTime); 
+		int month = calendar.get(Calendar.MONTH) + 1;
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		int time = calendar.get(Calendar.HOUR_OF_DAY); 
+		int min = calendar.get(Calendar.MINUTE);  
+		String startTimeStr = month+"月"+day+"日 "+time+":"+min;
+		
+		resultMap.put("startTime", startTimeStr);
+		resultMap.put("startAddress", stroke.getStartAddress());
+		resultMap.put("endAddress", stroke.getEndAddress());
+		resultMap.put("price", stroke.getPrice());
+		resultMap.put("seats", stroke.getSeats());
+		resultMap.put("strokeRoute", stroke.getStrokeRoute());
+		resultMap.put("remark", stroke.getRemark());
+		//获取车主拼车数
+		int pincheCount = strokeMapper.selectCount(stroke);
+		resultMap.put("pincheCount", pincheCount);
+		
+		return resultMap;
 	}
 }

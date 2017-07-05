@@ -79,4 +79,35 @@ public class PersonalCenterController {
 		map.put("CarLicense", StringUtil.checkNull(user.getCarLicense()));
 		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "个人信息获取成功!", map);
 	}
+	
+	/**
+	 * 车主行程详情
+	 * @param request
+	 * @param strokeId 行程ID
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "personal/driverItineraryInfo")
+	public ResponseEntity<String> driverItineraryInfo(HttpServletRequest request, String strokeId) {
+		if(strokeId==null || strokeId.equals("")){
+			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR, "请求参数异常,请重试!");
+		}
+		Map<String, Object> resultMap = itineraryService.getDriverItineraryInfo(strokeId);
+		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "请求成功",resultMap);
+	}
+	/**
+	 * 乘客行程详情
+	 * @param request
+	 * @param strokeId 行程ID
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "personal/passengerItineraryInfo")
+	public ResponseEntity<String> passengerItineraryInfo(HttpServletRequest request, String strokeId) {
+		if(strokeId==null || strokeId.equals("")){
+			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR, "请求参数异常,请重试!");
+		}
+		Map<String, Object> resultMap = itineraryService.getPassengerItineraryInfo(strokeId);
+		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "请求成功",resultMap);
+	}
 }

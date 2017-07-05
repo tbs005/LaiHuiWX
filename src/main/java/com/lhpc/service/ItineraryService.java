@@ -27,4 +27,8 @@ public interface ItineraryService {
 
 	List<Map<String, Object>> selectPersonalItineraryList(Stroke stroke, User user);
 
+	public Map<String, Object> getDriverItineraryInfo(String strokeId);
+	
+	public Map<String, Object> getPassengerItineraryInfo(String strokeId);
+
 }

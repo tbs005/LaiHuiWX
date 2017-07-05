@@ -8,6 +8,10 @@ public class Booked {
 	private Integer strokeId;
 
 	private Integer userId;
+	
+	private String userName;
+	
+	private String userMobile;
 
 	private Date bookedTime;
 
@@ -32,6 +36,7 @@ public class Booked {
 	private int page;
 	
 	private int size;
+	
 
 	public int getPage() {
 		return page;
@@ -152,6 +157,22 @@ public class Booked {
 
 	public void setIsEnable(Integer isEnable) {
 		this.isEnable = isEnable;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getUserMobile() {
+		return userMobile;
+	}
+
+	public void setUserMobile(String userMobile) {
+		this.userMobile = userMobile;
 	}
 
 }
