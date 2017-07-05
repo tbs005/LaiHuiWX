@@ -78,7 +78,5 @@ public class PersonalCenterController {
 		map.put("carType", StringUtil.checkNull(user.getCarType()));
 		map.put("CarLicense", StringUtil.checkNull(user.getCarLicense()));
 		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "个人信息获取成功!", map);
-		
-		
 	}
 }
