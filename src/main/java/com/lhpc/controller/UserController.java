@@ -110,4 +110,13 @@ public class UserController {
 	public ResponseEntity<String> noLogin() {
 		return GsonUtil.getJson(ResponseCodeUtil.NO_LOGIN, "您未注册,请先注册!");
 	}
+	
+	/**
+	 * 未注册
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/user/illegal")
+	public ResponseEntity<String> illegal() {
+		return GsonUtil.getJson(ResponseCodeUtil.NO_LOGIN, "非法用户!");
+	}
 }

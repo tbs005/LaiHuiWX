@@ -14,8 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.lhpc.dao.BookedMapper;
 import com.lhpc.dao.StrokeMapper;
+import com.lhpc.model.Booked;
 import com.lhpc.model.Stroke;
+import com.lhpc.model.User;
 import com.lhpc.service.ItineraryService;
 import com.lhpc.util.DateUtil;
 import com.lhpc.util.GsonUtil;
@@ -27,6 +30,9 @@ public class ItineraryServiceImpl implements ItineraryService {
 
 	@Autowired
 	private StrokeMapper strokeMapper;
+
+	@Autowired
+	private BookedMapper bookedMapper;
 
 	/**
 	 * 添加
@@ -102,29 +108,39 @@ public class ItineraryServiceImpl implements ItineraryService {
 		return strokeMapper.updateByPrimaryKeySelective(stroke);
 	}
 
+	/**
+	 * 跨城车辆
+	 */
 	@Override
 	public List<Stroke> selectCrossCityList(Stroke stroke) {
 		return strokeMapper.selectCrossCityList(stroke);
 	}
 
+	/**
+	 * 跨城车辆个数
+	 */
 	@Override
 	public int selectCrossCityCount(Stroke stroke) {
 		return strokeMapper.selectCrossCityCount(stroke);
 	}
 
+	/**
+	 * 乘客搜索车主列表
+	 */
 	@Override
 	public ResponseEntity<String> selectSearchStrokeList(Stroke stroke,
 			HttpServletRequest request) {
 		if (ParamVerificationUtil.selectSearchStrokeList(request)) {
-			stroke.setPage(stroke.getPage()*stroke.getSize());
+			stroke.setPage(stroke.getPage() * stroke.getSize());
 			List<Stroke> list = strokeMapper.selectSearchStrokeList(stroke);
-			if (list.size() > 0){
+			if (list.size() > 0) {
 				List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
 				for (Stroke stroke1 : list) {
 					Map<String, Object> resultMap = new HashMap<String, Object>();
 					resultMap.put("userName", stroke1.getUserName());
 					resultMap.put("carType", stroke1.getCarType());
-					resultMap.put("startTime", DateUtil.dateString(stroke1.getStartTime()));
+					resultMap.put("startTime",
+							DateUtil.dateString(stroke1.getStartTime()));
 					resultMap.put("count", strokeMapper.selectCount(stroke1));
 					resultMap.put("startCity", stroke1.getStartCity());
 					resultMap.put("endCity", stroke1.getEndCity());
@@ -137,13 +153,68 @@ public class ItineraryServiceImpl implements ItineraryService {
 					resultMap.put("strokeId", stroke1.getStrokeId());
 					resultList.add(resultMap);
 				}
-				return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "请求成功", resultList);
-			}
-			else{
+				return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "请求成功",
+						resultList);
+			} else {
 				return GsonUtil.getJson(ResponseCodeUtil.NO_DATA, "暂无数据");
 			}
 		} else {
 			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS, "参数不完整");
 		}
+	}
+
+	/**
+	 * 个人中心我的行程
+	 */
+	@Override
+	public List<Map<String, Object>> selectPersonalItineraryList(Stroke stroke,
+			User user) {
+		List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
+		// 车主
+		if (stroke.getMark() == 1) {
+			stroke.setUserId(user.getUserId());
+			stroke.setPage(stroke.getPage() * stroke.getSize());
+			List<Stroke> list = strokeMapper
+					.selectPersonalItineraryList(stroke);
+			if (list.size() > 0) {
+				for (Stroke stroke1 : list) {
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("route",
+							stroke1.getStartCity() + "--"
+									+ stroke1.getEndCity());
+					map.put("startTime",
+							DateUtil.dateString(stroke1.getStartTime()));
+					List<Booked> bookedList = bookedMapper
+							.selectStrokeBystrokeId(stroke1.getStrokeId(), 1);
+					int bookedSeats = 0;
+					if (bookedList.size() > 0) {
+						for (Booked booked : bookedList) {
+							bookedSeats += booked.getBookedSeats();
+						}
+					}
+					map.put("seats", bookedSeats+"人/"+stroke1.getSeats()+"人");
+					map.put("price", stroke1.getPrice()+"元/人");
+					resultList.add(map);
+				}
+			}
+		} else {
+			//乘客
+			List<Booked> bookedList = bookedMapper.selectByUserId(user.getUserId(),stroke.getPage()*stroke.getSize(),stroke.getSize());
+			if (bookedList.size()>0) {
+				for (Booked booked : bookedList) {
+					Stroke stroke1 = strokeMapper.selectByPrimaryKey(booked.getStrokeId());
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("route",
+							stroke1.getStartCity() + "--"
+									+ stroke1.getEndCity());
+					map.put("startTime",
+							DateUtil.dateString(stroke1.getStartTime()));
+					map.put("seats", booked.getBookedSeats()+"人");
+					map.put("price", stroke1.getPrice()+"元/人");
+					resultList.add(map);
+				}
+			}
+		}
+		return resultList;
 	}
 }

@@ -14,10 +14,14 @@ public interface BookedMapper {
     int insertSelective(Booked record);
 
     Booked selectByPrimaryKey(Integer bookedId);
+    
+    List<Booked> selectByUserId(@Param("userId")Integer userId,@Param("page")Integer page,@Param("size")Integer size);
 
     int updateByPrimaryKeySelective(Booked record);
 
     int updateByPrimaryKey(Booked record);
 
 	List<Booked> selectBystrokeId(@Param("userId")Integer userId, @Param("strokeId")Integer strokeId,@Param("isEnable") Integer isEnable);
+	
+	List<Booked> selectStrokeBystrokeId(@Param("strokeId")Integer strokeId,@Param("isEnable") Integer isEnable);
 }

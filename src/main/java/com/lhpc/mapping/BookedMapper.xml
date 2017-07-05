@@ -20,18 +20,37 @@
 		<result column="is_enable" property="isEnable" jdbcType="INTEGER" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		booked_id, stroke_id, user_id, booked_time, booked_seats, up_address,
+		booked_id, stroke_id, user_id, booked_time, booked_seats,
+		up_address,
 		down_address,
-		message, unbooked_time, unbooked_reason, unbooked_flag, unbooked_id, is_enable
+		message, unbooked_time, unbooked_reason,
+		unbooked_flag, unbooked_id, is_enable
 	</sql>
 
 	<select id="selectBystrokeId" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from wx_booked
-		where user_id = #{userId,jdbcType=INTEGER} and stroke_id =
+		where user_id = #{userId,jdbcType=INTEGER} and stroke_id
+		=
 		#{strokeId,jdbcType=INTEGER} and is_enable =
-		#{isEnable,jdbcType=INTEGER} 
+		#{isEnable,jdbcType=INTEGER}
+	</select>
+	<select id="selectByUserId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from wx_booked
+		where user_id = #{userId,jdbcType=INTEGER} and is_enable = 1
+		limit #{page},#{size}
+	</select>
+	<select id="selectStrokeBystrokeId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from wx_booked
+		where stroke_id =
+		#{strokeId,jdbcType=INTEGER} and
+		is_enable =
+		#{isEnable,jdbcType=INTEGER}
 	</select>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.Integer">
@@ -41,19 +60,25 @@
 		where booked_id = #{bookedId,jdbcType=INTEGER}
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from wx_booked
+		delete from
+		wx_booked
 		where booked_id = #{bookedId,jdbcType=INTEGER}
 	</delete>
 	<insert id="insert" parameterType="com.lhpc.model.Booked">
-		insert into wx_booked (booked_id, stroke_id, user_id,
+		insert into wx_booked
+		(booked_id, stroke_id, user_id,
 		booked_time, booked_seats, up_address,
 		down_address, message, unbooked_time,
-		unbooked_reason, unbooked_flag, unbooked_id,
+		unbooked_reason, unbooked_flag,
+		unbooked_id,
 		is_enable)
-		values (#{bookedId,jdbcType=INTEGER}, #{strokeId,jdbcType=INTEGER},
+		values (#{bookedId,jdbcType=INTEGER},
+		#{strokeId,jdbcType=INTEGER},
 		#{userId,jdbcType=INTEGER},
-		#{bookedTime,jdbcType=TIMESTAMP}, #{bookedSeats,jdbcType=INTEGER}, #{upAddress,jdbcType=VARCHAR},
-		#{downAddress,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR},
+		#{bookedTime,jdbcType=TIMESTAMP}, #{bookedSeats,jdbcType=INTEGER},
+		#{upAddress,jdbcType=VARCHAR},
+		#{downAddress,jdbcType=VARCHAR},
+		#{message,jdbcType=VARCHAR},
 		#{unbookedTime,jdbcType=TIMESTAMP},
 		#{unbookedReason,jdbcType=VARCHAR}, #{unbookedFlag,jdbcType=INTEGER},
 		#{unbookedId,jdbcType=INTEGER},
@@ -189,17 +214,27 @@
 	<update id="updateByPrimaryKey" parameterType="com.lhpc.model.Booked">
 		update wx_booked
 		set stroke_id = #{strokeId,jdbcType=INTEGER},
-		user_id = #{userId,jdbcType=INTEGER},
-		booked_time = #{bookedTime,jdbcType=TIMESTAMP},
-		booked_seats = #{bookedSeats,jdbcType=INTEGER},
-		up_address = #{upAddress,jdbcType=VARCHAR},
-		down_address = #{downAddress,jdbcType=VARCHAR},
+		user_id =
+		#{userId,jdbcType=INTEGER},
+		booked_time =
+		#{bookedTime,jdbcType=TIMESTAMP},
+		booked_seats =
+		#{bookedSeats,jdbcType=INTEGER},
+		up_address =
+		#{upAddress,jdbcType=VARCHAR},
+		down_address =
+		#{downAddress,jdbcType=VARCHAR},
 		message = #{message,jdbcType=VARCHAR},
 		unbooked_time = #{unbookedTime,jdbcType=TIMESTAMP},
-		unbooked_reason = #{unbookedReason,jdbcType=VARCHAR},
-		unbooked_flag = #{unbookedFlag,jdbcType=INTEGER},
-		unbooked_id = #{unbookedId,jdbcType=INTEGER},
-		is_enable = #{isEnable,jdbcType=INTEGER}
-		where booked_id = #{bookedId,jdbcType=INTEGER}
+		unbooked_reason =
+		#{unbookedReason,jdbcType=VARCHAR},
+		unbooked_flag =
+		#{unbookedFlag,jdbcType=INTEGER},
+		unbooked_id =
+		#{unbookedId,jdbcType=INTEGER},
+		is_enable =
+		#{isEnable,jdbcType=INTEGER}
+		where booked_id =
+		#{bookedId,jdbcType=INTEGER}
 	</update>
 </mapper>

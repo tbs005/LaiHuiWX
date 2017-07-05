@@ -23,6 +23,8 @@ public interface StrokeMapper {
     
     List<Stroke> selectCrossCityList(Stroke stroke);
     
+    List<Stroke> selectPersonalItineraryList(Stroke stroke);
+    
     int selectCrossCityCount(Stroke stroke);
     
     int selectCount(Stroke stroke);

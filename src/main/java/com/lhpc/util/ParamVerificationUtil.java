@@ -112,8 +112,10 @@ public class ParamVerificationUtil {
 			flag = true;
 		return flag;
 	}
-	
-	/** 乘客预定行程参数验证
+
+	/**
+	 * 乘客预定行程参数验证
+	 * 
 	 * @param request
 	 * @return
 	 */
@@ -128,6 +130,27 @@ public class ParamVerificationUtil {
 				&& StringUtil.isOrNotEmpty(bookedSeats)
 				&& StringUtil.isOrNotEmpty(upAddress)
 				&& StringUtil.isOrNotEmpty(downAddress)) {
+			flag = true;
+		}
+		return flag;
+	}
+
+	/**
+	 * 我的行程参数验证
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public static boolean personalItinerary(HttpServletRequest request) {
+		boolean flag = false;
+
+		String openID = request.getParameter("openID");
+		String mark = request.getParameter("mark");
+		String page = request.getParameter("page");
+		String size = request.getParameter("size");
+		if (StringUtil.isOrNotEmpty(openID) && StringUtil.isOrNotEmpty(mark)
+				&& StringUtil.isOrNotEmpty(page)
+				&& StringUtil.isOrNotEmpty(size)) {
 			flag = true;
 		}
 		return flag;

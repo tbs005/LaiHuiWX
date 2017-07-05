@@ -1,12 +1,14 @@
 package com.lhpc.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
 
 import com.lhpc.model.Stroke;
+import com.lhpc.model.User;
 
 
 public interface ItineraryService {
@@ -22,5 +24,7 @@ public interface ItineraryService {
 	int selectCrossCityCount(Stroke stroke);
 	
 	ResponseEntity<String> selectSearchStrokeList(Stroke stroke,HttpServletRequest request);
+
+	List<Map<String, Object>> selectPersonalItineraryList(Stroke stroke, User user);
 
 }

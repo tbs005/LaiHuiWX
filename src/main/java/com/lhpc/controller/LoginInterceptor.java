@@ -40,8 +40,8 @@ public class LoginInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object object) throws Exception {
 		User user = (User) session.getAttribute("CURRENT_USER");
+		String openID = request.getParameter("openID");
 		if (user == null) {
-			String openID = request.getParameter("openID");
 			user = userService.selectByOpenID(openID);
 			if (user == null) {
 				response.setContentType("application/json");
@@ -52,6 +52,11 @@ public class LoginInterceptor implements HandlerInterceptor {
 				return true;
 			}
 		} else {
+			if (!openID.equals(user.getOpenId())) {
+				response.setContentType("application/json");
+				response.sendRedirect("/user/illegal");
+				return false;
+			}
 			return true;
 		}
 	}

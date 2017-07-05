@@ -57,6 +57,16 @@
 		group by
 		start_city_code,end_city_code
 	</select>
+	
+	<select id="selectPersonalItineraryList" resultMap="BaseResultMap"
+		parameterType="com.lhpc.model.Stroke">
+		select
+		<include refid="Base_Column_List" />
+		from wx_stroke
+		where user_id = #{userId,jdbcType=INTEGER}
+		order by create_time desc
+		limit #{page},#{size}
+	</select>
 
 	<select id="selectSearchStrokeList" resultMap="BaseResultMap"
 		parameterType="com.lhpc.model.Stroke">
