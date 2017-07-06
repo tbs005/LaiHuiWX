@@ -1,5 +1,8 @@
 package com.lhpc.service.impl;
 
+
+import java.util.Date;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +48,25 @@ public class PersonalServiceImpl implements IPersonalService {
 		}
 
 		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "你已同意该预定!");
+	}
+
+	@Override
+	public ResponseEntity<String> denialBook(String bookedId, String strokeId) {
+		Stroke stroke = strokeMapper.selectByPrimaryKey(Integer.parseInt(strokeId));
+		Booked booked = bookedMapper.selectByPrimaryKey(Integer.parseInt(bookedId));
+		int result = 0;
+		if(booked!=null && stroke!=null){
+			booked.setUnbookedTime(new Date());
+			booked.setUnbookedFlag(1);
+			booked.setUnbookedId(stroke.getUserId());
+			booked.setIsEnable(0);
+			result = bookedMapper.updateByPrimaryKeySelective(booked);
+		}
+		if(result>0){
+			return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "拒绝成功!");
+		}else{
+			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR,"服务器繁忙,请稍后重试!");
+		}
 	}
 
 }

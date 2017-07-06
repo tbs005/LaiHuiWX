@@ -102,7 +102,7 @@ public class PersonalCenterController {
 		if (!StringUtil.isOrNotEmpty(openID)
 				|| !StringUtil.isOrNotEmpty(strokeId)) {
 			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS,
-					"请求参数异常,请重试!");
+					"参数不完整!");
 		}
 		Map<String, Object> resultMap = itineraryService
 				.getDriverItineraryInfo(strokeId);
@@ -126,7 +126,7 @@ public class PersonalCenterController {
 		if (!StringUtil.isOrNotEmpty(openID)
 				|| !StringUtil.isOrNotEmpty(strokeId)) {
 			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS,
-					"请求参数异常,请重试!");
+					"参数不完整!");
 		}
 		Map<String, Object> resultMap = itineraryService
 				.getPassengerItineraryInfo(strokeId);
@@ -183,7 +183,7 @@ public class PersonalCenterController {
 		if (!StringUtil.isOrNotEmpty(openID)
 				|| !StringUtil.isOrNotEmpty(bookedId)) {
 			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS,
-					"请求参数异常,请重试!");
+					"参数不完整!");
 		}
 		itineraryService.closeItinerary(bookedId);
 		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "操作成功");
@@ -199,5 +199,19 @@ public class PersonalCenterController {
 			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS, "参数不完整!");
 		}
 		return personalService.agreedBook( bookedId,strokeId);
+	}
+
+	/**
+	 * 车主拒绝乘客预定
+	 */
+	@ResponseBody
+	@RequestMapping(value="/denial/book",method=RequestMethod.POST)
+	public ResponseEntity<String> denialBook(HttpServletRequest request,String bookedId,String strokeId){
+		String openID = request.getParameter("openID");
+		if (!StringUtil.isOrNotEmpty(openID) || !StringUtil.isOrNotEmpty(bookedId)
+				|| !StringUtil.isOrNotEmpty(strokeId)) {
+			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS,"参数不完整!");
+		}
+		return personalService.denialBook(bookedId,strokeId);
 	}
 }

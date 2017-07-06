@@ -360,10 +360,12 @@ public class ItineraryServiceImpl implements ItineraryService {
 		if(booked2!=null && booked2.getStrokeId()!=null){
 			List<Booked> bookeds = bookedMapper.selectStrokeBystrokeId(booked2.getStrokeId(),1);
 			if(bookeds==null || bookeds.size()<=0){
-				Stroke stroke = new Stroke();
-				stroke.setStrokeId(booked2.getStrokeId());
-				stroke.setIsEnable(2);
-				strokeMapper.updateByPrimaryKey(stroke);
+				Stroke stroke = strokeMapper.selectByPrimaryKey(booked2.getStrokeId());
+				if(stroke!=null){
+					stroke.setIsEnable(2);
+					int value2 = strokeMapper.updateByPrimaryKeySelective(stroke);
+					System.out.println(value2);
+				}
 			}
 		}
 		return value;
