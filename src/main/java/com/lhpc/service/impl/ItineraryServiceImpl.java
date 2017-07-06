@@ -38,6 +38,7 @@ public class ItineraryServiceImpl implements ItineraryService {
 
 	@Autowired
 	private UserMapper userMapper;
+
 	/**
 	 * 添加
 	 */
@@ -197,17 +198,21 @@ public class ItineraryServiceImpl implements ItineraryService {
 							bookedSeats += booked.getBookedSeats();
 						}
 					}
-					map.put("seats", bookedSeats+"人/"+stroke1.getSeats()+"人");
-					map.put("price", stroke1.getPrice()+"元/人");
+					map.put("seats", bookedSeats + "人/" + stroke1.getSeats()
+							+ "人");
+					map.put("price", stroke1.getPrice() + "元/人");
 					resultList.add(map);
 				}
 			}
 		} else {
-			//乘客
-			List<Booked> bookedList = bookedMapper.selectByUserId(user.getUserId(),stroke.getPage()*stroke.getSize(),stroke.getSize());
-			if (bookedList.size()>0) {
+			// 乘客
+			List<Booked> bookedList = bookedMapper.selectByUserId(
+					user.getUserId(), stroke.getPage() * stroke.getSize(),
+					stroke.getSize());
+			if (bookedList.size() > 0) {
 				for (Booked booked : bookedList) {
-					Stroke stroke1 = strokeMapper.selectByPrimaryKey(booked.getStrokeId());
+					Stroke stroke1 = strokeMapper.selectByPrimaryKey(booked
+							.getStrokeId());
 					Map<String, Object> map = new HashMap<String, Object>();
 					map.put("strokeId", stroke1);
 					map.put("route",
@@ -215,8 +220,8 @@ public class ItineraryServiceImpl implements ItineraryService {
 									+ stroke1.getEndCity());
 					map.put("startTime",
 							DateUtil.dateString(stroke1.getStartTime()));
-					map.put("seats", booked.getBookedSeats()+"人");
-					map.put("price", stroke1.getPrice()+"元/人");
+					map.put("seats", booked.getBookedSeats() + "人");
+					map.put("price", stroke1.getPrice() + "元/人");
 					resultList.add(map);
 				}
 			}
@@ -230,13 +235,15 @@ public class ItineraryServiceImpl implements ItineraryService {
 	@Override
 	public Map<String, Object> getDriverItineraryInfo(String strokeId) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		Stroke stroke = strokeMapper.selectByPrimaryKey(Integer.parseInt(strokeId));
+		Stroke stroke = strokeMapper.selectByPrimaryKey(Integer
+				.parseInt(strokeId));
 		resultMap.put("accessCount", stroke.getAccessCount());
 		resultMap.put("seats", stroke.getSeats());
-		List<Booked> bookeds = bookedMapper.selectBookedByStrokeId(Integer.parseInt(strokeId));
-		List<Map<String,Object>> resultBookeds = new ArrayList<Map<String,Object>>();
-		for(Booked booked:bookeds){
-			Map<String,Object> map = new HashMap<String,Object>();
+		List<Booked> bookeds = bookedMapper.selectBookedByStrokeId(Integer
+				.parseInt(strokeId));
+		List<Map<String, Object>> resultBookeds = new ArrayList<Map<String, Object>>();
+		for (Booked booked : bookeds) {
+			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("bookedId", booked.getBookedId());
 			map.put("userName", booked.getUserName());
 			map.put("userMobile", booked.getUserMobile());
@@ -246,33 +253,35 @@ public class ItineraryServiceImpl implements ItineraryService {
 			resultBookeds.add(map);
 		}
 		resultMap.put("bookeds", resultBookeds);
-		
+
 		return resultMap;
 	}
+
 	/**
 	 * 根据行程ID获取 乘客 的行程详情
 	 */
 	@Override
 	public Map<String, Object> getPassengerItineraryInfo(String strokeId) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		//查询车主行程详情
-		Stroke stroke = strokeMapper.selectByPrimaryKey(Integer.parseInt(strokeId));
+		// 查询车主行程详情
+		Stroke stroke = strokeMapper.selectByPrimaryKey(Integer
+				.parseInt(strokeId));
 		resultMap.put("strokeId", stroke.getStrokeId());
 		resultMap.put("userId", stroke.getUserId());
 		User user = userMapper.selectByPrimaryKey(stroke.getUserId());
-		resultMap.put("userName", user!=null?user.getUserName():"");
-		resultMap.put("carType", user!=null?user.getCarType():"");
-		resultMap.put("userMobile", user!=null?user.getUserMobile():"");
-		//发车时间处理
+		resultMap.put("userName", user != null ? user.getUserName() : "");
+		resultMap.put("carType", user != null ? user.getCarType() : "");
+		resultMap.put("userMobile", user != null ? user.getUserMobile() : "");
+		// 发车时间处理
 		Date startTime = stroke.getStartTime();
-		Calendar calendar = Calendar.getInstance(); 
-		calendar.setTime(startTime); 
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(startTime);
 		int month = calendar.get(Calendar.MONTH) + 1;
 		int day = calendar.get(Calendar.DAY_OF_MONTH);
-		int time = calendar.get(Calendar.HOUR_OF_DAY); 
-		int min = calendar.get(Calendar.MINUTE);  
-		String startTimeStr = month+"月"+day+"日 "+time+":"+min;
-		
+		int time = calendar.get(Calendar.HOUR_OF_DAY);
+		int min = calendar.get(Calendar.MINUTE);
+		String startTimeStr = month + "月" + day + "日 " + time + ":" + min;
+
 		resultMap.put("startTime", startTimeStr);
 		resultMap.put("startAddress", stroke.getStartAddress());
 		resultMap.put("endAddress", stroke.getEndAddress());
@@ -280,10 +289,60 @@ public class ItineraryServiceImpl implements ItineraryService {
 		resultMap.put("seats", stroke.getSeats());
 		resultMap.put("strokeRoute", stroke.getStrokeRoute());
 		resultMap.put("remark", stroke.getRemark());
-		//获取车主拼车数
+		// 获取车主拼车数
 		int pincheCount = strokeMapper.selectCount(stroke);
 		resultMap.put("pincheCount", pincheCount);
-		
+
 		return resultMap;
+	}
+
+	/**
+	 * 获取车主行程
+	 */
+	@Override
+	public Map<String, Object> getPassengerItineraryDetail(String strokeId) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		Stroke stroke = strokeMapper.selectByPrimaryKey(Integer
+				.parseInt(strokeId));
+		resultMap.put("startAddress", stroke.getStartAddress());
+		resultMap.put("endAddress", stroke.getEndAddress());
+		resultMap.put("route", stroke.getStrokeRoute());
+		resultMap.put("seats", stroke.getSeats());
+		resultMap.put("startTime", DateUtil.date2String(stroke.getStartTime()));
+		resultMap.put("price", stroke.getPrice());
+		resultMap.put("remark", stroke.getRemark());
+		resultMap.put("strokeId", strokeId);
+		return resultMap;
+	}
+
+	/**
+	 * 编辑车主行程
+	 */
+	@Override
+	public ResponseEntity<String> personalItineraryEdit(HttpServletRequest request) {
+		try {
+			int strokeId = Integer.parseInt(request.getParameter("strokeId"));
+			int seats = Integer.parseInt(request.getParameter("seats"));
+			Stroke strokeBean = strokeMapper.selectByPrimaryKey(strokeId);
+			Stroke stroke = new Stroke();
+			stroke.setStrokeId(strokeId);
+			stroke.setSeats(seats);
+			stroke.setUpdateTime(new Date());
+			stroke.setRemark(request.getParameter("remark"));
+			stroke.setStartTime(DateUtil.stringToDate(request.getParameter("startTime")));
+			if (strokeBean.getSeats() >= seats) {
+				stroke.setUpdateTime(new Date());
+				if (strokeMapper.updateByPrimaryKey(stroke) > 0)
+					// TODO 推送给乘客
+					return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "修改成功!");
+				else
+					return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR,
+							"服务器繁忙,请重试!");
+			} else {
+				return GsonUtil.getJson(ResponseCodeUtil.SEAT_LACK, "座位数不足,不能修改!");
+			}
+		} catch (Exception e) {
+			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR, "服务器繁忙,请重试!");
+		}
 	}
 }

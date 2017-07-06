@@ -56,8 +56,8 @@ public class UserController {
 				if (isTelephone) {
 					String code = request.getParameter("code");
 					// 验证码是否正确
-					if (code == verificationCodeService.selectCodeByMobile(
-							mobile).getCode()) {
+					if (code.equals(verificationCodeService.selectCodeByMobile(
+							mobile).getCode())) {
 						// 如果是司机,则需要这两个参数
 						if (request.getParameter("userType").equals("1")) {
 							if (ParamVerificationUtil.driverLogin(request)) {
@@ -112,7 +112,7 @@ public class UserController {
 	}
 	
 	/**
-	 * 未注册
+	 * 非法用户
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/user/illegal")

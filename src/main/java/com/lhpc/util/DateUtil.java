@@ -1,5 +1,6 @@
 package com.lhpc.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -41,6 +42,17 @@ public class DateUtil {
 		// String mDateTime=formatter.format(c.getTime());
 		return c.getTime();
 
+	}
+	
+	/**
+	 * String转date
+	 * @param args
+	 * @throws ParseException 
+	 */
+	public static Date stringToDate(String date) throws ParseException{
+		SimpleDateFormat sim=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date d=sim.parse(date);
+		return d;
 	}
 
 	public static void main(String[] args) {

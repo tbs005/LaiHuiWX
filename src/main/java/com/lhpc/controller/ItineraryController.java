@@ -175,6 +175,7 @@ public class ItineraryController {
 	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/distance/prices", produces = "application/json; charset=utf-8")
 	public ResponseEntity<?> getPriceToWeb(HttpServletRequest request) {
+		User user = (User)session.getAttribute("CURRENT_USER");
 		JSONObject resultObject = new JSONObject();
 		String startCode = request.getParameter("startCode");
 		String endCode = request.getParameter("endCode");
@@ -193,6 +194,7 @@ public class ItineraryController {
 		if (pricesList.size() > 0) {
 			double price = pricesList.get(0).getPrice();
 			resultObject.put("price", price*person);
+			resultObject.put("carType", user.getCarType());
 			return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "价格获取成功",
 					resultObject);
 		}
@@ -228,6 +230,7 @@ public class ItineraryController {
 			double last_price = price * person;
 			resultObject.put("price", new BigDecimal(last_price)
 					.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			resultObject.put("carType", user.getCarType());
 		}
 
 		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "价格计算成功",

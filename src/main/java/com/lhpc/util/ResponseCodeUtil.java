@@ -18,6 +18,7 @@ public class ResponseCodeUtil {
 	public static final int CODE_BEYOND = 4008;// 发送验证码超出限制
 	public static final int SMS_SEND_FAILED = 4009; // 验证码发送失败
 	public static final int BOOKING_REPEAT = 4100; // 车单预定重复
+	public static final int CODE_REPEAT = 4101; // code重复
 	public static final int SEAT_LACK = 4101; // 车主座位不足
 	public static final int SYSTEM_ERROR = 5005;// 系统错误
 

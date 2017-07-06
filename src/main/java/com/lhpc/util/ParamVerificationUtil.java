@@ -156,4 +156,38 @@ public class ParamVerificationUtil {
 		return flag;
 	}
 
+	/**
+	 * 车主编辑路线参数验证
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public static boolean personalItineraryEdit(HttpServletRequest request) {
+		boolean flag = false;
+		String seats = request.getParameter("seats");
+		String startTime = request.getParameter("startTime");
+		String remark = request.getParameter("remark");
+		String strokeId = request.getParameter("strokeId");
+		if (StringUtil.isOrNotEmpty(seats)
+				&& StringUtil.isOrNotEmpty(startTime)
+				&& StringUtil.isOrNotEmpty(remark)
+				&& StringUtil.isOrNotEmpty(strokeId))
+			flag = true;
+		return flag;
+	}
+
+	/**
+	 * 获取车主行程参数验证
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public static boolean personalItineraryDetail(String strokeId, String openID) {
+		boolean flag = false;
+		if (StringUtil.isOrNotEmpty(openID)
+				&& StringUtil.isOrNotEmpty(strokeId))
+			flag = true;
+		return flag;
+	}
+
 }

@@ -5,20 +5,20 @@ import java.util.Map;
 
 import net.sf.json.JSONObject;
 
-import com.lhpc.util.ConfigUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.lhpc.dao.AccessTokenMapper;
+import com.lhpc.model.AccessToken;
 import com.lhpc.util.HttpRequest;
 
 public class Send {
+	
+	@Autowired
+	private AccessTokenMapper accessTokenMapper;
 
-	public static String getAccessToken() {
-		String url = "https://api.weixin.qq.com/cgi-bin/token";
-		String param = "grant_type=client_credential&appid="
-				+ ConfigUtil.WX_APP_ID + "&secret=" + ConfigUtil.WX_SECRET_KEY;
-		String objectString = HttpRequest.sendGet(url, param);
-		JSONObject jsonObject = JSONObject.fromObject(objectString);
-		String accessToken = jsonObject.getString("access_token");
-		System.out.println(accessToken);
-		return accessToken;
+	public String getAccessToken() {
+		AccessToken accessToken = accessTokenMapper.selectToken();
+		return accessToken.getAccessToken();
 
 	}
 
@@ -29,11 +29,11 @@ public class Send {
 			String openId) {
 		// AccessToken token = getAccessToken();
 		// String access_token = token.getToken();
-		String access_token = getAccessToken();
+		String access_token = new Send().getAccessToken();
 		String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="
 				+ access_token;
 		WxTemplate temp = new WxTemplate();
-		temp.setUrl("http://weixin.qq.com/download");
+		temp.setUrl("https://www.baidu.com");
 		temp.setTouser(openId);
 		temp.setTopcolor("#000000");
 		temp.setTemplate_id("7dN2fUAKlDU8oDHRStNoMEqWKCOgScnuS13SYw2JTCQ");
@@ -69,19 +69,9 @@ public class Send {
 		// jsonString);
 		String jsonObject = HttpRequest.sendPost(url, jsonString);
 		System.out.println(jsonObject);
-		
-		// if (null != jsonObject) {
-		// if (0 != jsonObject.getInt("errcode")) {
-		// result = jsonObject.getInt("errcode");
-		// //log.error("错误 errcode:{} errmsg:{}", jsonObject.getInt("errcode"),
-		// jsonObject.getString("errmsg"));
-		// }
-		// }
-		// log.info("模板消息发送结果："+result);
 	}
-
+	
 	public static void main(String[] args) {
-		send_template_message(ConfigUtil.WX_APP_ID, ConfigUtil.WX_SECRET_KEY,
-				"oTnCRwHoag7m3to9ezu6boyhw8m0");
+		send_template_message("wxd6d79c4ca0fef838","bace843875970ae9a941dcb6dbe16e6d","oTnCRwHoag7m3to9ezu6boyhw8m0");
 	}
 }
