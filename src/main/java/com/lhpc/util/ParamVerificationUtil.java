@@ -205,4 +205,22 @@ public class ParamVerificationUtil {
 		return flag;
 	}
 
+	/**
+	 * 车主同意乘客的预定
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public static boolean agreedBook(HttpServletRequest request) {
+		boolean flag = false;
+		String bookedId = request.getParameter("bookedId");
+		String strokeId = request.getParameter("strokeId");
+		if (StringUtil.isOrNotEmpty(bookedId)
+				&& StringUtil.isOrNotEmpty(strokeId)) {
+			flag = true;
+		}
+
+		return flag;
+	}
+
 }

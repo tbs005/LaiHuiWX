@@ -45,17 +45,17 @@ public class PassengerServiceImpl implements IPassengerService {
 			strokeMapper.update4AccessCount(booked.getStrokeId());
 		} catch (Exception e) {
 			logger.error("访问次数修改异常 ----------------- ");
-			logger.error(e.getMessage());
+
 		}
 		Map<String, Object> map = new HashMap<String, Object>();
 		User user = (User) session.getAttribute("CURRENT_USER");
 		booked.setUserId(user.getUserId());
 		booked.setBookedTime(new Date());
 		List<Booked> bookedList = bookedMapper.selectBystrokeId(
-				user.getUserId(), booked.getStrokeId(), 1);
+				user.getUserId());
 		if (bookedList.size() > 0) {
 			return GsonUtil.getJson(ResponseCodeUtil.BOOKING_REPEAT,
-					"你已经预定过该车单了,请预定其它车单!");
+					"你已经预定过车单了,请先取消已预订车单在预约其他车单!");
 		}
 		stroke = strokeMapper.selectByPrimaryKey(booked.getStrokeId());
 		if (stroke.getSeats() < booked.getBookedSeats()) {
@@ -65,7 +65,8 @@ public class PassengerServiceImpl implements IPassengerService {
 		int count = bookedMapper.insertSelective(booked);
 		if (count == 0) {
 			logger.error("预定行程插入数据失败 ------------------ ");
-			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR, "系统错误!");
+			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR,
+					"服务器繁忙,请稍后重试!");
 		}
 
 		User driver = new User();
@@ -75,25 +76,32 @@ public class PassengerServiceImpl implements IPassengerService {
 		} catch (Exception e) {
 			logger.error("查询数据失败 -------------------- ");
 			logger.error(e.getMessage());
-			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR, "系统错误!");
+			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR,
+					"服务器繁忙,请稍后重试!");
 		}
 		map.put("driverMobile", driver.getUserMobile());
 		return GsonUtil
 				.getJson(ResponseCodeUtil.SUCCESS, "预订成功,请尽快与车主联系!", map);
 	}
 
-	
 	@Override
 	public ResponseEntity<String> unsubscribeTravel(int bookedId) {
+		User user = (User) session.getAttribute("CURRENT_USER");
 		Booked booked = bookedMapper.selectByPrimaryKey(bookedId);
-		if (strokeMapper.update4Seats(booked.getStrokeId(),booked.getBookedSeats()) == 0) {
+		if (strokeMapper.update4Seats(booked.getStrokeId(),
+				booked.getBookedSeats()) == 0) {
 			logger.error("乘客退订行程更新车主行程座位数失败--------------------------");
-			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR, "退订失败!请稍后重试");
+			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR,
+					"服务器繁忙,请稍后重试!");
 		}
 		booked.setIsEnable(2);
+		booked.setUnbookedTime(new Date());
+		booked.setUnbookedId(user.getUserId());
+		booked.setUnbookedFlag(0);
 		if (bookedMapper.updateByPrimaryKeySelective(booked) == 0) {
 			logger.error("乘客退订修改退订记录状态失败--------------------------");
-			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR, "退订失败!请稍后重试");
+			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR,
+					"服务器繁忙,请稍后重试!");
 		}
 		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "退订成功!");
 	}
