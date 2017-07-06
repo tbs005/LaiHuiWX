@@ -78,11 +78,6 @@ public class VerificationCodeServiceImpl implements IVerificationCodeService {
 
 	@Override
 	public VerificationCode selectCodeByMobile(String mobile) {
-		try {
-			VerificationCode verificationCode =	verificationCodeMapper.selectCodeByMobile(mobile);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
 		return verificationCodeMapper.selectCodeByMobile(mobile);
 	}
 

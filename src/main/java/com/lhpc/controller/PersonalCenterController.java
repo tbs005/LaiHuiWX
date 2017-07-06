@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lhpc.model.Stroke;
 import com.lhpc.model.User;
+import com.lhpc.service.IPersonalService;
 import com.lhpc.service.ItineraryService;
 import com.lhpc.util.GsonUtil;
 import com.lhpc.util.ParamVerificationUtil;
@@ -38,6 +39,8 @@ public class PersonalCenterController {
 
 	@Autowired
 	private ItineraryService itineraryService;
+	@Autowired
+	private IPersonalService personalService;
 
 	@Autowired
 	private HttpSession session;
@@ -92,14 +95,17 @@ public class PersonalCenterController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "personal/driverItineraryInfo",method=RequestMethod.POST)
+	@RequestMapping(value = "personal/driverItineraryInfo", method = RequestMethod.POST)
 	public ResponseEntity<String> driverItineraryInfo(HttpServletRequest request) {
 		String openID = request.getParameter("openID");
 		String strokeId = request.getParameter("strokeId");
-		if(!StringUtil.isOrNotEmpty(openID) || !StringUtil.isOrNotEmpty(strokeId)){
-			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS, "请求参数异常,请重试!");
+		if (!StringUtil.isOrNotEmpty(openID)
+				|| !StringUtil.isOrNotEmpty(strokeId)) {
+			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS,
+					"请求参数异常,请重试!");
 		}
-		Map<String, Object> resultMap = itineraryService.getDriverItineraryInfo(strokeId);
+		Map<String, Object> resultMap = itineraryService
+				.getDriverItineraryInfo(strokeId);
 		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "请求成功", resultMap);
 	}
 
@@ -112,14 +118,18 @@ public class PersonalCenterController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "personal/passengerItineraryInfo",method=RequestMethod.POST)
-	public ResponseEntity<String> passengerItineraryInfo(HttpServletRequest request) {
+	@RequestMapping(value = "personal/passengerItineraryInfo", method = RequestMethod.POST)
+	public ResponseEntity<String> passengerItineraryInfo(
+			HttpServletRequest request) {
 		String openID = request.getParameter("openID");
 		String strokeId = request.getParameter("strokeId");
-		if(!StringUtil.isOrNotEmpty(openID) || !StringUtil.isOrNotEmpty(strokeId)){
-			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS, "请求参数异常,请重试!");
+		if (!StringUtil.isOrNotEmpty(openID)
+				|| !StringUtil.isOrNotEmpty(strokeId)) {
+			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS,
+					"请求参数异常,请重试!");
 		}
-		Map<String, Object> resultMap = itineraryService.getPassengerItineraryInfo(strokeId);
+		Map<String, Object> resultMap = itineraryService
+				.getPassengerItineraryInfo(strokeId);
 		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "请求成功", resultMap);
 	}
 
@@ -156,10 +166,13 @@ public class PersonalCenterController {
 			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS, "参数不完整!");
 		}
 	}
+
 	/**
 	 * 车主结束行程（多个乘客挨个结束）
+	 * 
 	 * @param request
-	 * @param bookedId ID
+	 * @param bookedId
+	 *            ID
 	 * @return
 	 */
 	@ResponseBody
@@ -167,10 +180,24 @@ public class PersonalCenterController {
 	public ResponseEntity<String> closeItinerary(HttpServletRequest request) {
 		String openID = request.getParameter("openID");
 		String bookedId = request.getParameter("bookedId");
-		if(!StringUtil.isOrNotEmpty(openID) || !StringUtil.isOrNotEmpty(bookedId)){
-			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS, "请求参数异常,请重试!");
+		if (!StringUtil.isOrNotEmpty(openID)
+				|| !StringUtil.isOrNotEmpty(bookedId)) {
+			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS,
+					"请求参数异常,请重试!");
 		}
-		int result = itineraryService.closeItinerary(bookedId);
+		itineraryService.closeItinerary(bookedId);
 		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "操作成功");
+	}
+
+	/**
+	 * 车主同意乘客预定
+	 */
+	@ResponseBody
+	@RequestMapping(value="/agreed/book",method=RequestMethod.POST)
+	public ResponseEntity<String> agreedBook(HttpServletRequest request,String bookedId,String strokeId){
+		if (!ParamVerificationUtil.agreedBook(request)) {
+			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS, "参数不完整!");
+		}
+		return personalService.agreedBook( bookedId,strokeId);
 	}
 }
