@@ -92,15 +92,14 @@ public class PersonalCenterController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "personal/driverItineraryInfo")
-	public ResponseEntity<String> driverItineraryInfo(
-			HttpServletRequest request, String strokeId) {
-		if (strokeId == null || strokeId.equals("")) {
-			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR,
-					"请求参数异常,请重试!");
+	@RequestMapping(value = "personal/driverItineraryInfo",method=RequestMethod.POST)
+	public ResponseEntity<String> driverItineraryInfo(HttpServletRequest request) {
+		String openID = request.getParameter("openID");
+		String strokeId = request.getParameter("strokeId");
+		if(!StringUtil.isOrNotEmpty(openID) || !StringUtil.isOrNotEmpty(strokeId)){
+			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS, "请求参数异常,请重试!");
 		}
-		Map<String, Object> resultMap = itineraryService
-				.getDriverItineraryInfo(strokeId);
+		Map<String, Object> resultMap = itineraryService.getDriverItineraryInfo(strokeId);
 		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "请求成功", resultMap);
 	}
 
@@ -113,15 +112,14 @@ public class PersonalCenterController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "personal/passengerItineraryInfo")
-	public ResponseEntity<String> passengerItineraryInfo(
-			HttpServletRequest request, String strokeId) {
-		if (strokeId == null || strokeId.equals("")) {
-			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR,
-					"请求参数异常,请重试!");
+	@RequestMapping(value = "personal/passengerItineraryInfo",method=RequestMethod.POST)
+	public ResponseEntity<String> passengerItineraryInfo(HttpServletRequest request) {
+		String openID = request.getParameter("openID");
+		String strokeId = request.getParameter("strokeId");
+		if(!StringUtil.isOrNotEmpty(openID) || !StringUtil.isOrNotEmpty(strokeId)){
+			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS, "请求参数异常,请重试!");
 		}
-		Map<String, Object> resultMap = itineraryService
-				.getPassengerItineraryInfo(strokeId);
+		Map<String, Object> resultMap = itineraryService.getPassengerItineraryInfo(strokeId);
 		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "请求成功", resultMap);
 	}
 
@@ -157,5 +155,22 @@ public class PersonalCenterController {
 		} else {
 			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS, "参数不完整!");
 		}
+	}
+	/**
+	 * 车主结束行程（多个乘客挨个结束）
+	 * @param request
+	 * @param bookedId ID
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "personal/closeItinerary", method = RequestMethod.POST)
+	public ResponseEntity<String> closeItinerary(HttpServletRequest request) {
+		String openID = request.getParameter("openID");
+		String bookedId = request.getParameter("bookedId");
+		if(!StringUtil.isOrNotEmpty(openID) || !StringUtil.isOrNotEmpty(bookedId)){
+			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS, "请求参数异常,请重试!");
+		}
+		int result = itineraryService.closeItinerary(bookedId);
+		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "操作成功");
 	}
 }

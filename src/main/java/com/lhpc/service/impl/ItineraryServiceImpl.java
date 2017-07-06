@@ -345,4 +345,27 @@ public class ItineraryServiceImpl implements ItineraryService {
 			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR, "服务器繁忙,请重试!");
 		}
 	}
+	
+	/**
+	 * 车主结束乘客行程
+	 */
+	@Override
+	public int closeItinerary(String bookedId) {
+		Booked booked = new Booked();
+		booked.setBookedId(Integer.parseInt(bookedId));
+		booked.setIsEnable(2);
+		int value = bookedMapper.updateByPrimaryKeySelective(booked);
+		//如果乘客预约全部结束，车主行程单也关闭
+		Booked booked2 = bookedMapper.selectByPrimaryKey(Integer.parseInt(bookedId));
+		if(booked2!=null && booked2.getStrokeId()!=null){
+			List<Booked> bookeds = bookedMapper.selectStrokeBystrokeId(booked2.getStrokeId(),1);
+			if(bookeds==null || bookeds.size()<=0){
+				Stroke stroke = new Stroke();
+				stroke.setStrokeId(booked2.getStrokeId());
+				stroke.setIsEnable(2);
+				strokeMapper.updateByPrimaryKey(stroke);
+			}
+		}
+		return value;
+	}
 }
