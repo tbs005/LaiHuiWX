@@ -170,7 +170,7 @@ public class PersonalCenterController {
 		if(!StringUtil.isOrNotEmpty(openID) || !StringUtil.isOrNotEmpty(bookedId)){
 			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS, "请求参数异常,请重试!");
 		}
-		int result = itineraryService.closeItinerary(bookedId);
+		itineraryService.closeItinerary(bookedId);
 		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "操作成功");
 	}
 }
