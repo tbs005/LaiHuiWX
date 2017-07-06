@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lhpc.dao.BookedMapper;
 import com.lhpc.dao.StrokeMapper;
@@ -23,6 +24,7 @@ import com.lhpc.util.GsonUtil;
 import com.lhpc.util.ResponseCodeUtil;
 
 @Service
+@Transactional
 public class PassengerServiceImpl implements IPassengerService {
 
 	private Logger logger = Logger.getLogger(PassengerServiceImpl.class);
@@ -38,7 +40,7 @@ public class PassengerServiceImpl implements IPassengerService {
 	@Override
 	public ResponseEntity<String> scheduled(Booked booked) {
 		Stroke stroke = new Stroke();
-		
+
 		try {
 			strokeMapper.update4AccessCount(booked.getStrokeId());
 		} catch (Exception e) {
@@ -78,6 +80,22 @@ public class PassengerServiceImpl implements IPassengerService {
 		map.put("driverMobile", driver.getUserMobile());
 		return GsonUtil
 				.getJson(ResponseCodeUtil.SUCCESS, "预订成功,请尽快与车主联系!", map);
+	}
+
+	
+	@Override
+	public ResponseEntity<String> unsubscribeTravel(int bookedId) {
+		Booked booked = bookedMapper.selectByPrimaryKey(bookedId);
+		if (strokeMapper.update4Seats(booked.getStrokeId(),booked.getBookedSeats()) == 0) {
+			logger.error("乘客退订行程更新车主行程座位数失败--------------------------");
+			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR, "退订失败!请稍后重试");
+		}
+		booked.setIsEnable(2);
+		if (bookedMapper.updateByPrimaryKeySelective(booked) == 0) {
+			logger.error("乘客退订修改退订记录状态失败--------------------------");
+			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR, "退订失败!请稍后重试");
+		}
+		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "退订成功!");
 	}
 
 }

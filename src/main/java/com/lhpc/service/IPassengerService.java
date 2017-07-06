@@ -8,4 +8,6 @@ public interface IPassengerService {
 
 	 ResponseEntity<String>  scheduled(Booked booked);
 
+	ResponseEntity<String> unsubscribeTravel(int bookedId);
+
 }

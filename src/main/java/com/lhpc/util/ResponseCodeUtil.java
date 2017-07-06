@@ -20,6 +20,8 @@ public class ResponseCodeUtil {
 	public static final int BOOKING_REPEAT = 4100; // 车单预定重复
 	public static final int CODE_REPEAT = 4101; // code重复
 	public static final int SEAT_LACK = 4101; // 车主座位不足
+	public static final int ERROR = 5000;// 操作失败
 	public static final int SYSTEM_ERROR = 5005;// 系统错误
+	
 
 }

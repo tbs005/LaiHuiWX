@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lhpc.dao.AccessTokenMapper;
 import com.lhpc.model.AccessToken;
+import com.lhpc.util.ConfigUtil;
 import com.lhpc.util.HttpRequest;
 
 public class Send {
@@ -72,6 +73,7 @@ public class Send {
 	}
 	
 	public static void main(String[] args) {
-		send_template_message("wxd6d79c4ca0fef838","bace843875970ae9a941dcb6dbe16e6d","oTnCRwHoag7m3to9ezu6boyhw8m0");
+		send_template_message(ConfigUtil.WX_APP_ID, ConfigUtil.WX_SECRET_KEY,
+				"oTnCRwNr4VA0euswLE7uEGjpCqUw");
 	}
 }

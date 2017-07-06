@@ -1,6 +1,7 @@
 package com.lhpc.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lhpc.model.User;
+import com.lhpc.model.VerificationCode;
 import com.lhpc.service.IUserService;
 import com.lhpc.service.IVerificationCodeService;
 import com.lhpc.util.GsonUtil;

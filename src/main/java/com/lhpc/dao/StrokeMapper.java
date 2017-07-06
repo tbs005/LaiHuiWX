@@ -32,4 +32,6 @@ public interface StrokeMapper {
     List<Stroke> selectSearchStrokeList(Stroke stroke);
 
 	int update4AccessCount(@Param("strokeId")Integer strokeId);
+
+	int update4Seats(@Param("strokeId")Integer strokeId,@Param("seats")Integer seats);
 }
