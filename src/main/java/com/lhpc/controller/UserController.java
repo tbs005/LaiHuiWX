@@ -1,6 +1,7 @@
 package com.lhpc.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lhpc.model.User;
+import com.lhpc.model.VerificationCode;
 import com.lhpc.service.IUserService;
 import com.lhpc.service.IVerificationCodeService;
 import com.lhpc.util.GsonUtil;
@@ -56,8 +58,8 @@ public class UserController {
 				if (isTelephone) {
 					String code = request.getParameter("code");
 					// 验证码是否正确
-					if (code == verificationCodeService.selectCodeByMobile(
-							mobile).getCode()) {
+					if (code.equals(verificationCodeService.selectCodeByMobile(
+							mobile).getCode())) {
 						// 如果是司机,则需要这两个参数
 						if (request.getParameter("userType").equals("1")) {
 							if (ParamVerificationUtil.driverLogin(request)) {

@@ -156,4 +156,19 @@ public class ParamVerificationUtil {
 		return flag;
 	}
 
+	/**
+	 * 乘客退订接口参数验证
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public static boolean unsubscribeTravel(HttpServletRequest request) {
+		boolean flag = false;
+		String bookedId = request.getParameter("bookedId");
+		if (StringUtil.isOrNotEmpty(bookedId)) {
+			flag = true;
+		}
+		return flag;
+	}
+
 }

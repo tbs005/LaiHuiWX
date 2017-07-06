@@ -282,6 +282,15 @@
 	</set>
 	where stroke_id = #{strokeId,jdbcType=INTEGER}
 	</update>
+	
+	<!-- 更新座位数 -->
+	<update id="update4Seats" parameterType="java.lang.Integer" >
+	update wx_stroke
+	<set>
+	seats = seats + #{seats,jdbcType=INTEGER}
+	</set>
+	where stroke_id = #{strokeId,jdbcType=INTEGER}
+	</update>
 	<update id="updateByPrimaryKeySelective" parameterType="com.lhpc.model.Stroke">
 		update wx_stroke
 		<set>

@@ -82,6 +82,6 @@ public class Send {
 
 	public static void main(String[] args) {
 		send_template_message(ConfigUtil.WX_APP_ID, ConfigUtil.WX_SECRET_KEY,
-				"oTnCRwHoag7m3to9ezu6boyhw8m0");
+				"oTnCRwNr4VA0euswLE7uEGjpCqUw");
 	}
 }
