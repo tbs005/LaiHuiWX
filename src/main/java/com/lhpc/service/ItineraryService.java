@@ -36,5 +36,7 @@ public interface ItineraryService {
 	ResponseEntity<String> personalItineraryEdit(HttpServletRequest request);
 	
 	public int closeItinerary(String bookedId);
+	
+	Stroke selectByPrimaryKey(Integer strokeId);
 
 }

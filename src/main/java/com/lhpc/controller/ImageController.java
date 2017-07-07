@@ -28,7 +28,7 @@ public class ImageController {
 	
 	@ResponseBody
 	@RequestMapping(value="image/list")
-	public ResponseEntity<String> noFinished() {
+	public ResponseEntity<String> imageList() {
 		try {
 			List<Image> imageList = imageService.selectImageList();
 			if (imageList.size() == 0) 

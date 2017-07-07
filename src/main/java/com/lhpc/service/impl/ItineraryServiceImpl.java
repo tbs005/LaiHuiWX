@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -140,7 +141,7 @@ public class ItineraryServiceImpl implements ItineraryService {
 			List<Stroke> list = strokeMapper.selectSearchStrokeList(stroke);
 			if (list.size() > 0) {
 				List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
-				for (Stroke stroke1 : list) {
+				list.stream().forEach(stroke1 -> {
 					Map<String, Object> resultMap = new HashMap<String, Object>();
 					resultMap.put("userName", stroke1.getUserName());
 					resultMap.put("carType", stroke1.getCarType());
@@ -157,7 +158,7 @@ public class ItineraryServiceImpl implements ItineraryService {
 					resultMap.put("seats", stroke1.getSeats());
 					resultMap.put("strokeId", stroke1.getStrokeId());
 					resultList.add(resultMap);
-				}
+				});
 				return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "请求成功",
 						resultList);
 			} else {
@@ -182,7 +183,8 @@ public class ItineraryServiceImpl implements ItineraryService {
 			List<Stroke> list = strokeMapper
 					.selectPersonalItineraryList(stroke);
 			if (list.size() > 0) {
-				for (Stroke stroke1 : list) {
+				Stream<Stroke> strokeStream = list.stream();
+				strokeStream.forEach(stroke1 -> {
 					Map<String, Object> map = new HashMap<String, Object>();
 					map.put("strokeId", stroke1.getStrokeId());
 					map.put("route",
@@ -202,7 +204,7 @@ public class ItineraryServiceImpl implements ItineraryService {
 							+ "人");
 					map.put("price", stroke1.getPrice() + "元/人");
 					resultList.add(map);
-				}
+				});
 			}
 		} else {
 			// 乘客
@@ -210,7 +212,8 @@ public class ItineraryServiceImpl implements ItineraryService {
 					user.getUserId(), stroke.getPage() * stroke.getSize(),
 					stroke.getSize());
 			if (bookedList.size() > 0) {
-				for (Booked booked : bookedList) {
+				Stream<Booked> bookedStream = bookedList.stream();
+				bookedStream.forEach(booked -> {
 					Stroke stroke1 = strokeMapper.selectByPrimaryKey(booked
 							.getStrokeId());
 					Map<String, Object> map = new HashMap<String, Object>();
@@ -223,7 +226,7 @@ public class ItineraryServiceImpl implements ItineraryService {
 					map.put("seats", booked.getBookedSeats() + "人");
 					map.put("price", stroke1.getPrice() + "元/人");
 					resultList.add(map);
-				}
+				});
 			}
 		}
 		return resultList;
@@ -319,7 +322,8 @@ public class ItineraryServiceImpl implements ItineraryService {
 	 * 编辑车主行程
 	 */
 	@Override
-	public ResponseEntity<String> personalItineraryEdit(HttpServletRequest request) {
+	public ResponseEntity<String> personalItineraryEdit(
+			HttpServletRequest request) {
 		try {
 			int strokeId = Integer.parseInt(request.getParameter("strokeId"));
 			int seats = Integer.parseInt(request.getParameter("seats"));
@@ -329,7 +333,8 @@ public class ItineraryServiceImpl implements ItineraryService {
 			stroke.setSeats(seats);
 			stroke.setUpdateTime(new Date());
 			stroke.setRemark(request.getParameter("remark"));
-			stroke.setStartTime(DateUtil.stringToDate(request.getParameter("startTime")));
+			stroke.setStartTime(DateUtil.stringToDate(request
+					.getParameter("startTime")));
 			if (strokeBean.getSeats() >= seats) {
 				stroke.setUpdateTime(new Date());
 				if (strokeMapper.updateByPrimaryKey(stroke) > 0)
@@ -339,13 +344,15 @@ public class ItineraryServiceImpl implements ItineraryService {
 					return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR,
 							"服务器繁忙,请重试!");
 			} else {
-				return GsonUtil.getJson(ResponseCodeUtil.SEAT_LACK, "座位数不足,不能修改!");
+				return GsonUtil.getJson(ResponseCodeUtil.SEAT_LACK,
+						"座位数不足,不能修改!");
 			}
 		} catch (Exception e) {
-			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR, "服务器繁忙,请重试!");
+			return GsonUtil
+					.getJson(ResponseCodeUtil.SYSTEM_ERROR, "服务器繁忙,请重试!");
 		}
 	}
-	
+
 	/**
 	 * 车主结束乘客行程
 	 */
@@ -355,19 +362,28 @@ public class ItineraryServiceImpl implements ItineraryService {
 		booked.setBookedId(Integer.parseInt(bookedId));
 		booked.setIsEnable(2);
 		int value = bookedMapper.updateByPrimaryKeySelective(booked);
-		//如果乘客预约全部结束，车主行程单也关闭
-		Booked booked2 = bookedMapper.selectByPrimaryKey(Integer.parseInt(bookedId));
-		if(booked2!=null && booked2.getStrokeId()!=null){
-			List<Booked> bookeds = bookedMapper.selectStrokeBystrokeId(booked2.getStrokeId(),1);
-			if(bookeds==null || bookeds.size()<=0){
-				Stroke stroke = strokeMapper.selectByPrimaryKey(booked2.getStrokeId());
-				if(stroke!=null){
+		// 如果乘客预约全部结束，车主行程单也关闭
+		Booked booked2 = bookedMapper.selectByPrimaryKey(Integer
+				.parseInt(bookedId));
+		if (booked2 != null && booked2.getStrokeId() != null) {
+			List<Booked> bookeds = bookedMapper.selectStrokeBystrokeId(
+					booked2.getStrokeId(), 1);
+			if (bookeds == null || bookeds.size() <= 0) {
+				Stroke stroke = strokeMapper.selectByPrimaryKey(booked2
+						.getStrokeId());
+				if (stroke != null) {
 					stroke.setIsEnable(2);
-					int value2 = strokeMapper.updateByPrimaryKeySelective(stroke);
+					int value2 = strokeMapper
+							.updateByPrimaryKeySelective(stroke);
 					System.out.println(value2);
 				}
 			}
 		}
 		return value;
+	}
+
+	@Override
+	public Stroke selectByPrimaryKey(Integer strokeId) {
+		return strokeMapper.selectByPrimaryKey(strokeId);
 	}
 }

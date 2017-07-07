@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -51,7 +52,8 @@ public class StrokeController {
 					.selectCrossCityList(stroke);
 			if (crossCityList.size() > 0) {
 				List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-				for (Stroke s : crossCityList) {
+				Stream<Stroke> stream = crossCityList.stream();
+				stream.forEach(s -> {
 					Map<String, Object> map = new HashMap<String, Object>();
 					map.put("startCity", s.getStartCity());
 					map.put("startCityCode", s.getStartCityCode());
@@ -59,7 +61,7 @@ public class StrokeController {
 					map.put("endCityCode", s.getEndCityCode());
 					map.put("count", itineraryService.selectCrossCityCount(s));
 					list.add(map);
-				}
+				});
 				return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "请求成功", list);
 			} else {
 				return GsonUtil.getJson(ResponseCodeUtil.NO_DATA, "暂无数据");
@@ -71,6 +73,7 @@ public class StrokeController {
 		}
 	}
 
+	
 	/**
 	 * 乘客查询车主行程列表
 	 */

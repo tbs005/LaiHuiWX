@@ -24,7 +24,7 @@ public class GetAccessToken {
 	
 	@Scheduled(cron = "0 0 */2 * * ?")
 	public void getAccessToken() {
-		String url = "https://api.weixin.qq.com/cgi-bin/token";
+		String url = ConfigUtil.GET_ACCESS_TOKEN;
 		String param = "grant_type=client_credential&appid="+ConfigUtil.WX_APP_ID+"&secret="+ConfigUtil.WX_SECRET_KEY;
 		String accessToken = HttpRequest.sendGet(url, param);
 		AccessToken at = GsonUtil.parseJsonWithGson(accessToken, AccessToken.class);

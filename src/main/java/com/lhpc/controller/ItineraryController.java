@@ -114,6 +114,7 @@ public class ItineraryController {
 		map.put("remark", stroke.getRemark());
 		map.put("price", stroke.getPrice());
 		map.put("seats", stroke.getSeats());
+		map.put("strokeId", stroke.getStrokeId());
 		map.put("startTime", DateUtil.date2String(stroke.getStartTime()));
 		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "行程发布成功!", map);
 
