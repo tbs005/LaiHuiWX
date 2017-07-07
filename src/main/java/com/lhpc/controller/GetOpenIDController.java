@@ -33,7 +33,7 @@ public class GetOpenIDController {
 			if (code == null || code.equals(""))
 				return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS,
 						"参数不完整!");
-			String url = "https://api.weixin.qq.com/sns/oauth2/access_token";
+			String url = ConfigUtil.GET_OPENID;
 			String param = "appid=" + ConfigUtil.WX_APP_ID + "&secret="
 					+ ConfigUtil.WX_SECRET_KEY + "&code=" + code
 					+ "&grant_type=authorization_code";

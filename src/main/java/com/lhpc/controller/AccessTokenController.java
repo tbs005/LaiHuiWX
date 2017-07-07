@@ -1,5 +1,7 @@
 package com.lhpc.controller;
 
+import java.util.Date;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +11,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lhpc.model.AccessToken;
 import com.lhpc.service.IAccessTokenService;
+import com.lhpc.util.ConfigUtil;
 import com.lhpc.util.GsonUtil;
+import com.lhpc.util.HttpRequest;
 import com.lhpc.util.ResponseCodeUtil;
 
 /**
@@ -40,5 +44,30 @@ public class AccessTokenController {
 		}
 		
 	}
-
+	
+	/**
+	 * 刷新accessToken
+	 */
+	@ResponseBody
+	@RequestMapping(value="flush/token")
+	public ResponseEntity<String> flushToken() {
+		try {
+			String url = ConfigUtil.GET_ACCESS_TOKEN;
+			String param = "grant_type=client_credential&appid="+ConfigUtil.WX_APP_ID+"&secret="+ConfigUtil.WX_SECRET_KEY;
+			String accessToken = HttpRequest.sendGet(url, param);
+			AccessToken at = GsonUtil.parseJsonWithGson(accessToken, AccessToken.class);
+			AccessToken bean = new AccessToken();
+			bean.setAccessToken(at.getAccess_token());
+			bean.setCreateTime(new Date());
+			int count = accessTokenService.insert(bean);
+			if (count > 0) 
+				return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "刷新成功!");
+			else 
+				return GsonUtil.getJson(ResponseCodeUtil.FLUSH_TOKEN_ERROR, "刷新失败!");
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR, "服务器繁忙,请重试!");
+		}
+		
+	}
 }

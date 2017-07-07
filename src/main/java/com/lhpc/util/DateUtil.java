@@ -27,6 +27,11 @@ public class DateUtil {
 		SimpleDateFormat format = new SimpleDateFormat("MM月dd日 HH:mm");
 		return format.format(date);
 	}
+	
+	public static String dateWxString(Date date) {
+		SimpleDateFormat format = new SimpleDateFormat("MM-dd HH:mm");
+		return format.format(date);
+	}
 
 	/**
 	 * 获取时间的前一天时间

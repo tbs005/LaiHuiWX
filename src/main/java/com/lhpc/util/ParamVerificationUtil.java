@@ -222,5 +222,19 @@ public class ParamVerificationUtil {
 
 		return flag;
 	}
+	
+	/**
+	 * 发布成功推送参数验证
+	 * @param request
+	 * @return
+	 */
+	public static boolean pushPublish(String openID,String strokeId) {
+		boolean flag = false;
+		if (StringUtil.isOrNotEmpty(openID)
+				&& StringUtil.isOrNotEmpty(strokeId)) {
+			flag = true;
+		}
+		return flag;
+	}
 
 }
