@@ -20,8 +20,10 @@ import com.lhpc.model.Booked;
 import com.lhpc.model.Stroke;
 import com.lhpc.model.User;
 import com.lhpc.service.IPassengerService;
+import com.lhpc.util.ConfigUtil;
 import com.lhpc.util.GsonUtil;
 import com.lhpc.util.ResponseCodeUtil;
+import com.lhpc.util.SendSMSUtil;
 
 @Service
 @Transactional
@@ -51,8 +53,8 @@ public class PassengerServiceImpl implements IPassengerService {
 		User user = (User) session.getAttribute("CURRENT_USER");
 		booked.setUserId(user.getUserId());
 		booked.setBookedTime(new Date());
-		List<Booked> bookedList = bookedMapper.selectBystrokeId(
-				user.getUserId());
+		List<Booked> bookedList = bookedMapper.selectBystrokeId(user
+				.getUserId());
 		if (bookedList.size() > 0) {
 			return GsonUtil.getJson(ResponseCodeUtil.BOOKING_REPEAT,
 					"你已经预定过车单了,请先取消已预订车单在预约其他车单!");
@@ -103,6 +105,16 @@ public class PassengerServiceImpl implements IPassengerService {
 			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR,
 					"服务器繁忙,请稍后重试!");
 		}
+		User driver = new User();
+		try {
+			driver = userMapper.selectByPrimaryKey(strokeMapper
+					.selectByPrimaryKey(booked.getStrokeId()).getUserId());
+			SendSMSUtil.sendSMS(driver.getUserMobile(),
+					ConfigUtil.UNSUBSCRIBE_TRAVEL, "#name#="+driver.getUserName());
+		} catch (Exception e) {
+			logger.error("查询车主信息失败,推送失败!--------------------------");
+		}
+
 		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "退订成功!");
 	}
 

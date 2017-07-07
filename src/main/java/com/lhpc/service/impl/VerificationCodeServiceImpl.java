@@ -13,6 +13,7 @@ import com.lhpc.controller.SmsVerificationController;
 import com.lhpc.dao.VerificationCodeMapper;
 import com.lhpc.model.VerificationCode;
 import com.lhpc.service.IVerificationCodeService;
+import com.lhpc.util.ConfigUtil;
 import com.lhpc.util.GsonUtil;
 import com.lhpc.util.ResponseCodeUtil;
 import com.lhpc.util.SendSMSUtil;
@@ -52,7 +53,7 @@ public class VerificationCodeServiceImpl implements IVerificationCodeService {
 					"发送验证码过于频繁，请稍后重试！");
 		}
 
-		boolean success = SendSMSUtil.sendSMS(mobile, 29230, code);
+		boolean success = SendSMSUtil.sendSMS(mobile, ConfigUtil.LOGIN_TPL_ID, code);
 		if (!success) {
 			return GsonUtil.getJson(ResponseCodeUtil.SMS_SEND_FAILED,
 					"验证码发送失败，请校验您输入的手机号是否正确！");

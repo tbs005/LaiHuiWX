@@ -1,5 +1,8 @@
 package com.lhpc.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import com.lhpc.model.User;
 
 public interface UserMapper {
@@ -9,4 +12,6 @@ public interface UserMapper {
     User selectByPrimaryKey(Integer userId);
     
     User selectByOpenID(String openID);
+
+	List<String> getMobileByList(Map<String, Object> userIdsParam);
 }

@@ -22,10 +22,12 @@ import com.lhpc.model.Booked;
 import com.lhpc.model.Stroke;
 import com.lhpc.model.User;
 import com.lhpc.service.ItineraryService;
+import com.lhpc.util.ConfigUtil;
 import com.lhpc.util.DateUtil;
 import com.lhpc.util.GsonUtil;
 import com.lhpc.util.ParamVerificationUtil;
 import com.lhpc.util.ResponseCodeUtil;
+import com.lhpc.util.SendSMSUtil;
 
 @Service
 public class ItineraryServiceImpl implements ItineraryService {
@@ -332,10 +334,18 @@ public class ItineraryServiceImpl implements ItineraryService {
 			stroke.setStartTime(DateUtil.stringToDate(request.getParameter("startTime")));
 			if (strokeBean.getSeats() >= seats) {
 				stroke.setUpdateTime(new Date());
-				if (strokeMapper.updateByPrimaryKey(stroke) > 0)
-					// TODO 推送给乘客
+				if (strokeMapper.updateByPrimaryKey(stroke) > 0){
+					List<Booked> bookedList = bookedMapper.selectStrokeBystrokeId(strokeId, 1);
+					if (bookedList.size()>0) {
+						Map<String, Object> userIdsParam = new HashMap<String, Object>();
+						userIdsParam.put("bookedList", bookedList);
+						List<String> mobileList = userMapper.getMobileByList(userIdsParam);
+						for (String passangerMobile : mobileList) {
+							 SendSMSUtil.sendSMS(passangerMobile, ConfigUtil.LOGIN_TPL_ID, "aa");
+						}
+					}
 					return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "修改成功!");
-				else
+				}else
 					return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR,
 							"服务器繁忙,请重试!");
 			} else {

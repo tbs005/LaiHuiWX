@@ -22,7 +22,16 @@
     from wx_user
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
-  
+  <select id="getMobileByList" resultType="java.lang.String">
+    SELECT
+    user_mobile 
+    from wx_user 
+    WHERE user_id in 
+    <foreach collection="bookedList" item="id" open="(" close=")"
+    separator=",">
+    #{id.userId}
+    </foreach>
+    </select>
   <select id="selectByOpenID" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
