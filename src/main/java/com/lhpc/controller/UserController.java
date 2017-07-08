@@ -1,6 +1,8 @@
 package com.lhpc.controller;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -47,6 +49,7 @@ public class UserController {
 	@RequestMapping(value = "/user/login", method = RequestMethod.POST)
 	public ResponseEntity<String> sendPhoneCode(HttpServletRequest request,
 			User user) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			// 验证参数是否完整
 			if (ParamVerificationUtil.userLogin(request)) {
@@ -75,10 +78,11 @@ public class UserController {
 						user.setUserName(request.getParameter("userName"));
 						user.setCreateTime(new Date());
 						user.setLoginTime(new Date());
+						map.put("userType", request.getParameter("userType"));
 						// 把用户信息插入数据库
 						if (userService.insert(user) == 1)
 							return GsonUtil.getJson(ResponseCodeUtil.SUCCESS,
-									"注册成功");
+									"注册成功",map);
 						else
 							return GsonUtil.getJson(
 									ResponseCodeUtil.LOGIN_ERROR, "注册失败");

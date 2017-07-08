@@ -222,16 +222,36 @@ public class ParamVerificationUtil {
 
 		return flag;
 	}
-	
+
 	/**
 	 * 发布成功推送参数验证
+	 * 
 	 * @param request
 	 * @return
 	 */
-	public static boolean pushPublish(String openID,String strokeId) {
+	public static boolean pushPublish(String openID, String strokeId) {
 		boolean flag = false;
 		if (StringUtil.isOrNotEmpty(openID)
 				&& StringUtil.isOrNotEmpty(strokeId)) {
+			flag = true;
+		}
+		return flag;
+	}
+
+	/**
+	 * 微信支付参数验证
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public static boolean pay(HttpServletRequest request) {
+		boolean flag = false;
+		String openID = request.getParameter("openID");
+		String orderNum = request.getParameter("orderNum");
+		String price = request.getParameter("price");
+		if (StringUtil.isOrNotEmpty(openID)
+				&& StringUtil.isOrNotEmpty(orderNum)
+				&& StringUtil.isOrNotEmpty(price)&&Double.parseDouble(price)>0) {
 			flag = true;
 		}
 		return flag;

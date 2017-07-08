@@ -214,4 +214,16 @@ public class PersonalCenterController {
 		}
 		return personalService.denialBook(bookedId,strokeId);
 	}
+	
+	/**
+	 * 提现
+	 */
+	@ResponseBody
+	@RequestMapping(value="/extract/cash",method=RequestMethod.POST)
+	public ResponseEntity<String> extractCash(String openID,String money){
+		if (!StringUtil.isOrNotEmpty(openID) || !StringUtil.isOrNotEmpty(money)) {
+			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS,"参数不完整!");
+		}
+		return personalService.extractCash(money);
+	}
 }

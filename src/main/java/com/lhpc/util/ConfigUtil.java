@@ -11,7 +11,14 @@ public class ConfigUtil {
 	 */
 	public static final String WX_APP_ID = "wxd6d79c4ca0fef838";// 公众号id
 	public static final String WX_SECRET_KEY = "bace843875970ae9a941dcb6dbe16e6d";// 公众号秘钥
-
+	public static final  String WX_WEB_MCH_SECRET_KEY = "bace843875970ae9a941dcb6dbe16edd";
+	public static final String WX_WEB_MCH_ID = "1439584802";//商户号
+	public static final  String WX_LAIHUI_APP_SECRET_KEY = "2bfca107a5dac789f2fdhg1ca5ee7695";
+	//public static final  String WX_PAY_WEB_NOTIFY_URL = "https://api.laihuipinche.com/wx/wx_pay/notify";//正式
+	public static final  String WX_PAY_WEB_NOTIFY_URL = "http://apitest.callback2.laihuipinche.com/wx_pays/notify/";//测试
+	
+	
+	
 	public static final String API_ADD_TEMPLATE_URL = "https://api.weixin.qq.com/cgi-bin/template/api_add_template";//获取微信消息模板URL
 	public static final String GET_ALL_PRIVATE_TEMPLATE_URL = "https://api.weixin.qq.com/cgi-bin/template/get_all_private_template";//获取微信消息模板列表URL
 	public static final String DEL_PRIVATE_TEMPLATE_URL = "https://api.weixin.qq.com/cgi-bin/template/del_private_template";//删除微信消息模板URL

@@ -241,6 +241,12 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>5.2.4.Final</version>
 		</dependency>
+		 <!--xml解析-->
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>1.6.1</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>LaiHuiWXApi</finalName>  
