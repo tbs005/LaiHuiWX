@@ -14,4 +14,6 @@ public interface UserMapper {
     User selectByOpenID(String openID);
 
 	List<String> getMobileByList(Map<String, Object> userIdsParam);
+	
+	int updateWalletByUserId(User user);
 }
