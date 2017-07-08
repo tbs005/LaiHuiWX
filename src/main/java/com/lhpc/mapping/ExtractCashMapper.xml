@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lhpc.dao.ExtractCashMapper">
+	<resultMap id="BaseResultMap" type="com.lhpc.model.ExtractCash">
+		<id column="extract_id" property="extractId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="extract_money" property="extractMoney"
+			jdbcType="DOUBLE" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="extract_status" property="extractStatus"
+			jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		extract_id, user_id, extract_money, create_time, extract_status
+	</sql>
+	<insert id="insert" parameterType="com.lhpc.model.ExtractCash">
+		insert into wx_extract_cash (user_id, extract_money, create_time)
+		values (#{userId,jdbcType=INTEGER}, #{extractMoney,jdbcType=DOUBLE},
+		#{createTime,jdbcType=TIMESTAMP})
+	</insert>
+</mapper>

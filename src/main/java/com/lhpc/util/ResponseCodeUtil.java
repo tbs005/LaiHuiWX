@@ -22,6 +22,7 @@ public class ResponseCodeUtil {
 	public static final int SEAT_LACK = 4101; // 车主座位不足
 	public static final int PUSH_ERROR = 4102; // 推送失败
 	public static final int FLUSH_TOKEN_ERROR = 4103; // 刷新失败
+	public static final int WALLET_EMPTY = 4104; // 余额不足
 	public static final int ERROR = 5000;// 操作失败
 	public static final int SYSTEM_ERROR = 5005;// 系统错误
 	
