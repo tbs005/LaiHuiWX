@@ -12,10 +12,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lhpc.dao.BookedMapper;
+import com.lhpc.dao.ExtractCashMapper;
 import com.lhpc.dao.OrderMapper;
 import com.lhpc.dao.StrokeMapper;
 import com.lhpc.dao.UserMapper;
 import com.lhpc.model.Booked;
+import com.lhpc.model.ExtractCash;
 import com.lhpc.model.Order;
 import com.lhpc.model.Stroke;
 import com.lhpc.model.User;
@@ -38,6 +40,8 @@ public class PersonalServiceImpl implements IPersonalService {
 	private UserMapper userMapper;
 	@Autowired
 	private OrderMapper orderMapper;
+	@Autowired
+	private ExtractCashMapper extractCashMapper;
 	@Autowired
 	private HttpSession session;
 
@@ -100,13 +104,22 @@ public class PersonalServiceImpl implements IPersonalService {
 	}
 
 	@Override
-	public ResponseEntity<String> extractCash(String money) {
-		User user = (User) session.getAttribute("CURRENT_USER");
-		if (user.getWallet() < Integer.parseInt(money)) {
-			return GsonUtil.getJson(ResponseCodeUtil.WALLET_EMPTY, "您的余额不足,不能提现");
+	public ResponseEntity<String> extractCash(String money,String openID) {
+		User user = userMapper.selectByOpenID(openID);
+		if (user.getWallet() < Double.parseDouble(money)) {
+			return GsonUtil.getJson(ResponseCodeUtil.WALLET_EMPTY, "您的余额不足,不能提现!");
 		}
-		
-		return null;
+		User u = new User();
+		u.setUserId(user.getUserId());
+		u.setWallet(user.getWallet() - Double.parseDouble(money));
+		userMapper.updateWalletByUserId(u);
+		ExtractCash extractCash = new ExtractCash();
+		extractCash.setUserId(user.getUserId());
+		extractCash.setExtractMoney(Double.parseDouble(money));
+		extractCash.setCreateTime(new Date());
+		extractCashMapper.insert(extractCash);
+		// TODO 推送
+		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "提现成功!");
 	}
 
 }

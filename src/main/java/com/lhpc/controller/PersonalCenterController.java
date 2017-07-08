@@ -224,6 +224,6 @@ public class PersonalCenterController {
 		if (!StringUtil.isOrNotEmpty(openID) || !StringUtil.isOrNotEmpty(money)) {
 			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS,"参数不完整!");
 		}
-		return personalService.extractCash(money);
+		return personalService.extractCash(money,openID);
 	}
 }

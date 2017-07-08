@@ -8,6 +8,6 @@ public interface IPersonalService {
 
 	ResponseEntity<String> denialBook(String bookedId, String strokeId);
 	
-	ResponseEntity<String> extractCash(String money);
+	ResponseEntity<String> extractCash(String money,String openID);
 
 }
