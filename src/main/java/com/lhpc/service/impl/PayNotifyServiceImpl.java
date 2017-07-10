@@ -30,6 +30,7 @@ import com.lhpc.service.IPayNotifyService;
 import com.lhpc.util.ConfigUtil;
 import com.lhpc.util.GsonUtil;
 import com.lhpc.util.ResponseCodeUtil;
+import com.lhpc.util.SendSMSUtil;
 import com.lhpc.util.Utils;
 import com.lhpc.util.XmlParse;
 
@@ -127,6 +128,7 @@ public class PayNotifyServiceImpl implements IPayNotifyService {
 
 		if (is_success) {
 			if (result_code.equals("SUCCESS")) {
+			
 				// System.out.println("查询是否已经收到异步通知！");
 				List<PayLog> alipayNotifyList = payLogMapper
 						.selectByOutTradeNo(out_trade_no);
