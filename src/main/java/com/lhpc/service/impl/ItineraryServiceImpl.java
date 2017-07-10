@@ -396,4 +396,10 @@ public class ItineraryServiceImpl implements ItineraryService {
 	public Stroke selectByPrimaryKey(Integer strokeId) {
 		return strokeMapper.selectByPrimaryKey(strokeId);
 	}
+
+	@Override
+	public int selectCount(Stroke stroke) {
+		return strokeMapper.selectCount(stroke);
+	}
+
 }

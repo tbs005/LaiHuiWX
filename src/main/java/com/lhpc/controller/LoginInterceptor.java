@@ -41,23 +41,30 @@ public class LoginInterceptor implements HandlerInterceptor {
 			HttpServletResponse response, Object object) throws Exception {
 		User user = (User) session.getAttribute("CURRENT_USER");
 		String openID = request.getParameter("openID");
-		if (user == null) {
-			user = userService.selectByOpenID(openID);
+		if (openID != null && !openID.equals("") && openID.length() == 28) {
 			if (user == null) {
-				response.setContentType("application/json");
-				response.sendRedirect("/user/noLogin");
-				return false;
+				user = userService.selectByOpenID(openID);
+				if (user == null) {
+					response.setContentType("application/json");
+					response.sendRedirect("/user/noLogin");
+					return false;
+				} else {
+					session.setAttribute("CURRENT_USER", user);
+					return true;
+				}
 			} else {
-				session.setAttribute("CURRENT_USER", user);
+				if (!openID.equals(user.getOpenId())) {
+					response.setContentType("application/json");
+					response.sendRedirect("/user/illegal");
+					return false;
+				}
 				return true;
 			}
 		} else {
-			if (!openID.equals(user.getOpenId())) {
-				response.setContentType("application/json");
-				response.sendRedirect("/user/illegal");
-				return false;
-			}
-			return true;
+			response.setContentType("application/json");
+			response.sendRedirect("/openID/error");
+			return false;
 		}
+
 	}
 }

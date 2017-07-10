@@ -38,5 +38,7 @@ public interface ItineraryService {
 	public int closeItinerary(String bookedId);
 	
 	Stroke selectByPrimaryKey(Integer strokeId);
+	
+	int selectCount(Stroke stroke);
 
 }

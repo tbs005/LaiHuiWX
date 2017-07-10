@@ -233,7 +233,10 @@ public class SendSMSUtil {
 	public static void main(String[] args) {
 		// String rand=server("13838741275");
 
+
 		String code = "#name#=庞振朋&#price#=30.4";
 		sendSMS("15738961936", 39245, code);
+
+		
 	}
 }
