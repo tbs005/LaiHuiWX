@@ -276,7 +276,7 @@ public class SendSMSUtil {
 	public static void main(String[] args) {
 		// String rand=server("13838741275");
 		String rand = randomNum();
-		String code = "#code#=" + rand;
-		sendSMS("15738961936", 29230, code);
+		String code = "";
+		sendSMS("18837272773", 39385, code);
 	}
 }
