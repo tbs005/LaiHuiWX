@@ -22,6 +22,7 @@ public class Booked {
 	private String downAddress;
 
 	private String message;
+	private String outTradeNo;
 
 	private Date unbookedTime;
 
@@ -116,6 +117,14 @@ public class Booked {
 
 	public void setMessage(String message) {
 		this.message = message == null ? null : message.trim();
+	}
+
+	public String getOutTradeNo() {
+		return outTradeNo;
+	}
+
+	public void setOutTradeNo(String outTradeNo) {
+		this.outTradeNo = outTradeNo;
 	}
 
 	public Date getUnbookedTime() {

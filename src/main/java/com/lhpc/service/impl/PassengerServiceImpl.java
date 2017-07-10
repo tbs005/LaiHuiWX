@@ -110,7 +110,7 @@ public class PassengerServiceImpl implements IPassengerService {
 			driver = userMapper.selectByPrimaryKey(strokeMapper
 					.selectByPrimaryKey(booked.getStrokeId()).getUserId());
 			SendSMSUtil.sendSMS(driver.getUserMobile(),
-					ConfigUtil.UNSUBSCRIBE_TRAVEL, "#name#="+driver.getUserName());
+					ConfigUtil.UNSUBSCRIBE_TRAVEL, "#name#="+user.getUserName());
 		} catch (Exception e) {
 			logger.error("查询车主信息失败,推送失败!--------------------------");
 		}

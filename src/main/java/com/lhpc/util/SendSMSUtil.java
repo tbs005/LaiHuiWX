@@ -10,7 +10,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
@@ -202,48 +201,6 @@ public class SendSMSUtil {
 		}
 		return result;
 	}
-	/**
-	 * 多参数
-	 * @param mobile
-	 * @param tpl_id
-	 * @param tpl_value
-	 * @return
-	 */
-	public static String sendSMStoServers(String mobile, int tpl_id,
-			List<?> paramList) {
-		if (tpl_id == 0) {
-			tpl_id = 29230;
-		}
-		String result = null;
-		String url = "http://v.juhe.cn/sms/send";// 请求接口地址
-		Map<String, Object> params = new HashMap<String, Object>();// 请求参数
-		params.put("mobile", mobile);// 接收短信的手机号码
-		params.put("tpl_id", tpl_id);// 短信模板ID，请参考个人中心短信模板设置 8193
-		params.put("tpl_value", paramList.get(0));// 变量名和变量值对。如果你的变量名或者变量值中带有#&amp;=中的任意一个特殊符号，请先分别进行urlencode编码后再传递，&lt;a
-											// href=&quot;http://www.juhe.cn/news/index/id/50&quot;
-											// target=&quot;_blank&quot;&gt;详细说明&gt;&lt;/a&gt;
-		params.put("key", ConfigUtil.APPKEY);// 应用ConfigUtil.APPKEY(应用详细页查询)
-		params.put("dtype", "json");// 返回数据的格式,xml或json，默认json
-
-		int maxTry = 3;
-		int num = 0;
-		while (num < maxTry) {
-			try {
-				boolean flag = false;
-				result = net(url, params, "GET");
-				JSONObject object = JSONObject.parseObject(result);
-				if (object != null) {
-					flag = true;
-				}
-				if (flag == true) {
-					break;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return result;
-	}
 
 	@SuppressWarnings("unused")
 	public static boolean sendSMS(String mobile, int tpl_id, String tpl_value) {
@@ -254,7 +211,7 @@ public class SendSMSUtil {
 		String sms_sid = "";
 		if (result != null) {
 			JSONObject object = JSONObject.parseObject(result);
-			//System.out.println("object信息：" + object);
+			// System.out.println("object信息：" + object);
 			if (object.getIntValue("error_code") == 0) {
 				JSONObject jsonObject = object.getJSONObject("result");
 				sms_sid = jsonObject.getString("sid");
@@ -264,8 +221,8 @@ public class SendSMSUtil {
 			} else {
 				sms_reason = object.getString("reason");
 				sms_error_code = object.getIntValue("error_code");
-//				System.out.println(object.get("error_code") + ":"
-//						+ object.get("reason"));
+				// System.out.println(object.get("error_code") + ":"
+				// + object.get("reason"));
 				isSuccess = false;
 			}
 		}
@@ -275,8 +232,8 @@ public class SendSMSUtil {
 
 	public static void main(String[] args) {
 		// String rand=server("13838741275");
-		String rand = randomNum();
-		String code = "#code#=" + rand;
-		sendSMS("15738961936", 29230, code);
+
+		String code = "#name#=庞振朋&#price#=30.4";
+		sendSMS("15738961936", 39245, code);
 	}
 }

@@ -46,7 +46,7 @@ public class PersonalCenterController {
 	private HttpSession session;
 
 	/**
-	 * 个人中心我的行程
+	 * 个人中心我的行程列表
 	 */
 	@ResponseBody
 	@RequestMapping(value = "personal/itinerary")

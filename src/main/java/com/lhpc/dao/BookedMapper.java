@@ -26,4 +26,6 @@ public interface BookedMapper {
 	List<Booked> selectStrokeBystrokeId(@Param("strokeId")Integer strokeId,@Param("isEnable") Integer isEnable);
 	
 	List<Booked> selectBookedByStrokeId(@Param("strokeId")Integer strokeId);
+
+	Booked selectByOutTradeNo(String out_trade_no);
 }

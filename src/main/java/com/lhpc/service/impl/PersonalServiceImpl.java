@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,6 @@ import com.lhpc.dao.StrokeMapper;
 import com.lhpc.dao.UserMapper;
 import com.lhpc.model.Booked;
 import com.lhpc.model.ExtractCash;
-import com.lhpc.model.Order;
 import com.lhpc.model.Stroke;
 import com.lhpc.model.User;
 import com.lhpc.service.IPersonalService;
@@ -31,7 +31,7 @@ import com.lhpc.util.SendSMSUtil;
 @Service
 @Transactional
 public class PersonalServiceImpl implements IPersonalService {
-
+	private Logger logger = Logger.getLogger(PersonalServiceImpl.class);
 	@Autowired
 	private BookedMapper bookedMapper;
 	@Autowired
@@ -58,12 +58,13 @@ public class PersonalServiceImpl implements IPersonalService {
 		}
 		int seats = -booked.getBookedSeats();
 		strokeMapper.update4Seats(Integer.parseInt(strokeId), seats);
-		Order order = new Order();
-		String orderNum = OrderNumUtil.getOrderNum(user);
-		order.setBookedId(Integer.parseInt(strokeId));
-		order.setOrderNum(orderNum);
-		order.setCreateTime(new Date());
-		orderMapper.insert(order);
+		// 商户订单号
+		String outTradeNo = OrderNumUtil.getOrderNum(user);
+		booked.setOutTradeNo(outTradeNo);
+		int count = bookedMapper.updateByPrimaryKeySelective(booked);
+		if (count == 0) {
+			logger.error("车主同意乘客预定时,商户订单号插入失败");
+		}
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("userName", user.getUserName());
 		map.put("carType", user.getCarType());
@@ -72,7 +73,7 @@ public class PersonalServiceImpl implements IPersonalService {
 		map.put("downAddress", booked.getDownAddress());
 		map.put("seats", booked.getBookedSeats());
 		map.put("price", stroke.getPrice());
-		map.put("orderNum", orderNum);
+		map.put("orderNum", outTradeNo);
 		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "你已同意该预定!", map);
 	}
 
@@ -93,7 +94,7 @@ public class PersonalServiceImpl implements IPersonalService {
 		}
 		if (result > 0) {
 			User passenger = userMapper.selectByPrimaryKey(booked.getUserId());
-
+			//发送推送短信
 			SendSMSUtil.sendSMS(passenger.getUserMobile(),
 					ConfigUtil.DENIAL_BOOK, "#name#=" + user.getUserName());
 			return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "拒绝成功!");
@@ -104,10 +105,11 @@ public class PersonalServiceImpl implements IPersonalService {
 	}
 
 	@Override
-	public ResponseEntity<String> extractCash(String money,String openID) {
+	public ResponseEntity<String> extractCash(String money, String openID) {
 		User user = userMapper.selectByOpenID(openID);
 		if (user.getWallet() < Double.parseDouble(money)) {
-			return GsonUtil.getJson(ResponseCodeUtil.WALLET_EMPTY, "您的余额不足,不能提现!");
+			return GsonUtil.getJson(ResponseCodeUtil.WALLET_EMPTY,
+					"您的余额不足,不能提现!");
 		}
 		User u = new User();
 		u.setUserId(user.getUserId());

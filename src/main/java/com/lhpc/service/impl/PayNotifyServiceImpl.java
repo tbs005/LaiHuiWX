@@ -24,7 +24,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.lhpc.dao.BookedMapper;
 import com.lhpc.dao.PayLogMapper;
+import com.lhpc.dao.StrokeMapper;
+import com.lhpc.dao.UserMapper;
+import com.lhpc.model.Booked;
 import com.lhpc.model.PayLog;
 import com.lhpc.service.IPayNotifyService;
 import com.lhpc.util.ConfigUtil;
@@ -41,6 +45,12 @@ public class PayNotifyServiceImpl implements IPayNotifyService {
 	private Logger logger = Logger.getLogger(IPayNotifyService.class);
 	@Autowired
 	private PayLogMapper payLogMapper;
+	@Autowired
+	private BookedMapper bookedMapper;
+	@Autowired
+	private UserMapper userMapper;
+	@Autowired
+	private StrokeMapper strokeMapper;
 
 	@Override
 	public ResponseEntity<String> notify(HttpServletRequest request,
@@ -128,7 +138,19 @@ public class PayNotifyServiceImpl implements IPayNotifyService {
 
 		if (is_success) {
 			if (result_code.equals("SUCCESS")) {
-			
+				
+				Booked booked = bookedMapper.selectByOutTradeNo(out_trade_no);
+				int driverId = strokeMapper.selectByPrimaryKey(booked.getStrokeId()).getUserId();
+				int passengerId = booked.getUserId();
+				if (driverId>0&&passengerId>0){ 
+					String driverMobile = userMapper.selectByPrimaryKey(driverId).getUserMobile();
+					String passengerName = userMapper.selectByPrimaryKey(passengerId).getUserName();
+					double price = strokeMapper.selectByPrimaryKey(booked.getStrokeId()).getPrice();
+					SendSMSUtil.sendSMS(driverMobile, ConfigUtil.PAY_SUCCESS, "#name#="+passengerName+"&#price#="+price);
+				}
+				else 
+					logger.error("订单号为"+out_trade_no+"的用户推送信息推送失败,没有查询到相关信息");
+				
 				// System.out.println("查询是否已经收到异步通知！");
 				List<PayLog> alipayNotifyList = payLogMapper
 						.selectByOutTradeNo(out_trade_no);
@@ -180,6 +202,8 @@ public class PayNotifyServiceImpl implements IPayNotifyService {
 					out.close();
 				}
 			}
+		}else {
+			logger.error("回调中微信支付log创建失败!");
 		}
 
 		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "");

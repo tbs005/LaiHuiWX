@@ -10,6 +10,7 @@
 		<result column="up_address" property="upAddress" jdbcType="VARCHAR" />
 		<result column="down_address" property="downAddress" jdbcType="VARCHAR" />
 		<result column="message" property="message" jdbcType="VARCHAR" />
+		<result column="out_trade_no" property="outTradeNo" jdbcType="VARCHAR" />
 		<result column="unbooked_time" property="unbookedTime"
 			jdbcType="TIMESTAMP" />
 		<result column="unbooked_reason" property="unbookedReason"
@@ -23,10 +24,17 @@
 		booked_id, stroke_id, user_id, booked_time, booked_seats,
 		up_address,
 		down_address,
-		message, unbooked_time, unbooked_reason,
+		message,out_trade_no, unbooked_time, unbooked_reason,
 		unbooked_flag, unbooked_id, is_enable
 	</sql>
 
+	<select id="selectByOutTradeNo" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from wx_booked
+		where out_trade_no = #{outTradeNo,jdbcType=VARCHAR} and is_enable = 1
+		
+	</select>
 	<select id="selectBystrokeId" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
@@ -109,6 +117,9 @@
 			<if test="message != null">
 				message,
 			</if>
+			<if test="outTradeNo != null">
+				out_trade_no,
+			</if>
 			<if test="unbookedTime != null">
 				unbooked_time,
 			</if>
@@ -150,6 +161,9 @@
 			<if test="message != null">
 				#{message,jdbcType=VARCHAR},
 			</if>
+			<if test="outTradeNo != null">
+				#{outTradeNo,jdbcType=VARCHAR},
+			</if>
 			<if test="unbookedTime != null">
 				#{unbookedTime,jdbcType=TIMESTAMP},
 			</if>
@@ -190,6 +204,9 @@
 			</if>
 			<if test="message != null">
 				message = #{message,jdbcType=VARCHAR},
+			</if>
+			<if test="outTradeNo != null">
+				out_trade_no = #{outTradeNo,jdbcType=VARCHAR}
 			</if>
 			<if test="unbookedTime != null">
 				unbooked_time = #{unbookedTime,jdbcType=TIMESTAMP},
