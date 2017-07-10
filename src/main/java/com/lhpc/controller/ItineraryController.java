@@ -106,6 +106,23 @@ public class ItineraryController {
 			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR, "系统错误!");
 		}
 		stroke = itineraryService.selectStroke(user.getUserId(), 1).get(0);
+		map.put("strokeId", stroke.getStrokeId());
+		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "行程发布成功!", map);
+
+	}
+	
+	/**
+	 * 发布成功后返回的数据
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/itinerary/info", method = RequestMethod.POST)
+	public ResponseEntity<String> itineraryInfo(String strokeId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		User user = (User)session.getAttribute("CURRENT_USER");
+		if (strokeId!=null &&!strokeId.equals("")) {
+			
+		}
+		Stroke stroke = itineraryService.selectStroke(user.getUserId(), 1).get(0);
 		map.put("userName", user.getUserName());
 		map.put("carType", user.getCarType());
 		map.put("startAddress", stroke.getStartAddress());
@@ -117,7 +134,6 @@ public class ItineraryController {
 		map.put("strokeId", stroke.getStrokeId());
 		map.put("startTime", DateUtil.date2String(stroke.getStartTime()));
 		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "行程发布成功!", map);
-
 	}
 
 	/**
