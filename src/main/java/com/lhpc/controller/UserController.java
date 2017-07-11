@@ -51,6 +51,7 @@ public class UserController {
 	public ResponseEntity<String> sendPhoneCode(HttpServletRequest request,
 			User user) {
 		Map<String, Object> map = new HashMap<String, Object>();
+		String openid = request.getParameter("openID");
 		try {
 			// 验证参数是否完整
 			if (ParamVerificationUtil.userLogin(request)) {
@@ -62,9 +63,20 @@ public class UserController {
 					// 验证码是否正确
 					if (code.equals(verificationCodeService.selectCodeByMobile(
 							mobile).getCode())) {
+						map.put("userType", request.getParameter("userType"));
 						// 如果是司机,则需要这两个参数
 						if (request.getParameter("userType").equals("1")) {
 							if (ParamVerificationUtil.driverLogin(request)) {
+								User userBean = userService.selectByOpenID(openid);
+								if (userBean!=null) {
+									userBean.setCarType(request.getParameter("carType"));
+									userBean.setCarLicense(request
+											.getParameter("carLicense"));
+									userService.updateByOpenID(userBean);
+									return GsonUtil.getJson(
+											ResponseCodeUtil.SUCCESS,
+											"注册成功",map);
+								}
 								user.setCarType(request.getParameter("carType"));
 								user.setCarLicense(request
 										.getParameter("carLicense"));
@@ -75,11 +87,14 @@ public class UserController {
 							}
 						}
 						user.setUserMobile(mobile);
-						user.setOpenId(request.getParameter("openID"));
+						if (openid==null||openid.equals("")||openid.length() != 28) {
+							return GsonUtil.getJson(
+									ResponseCodeUtil.OPENID_ERROR, "openID格式错误!");
+						}
+						user.setOpenId(openid);
 						user.setUserName(request.getParameter("userName"));
 						user.setCreateTime(new Date());
 						user.setLoginTime(new Date());
-						map.put("userType", request.getParameter("userType"));
 						// 把用户信息插入数据库
 						if (userService.insert(user) == 1)
 							return GsonUtil.getJson(ResponseCodeUtil.SUCCESS,

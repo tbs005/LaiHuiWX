@@ -9,5 +9,7 @@ public interface IUserService {
     User selectByPrimaryKey(Integer userId);
     
     User selectByOpenID(String openID);
+    
+    int updateByOpenID(User user);
 
 }

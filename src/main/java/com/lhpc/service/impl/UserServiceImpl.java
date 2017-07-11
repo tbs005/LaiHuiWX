@@ -34,4 +34,9 @@ public class UserServiceImpl implements IUserService {
 		return userDao.selectByOpenID(openID);
 	}
 
+	@Override
+	public int updateByOpenID(User user) {
+		return userDao.updateByOpenID(user);
+	}
+
 }

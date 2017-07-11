@@ -22,14 +22,16 @@ public class PushInfoUtil {
 
 	/**
 	 * 发布成功
+	 * 
 	 * @param stroke
 	 * @return
 	 */
-	public static WxTemplate pushPublish(Stroke stroke,User user,String openID,String storkeId){
+	public static WxTemplate pushPublish(Stroke stroke, User user,
+			String openID, String storkeId) {
 		Map<String, TemplateData> m = new HashMap<String, TemplateData>();
 		TemplateData first = new TemplateData();
 		first.setColor(ConfigUtil.GREEN);
-		first.setValue(user.getUserName()+"，您的出行信息已发布成功。");
+		first.setValue(user.getUserName() + "，您的出行信息已发布成功。");
 		m.put("first", first);
 		TemplateData keyword1 = new TemplateData();
 		keyword1.setColor(ConfigUtil.BLUE);
@@ -48,20 +50,23 @@ public class PushInfoUtil {
 		keyword4.setValue(DateUtil.dateWxString(stroke.getStartTime()));
 		m.put("keyword4", keyword4);
 		WxTemplate temp = new WxTemplate();
-		temp.setUrl("https://www.baidu.com");
+		temp.setUrl("https://lhwx.laihuipinche.com/wx/itinerary/info?strokeId="
+				+ storkeId);
 		temp.setTouser(openID);
 		temp.setTopcolor(ConfigUtil.BLACK);
 		temp.setTemplate_id(ConfigUtil.PUSH_PUBLISH);
 		temp.setData(m);
 		return temp;
 	}
-	
+
 	/**
 	 * 预约推送
+	 * 
 	 * @param stroke
 	 * @return
 	 */
-	public static WxTemplate pushScheduled(Booked booked,User user,String openID){
+	public static WxTemplate pushScheduled(Booked booked, User user,
+			String openID) {
 		Map<String, TemplateData> m = new HashMap<String, TemplateData>();
 		TemplateData first = new TemplateData();
 		first.setColor(ConfigUtil.GREEN);
@@ -73,7 +78,7 @@ public class PushInfoUtil {
 		m.put("keyword1", keyword1);
 		TemplateData keyword2 = new TemplateData();
 		keyword2.setColor(ConfigUtil.BLUE);
-		keyword2.setValue(booked.getBookedSeats()+"");
+		keyword2.setValue(booked.getBookedSeats() + "");
 		m.put("keyword2", keyword2);
 		TemplateData keyword3 = new TemplateData();
 		keyword3.setColor(ConfigUtil.BLUE);
@@ -100,15 +105,17 @@ public class PushInfoUtil {
 		return temp;
 	}
 
-	public static WxTemplate pushAggress(Stroke stroke, User user, String openID,Booked booked) {
+	public static WxTemplate pushAggress(Stroke stroke, User user,
+			String openID, Booked booked) {
 		Map<String, TemplateData> m = new HashMap<String, TemplateData>();
 		TemplateData first = new TemplateData();
 		first.setColor(ConfigUtil.GREEN);
-		first.setValue("您已成功预定了"+booked.getBookedSeats()+"个座位。");
+
+		first.setValue("您已成功预定了" + booked.getBookedSeats() + "个座位.");
 		m.put("first", first);
 		TemplateData keyword1 = new TemplateData();
 		keyword1.setColor(ConfigUtil.BLUE);
-		keyword1.setValue(stroke.getStartCity()+"-"+stroke.getEndAddress());
+		keyword1.setValue(stroke.getStartCity() + "-" + stroke.getEndAddress());
 		m.put("keyword1", keyword1);
 		TemplateData keyword2 = new TemplateData();
 		keyword2.setColor(ConfigUtil.BLUE);
