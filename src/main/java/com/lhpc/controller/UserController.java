@@ -75,7 +75,12 @@ public class UserController {
 							}
 						}
 						user.setUserMobile(mobile);
-						user.setOpenId(request.getParameter("openID"));
+						String openid = request.getParameter("openID");
+						if (openid==null||openid.equals("")||openid.length() != 28) {
+							return GsonUtil.getJson(
+									ResponseCodeUtil.OPENID_ERROR, "openID格式错误!");
+						}
+						user.setOpenId(openid);
 						user.setUserName(request.getParameter("userName"));
 						user.setCreateTime(new Date());
 						user.setLoginTime(new Date());
