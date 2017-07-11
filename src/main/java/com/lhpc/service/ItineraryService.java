@@ -31,6 +31,8 @@ public interface ItineraryService {
 	
 	public Map<String, Object> getPassengerItineraryInfo(String strokeId,String bookedId);
 	
+	public Map<String, Object> passengerIsAgree(String strokeId,String bookedId);
+	
 	public Map<String, Object> getPassengerItineraryDetail(String strokeId);
 
 	ResponseEntity<String> personalItineraryEdit(HttpServletRequest request);

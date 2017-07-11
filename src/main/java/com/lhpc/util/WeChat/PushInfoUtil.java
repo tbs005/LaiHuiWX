@@ -50,7 +50,7 @@ public class PushInfoUtil {
 		keyword4.setValue(DateUtil.dateWxString(stroke.getStartTime()));
 		m.put("keyword4", keyword4);
 		WxTemplate temp = new WxTemplate();
-		temp.setUrl("https://lhwx.laihuipinche.com/wx/itinerary/info?strokeId="
+		temp.setUrl("https://lhwx.web.laihuipinche.com/Release_success.html?strokeId="
 				+ storkeId);
 		temp.setTouser(openID);
 		temp.setTopcolor(ConfigUtil.BLACK);
@@ -97,7 +97,7 @@ public class PushInfoUtil {
 		remark.setValue("点击【详情】查看拼友电话、上车点。");
 		m.put("remark", remark);
 		WxTemplate temp = new WxTemplate();
-		temp.setUrl("https://www.baidu.com");
+		temp.setUrl("https://lhwx.web.laihuipinche.com/my_passenger.html?bookedId="+booked.getBookedId()+"&strokeId="+booked.getStrokeId());
 		temp.setTouser(openID);
 		temp.setTopcolor(ConfigUtil.BLACK);
 		temp.setTemplate_id(ConfigUtil.PUSH_SCHEDULED);
