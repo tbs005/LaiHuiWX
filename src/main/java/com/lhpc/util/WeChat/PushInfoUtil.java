@@ -92,6 +92,10 @@ public class PushInfoUtil {
 		keyword5.setColor(ConfigUtil.BLUE);
 		keyword5.setValue(booked.getDownAddress());
 		m.put("keyword5", keyword5);
+		TemplateData remark = new TemplateData();
+		remark.setColor(ConfigUtil.BLUE);
+		remark.setValue("点击【详情】查看拼友电话、上车点。");
+		m.put("remark", remark);
 		WxTemplate temp = new WxTemplate();
 		temp.setUrl("https://www.baidu.com");
 		temp.setTouser(openID);
@@ -106,6 +110,7 @@ public class PushInfoUtil {
 		Map<String, TemplateData> m = new HashMap<String, TemplateData>();
 		TemplateData first = new TemplateData();
 		first.setColor(ConfigUtil.GREEN);
+
 		first.setValue("您已成功预定了" + booked.getBookedSeats() + "个座位.");
 		m.put("first", first);
 		TemplateData keyword1 = new TemplateData();
@@ -128,6 +133,10 @@ public class PushInfoUtil {
 		keyword5.setColor(ConfigUtil.BLUE);
 		keyword5.setValue(DateUtil.dateString(stroke.getStartTime()));
 		m.put("keyword5", keyword5);
+		TemplateData remark = new TemplateData();
+		remark.setColor(ConfigUtil.BLUE);
+		remark.setValue("点击【详情】查看车主行程信息。");
+		m.put("remark", remark);
 		WxTemplate temp = new WxTemplate();
 		temp.setUrl("https://www.baidu.com");
 		temp.setTouser(openID);
