@@ -54,4 +54,8 @@ public class ConfigUtil {
 	public static final String BLUE = "#222966";// 蓝色
 	public static final String GREEN = "#0db407";// 绿色
 
+	/**
+	 * 腾讯地图
+	 */
+	public static final String TENCENT_APP_KEY="7JYBZ-Z76KP-HVWD6-L6NZK-5ELOS-VSFY6";//腾讯地图应用秘钥
 }

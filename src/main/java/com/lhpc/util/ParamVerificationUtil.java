@@ -296,16 +296,11 @@ public class ParamVerificationUtil {
 		if (StringUtil.isOrNotEmpty(startCode)
 				&& StringUtil.isOrNotEmpty(endCode)
 				&& StringUtil.isOrNotEmpty(bookingSeats)
-				) {
-			flag = true;
-		}
-		if (StringUtil.isOrNotEmpty(originLocation)
+				&& StringUtil.isOrNotEmpty(originLocation)
 				&& StringUtil.isOrNotEmpty(destinationLocation)
-				&& StringUtil.isOrNotEmpty(bookingSeats)
-				) {
+				&& StringUtil.isOrNotEmpty(bookingSeats)) {
 			flag = true;
 		}
 		return flag;
 	}
-
 }
