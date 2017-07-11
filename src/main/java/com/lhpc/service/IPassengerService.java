@@ -10,4 +10,6 @@ public interface IPassengerService {
 
 	ResponseEntity<String> unsubscribeTravel(int bookedId);
 
+	Booked selectByPrimaryKey(int bookedId);
+
 }

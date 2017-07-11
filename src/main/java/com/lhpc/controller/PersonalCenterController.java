@@ -123,13 +123,15 @@ public class PersonalCenterController {
 			HttpServletRequest request) {
 		String openID = request.getParameter("openID");
 		String strokeId = request.getParameter("strokeId");
+		String bookedId = request.getParameter("bookedId");
 		if (!StringUtil.isOrNotEmpty(openID)
-				|| !StringUtil.isOrNotEmpty(strokeId)) {
+				|| !StringUtil.isOrNotEmpty(strokeId)
+				|| !StringUtil.isOrNotEmpty(bookedId)) {
 			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS,
 					"参数不完整!");
 		}
 		Map<String, Object> resultMap = itineraryService
-				.getPassengerItineraryInfo(strokeId);
+				.getPassengerItineraryInfo(strokeId,bookedId);
 		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "请求成功", resultMap);
 	}
 

@@ -189,6 +189,7 @@ public class ItineraryServiceImpl implements ItineraryService {
 				strokeStream.forEach(stroke1 -> {
 					Map<String, Object> map = new HashMap<String, Object>();
 					map.put("strokeId", stroke1.getStrokeId());
+					map.put("isEnable", stroke1.getIsEnable());
 					map.put("route",
 							stroke1.getStartCity() + "--"
 									+ stroke1.getEndCity());
@@ -220,6 +221,8 @@ public class ItineraryServiceImpl implements ItineraryService {
 							.getStrokeId());
 					Map<String, Object> map = new HashMap<String, Object>();
 					map.put("strokeId", stroke1);
+					map.put("bookedId", booked.getBookedId());
+					map.put("isEnable", booked.getIsEnable());
 					map.put("route",
 							stroke1.getStartCity() + "--"
 									+ stroke1.getEndCity());
@@ -251,6 +254,7 @@ public class ItineraryServiceImpl implements ItineraryService {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("bookedId", booked.getBookedId());
 			map.put("userName", booked.getUserName());
+			map.put("isEnable", booked.getIsEnable());
 			map.put("userMobile", booked.getUserMobile());
 			map.put("upAddress", booked.getUpAddress());
 			map.put("downAddress", booked.getDownAddress());
@@ -266,12 +270,13 @@ public class ItineraryServiceImpl implements ItineraryService {
 	 * 根据行程ID获取 乘客 的行程详情
 	 */
 	@Override
-	public Map<String, Object> getPassengerItineraryInfo(String strokeId) {
+	public Map<String, Object> getPassengerItineraryInfo(String strokeId,String bookedId) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		// 查询车主行程详情
 		Stroke stroke = strokeMapper.selectByPrimaryKey(Integer
 				.parseInt(strokeId));
 		resultMap.put("strokeId", stroke.getStrokeId());
+		resultMap.put("bookedId", Integer.parseInt(bookedId));
 		resultMap.put("userId", stroke.getUserId());
 		User user = userMapper.selectByPrimaryKey(stroke.getUserId());
 		resultMap.put("userName", user != null ? user.getUserName() : "");
@@ -382,7 +387,7 @@ public class ItineraryServiceImpl implements ItineraryService {
 				Stroke stroke = strokeMapper.selectByPrimaryKey(booked2
 						.getStrokeId());
 				if (stroke != null) {
-					stroke.setIsEnable(2);
+					stroke.setIsEnable(3);
 					int value2 = strokeMapper
 							.updateByPrimaryKeySelective(stroke);
 					System.out.println(value2);

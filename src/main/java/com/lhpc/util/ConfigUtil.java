@@ -28,10 +28,11 @@ public class ConfigUtil {
 	
 	public static final String PUSH_PUBLISH = "7dN2fUAKlDU8oDHRStNoMEqWKCOgScnuS13SYw2JTCQ";//发布成功推送模板
 	
-	
+	public static final String PUSH_SCHEDULED = "whG3hS1O1Id05ma-mBakL3oF1TcQ6EKqry-BZjW67LU";//拼车定座模板
 
-	/**
-	 * 聚合短信验证码配置
+	public static final String PUSH_AGGRESS_SCHEDULED = "5ILXYOr353BhHBl1_dA7EpbT1btnlA9Em0zkqjzb1bg"; //订座成功通知
+	 
+	/* 聚合短信验证码配置
 	 */
 	public static final String APPKEY = "6c871b315def3b449dbdbce28a4dc55a";
 	public static final String DEF_CHATSET = "UTF-8";

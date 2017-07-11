@@ -61,6 +61,7 @@ public class PersonalServiceImpl implements IPersonalService {
 		// 商户订单号
 		String outTradeNo = OrderNumUtil.getOrderNum(user);
 		booked.setOutTradeNo(outTradeNo);
+		booked.setIsEnable(2);
 		int count = bookedMapper.updateByPrimaryKeySelective(booked);
 		if (count == 0) {
 			logger.error("车主同意乘客预定时,商户订单号插入失败");
