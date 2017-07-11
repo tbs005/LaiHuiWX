@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,7 @@ import com.lhpc.util.StringUtil;
 @Controller
 @RequestMapping(value = "/wx")
 public class PassengerController {
-
+	private Logger logger = Logger.getLogger(PassengerController.class);
 	@Autowired
 	private IPassengerService passengerService;
 
@@ -48,6 +49,7 @@ public class PassengerController {
 	public ResponseEntity<String> scheduled(Booked booked,
 			HttpServletRequest request) {
 		if (!ParamVerificationUtil.scheduledTravel(request)) {
+			logger.error("乘客预定行程参数不完整");
 			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS, "参数不完整!");
 		}
 		return passengerService.scheduled(booked);

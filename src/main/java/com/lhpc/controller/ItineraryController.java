@@ -193,6 +193,10 @@ public class ItineraryController {
 	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/distance/prices", produces = "application/json; charset=utf-8")
 	public ResponseEntity<?> getPriceToWeb(HttpServletRequest request) {
+		if (!ParamVerificationUtil.getPrice(request)) {
+			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS, "参数不完整");
+		}
+			
 		User user = (User)session.getAttribute("CURRENT_USER");
 		JSONObject resultObject = new JSONObject();
 		String startCode = request.getParameter("startCode");

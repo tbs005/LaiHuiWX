@@ -52,6 +52,10 @@ public class UserController {
 			User user) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		String openid = request.getParameter("openID");
+		if (openid==null||openid.equals("")||openid.length() != 28) {
+			return GsonUtil.getJson(
+					ResponseCodeUtil.OPENID_ERROR, "openID格式错误!");
+		}
 		try {
 			// 验证参数是否完整
 			if (ParamVerificationUtil.userLogin(request)) {
@@ -89,12 +93,6 @@ public class UserController {
 							}
 						}
 						user.setUserMobile(mobile);
-						if (openid == null || openid.equals("")
-								|| openid.length() != 28) {
-							return GsonUtil.getJson(
-									ResponseCodeUtil.OPENID_ERROR,
-									"openID格式错误!");
-						}
 						user.setOpenId(openid);
 						user.setUserName(request.getParameter("userName"));
 						user.setCreateTime(new Date());
