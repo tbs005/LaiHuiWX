@@ -147,6 +147,11 @@ public class PayNotifyServiceImpl implements IPayNotifyService {
 					String passengerName = userMapper.selectByPrimaryKey(passengerId).getUserName();
 					double price = strokeMapper.selectByPrimaryKey(booked.getStrokeId()).getPrice();
 					SendSMSUtil.sendSMS(driverMobile, ConfigUtil.PAY_SUCCESS, "#name#="+passengerName+"&#price#="+price);
+					booked.setIsEnable(2);
+					int count = bookedMapper.updateByPrimaryKeySelective(booked);
+					if (count == 0) {
+						logger.error("订单号为"+out_trade_no+"的用户支付成功,但是结束预约单失败");
+					}
 				}
 				else 
 					logger.error("订单号为"+out_trade_no+"的用户推送信息推送失败,没有查询到相关信息");
