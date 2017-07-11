@@ -47,6 +47,7 @@ public class ConfigUtil {
 	public static final int SUCCESS_BOOK = 39247; // 乘客预订成功模板(发送给乘客)
 	public static final int DENIAL_BOOK = 39252; // 车主拒绝乘客预定模板(发送给乘客)
 	public static final int EXTRACT_CASH = 39385; // 车主提现到账(发送给车主)
+	public static final int APPLY_EXTRACT = 39429; // 车主申请提现(发送给车主)
 
 	
 	/**

@@ -121,7 +121,7 @@ public class PersonalServiceImpl implements IPersonalService {
 		extractCash.setExtractMoney(Double.parseDouble(money));
 		extractCash.setCreateTime(new Date());
 		extractCashMapper.insert(extractCash);
-		// TODO 推送
+		SendSMSUtil.sendSMS(user.getUserMobile(),ConfigUtil.APPLY_EXTRACT,"");
 		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "申请提现成功!");
 	}
 
