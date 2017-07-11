@@ -61,6 +61,7 @@ public class StrokeController {
 					map.put("startCityCode", s.getStartCityCode());
 					map.put("endCity", s.getEndCity());
 					map.put("endCityCode", s.getEndCityCode());
+					s.setCurrentTime(new Date());
 					map.put("count", itineraryService.selectCrossCityCount(s));
 					list.add(map);
 				});
