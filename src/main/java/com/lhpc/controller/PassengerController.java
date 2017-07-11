@@ -1,5 +1,7 @@
 package com.lhpc.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import com.lhpc.service.ItineraryService;
 import com.lhpc.util.GsonUtil;
 import com.lhpc.util.ParamVerificationUtil;
 import com.lhpc.util.ResponseCodeUtil;
+import com.lhpc.util.StringUtil;
 
 /**
  * 乘客操作模块
@@ -61,5 +64,28 @@ public class PassengerController {
 			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS, "参数不完整!");
 		}
 		return passengerService.unsubscribeTravel(Integer.parseInt(bookedId));
+	}
+	
+	/**
+	 * 乘客同意或拒绝车主页面
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "passenger/isAgree", method = RequestMethod.POST)
+	public ResponseEntity<String> passengerIsAgree(
+			HttpServletRequest request) {
+		String openID = request.getParameter("openID");
+		String strokeId = request.getParameter("strokeId");
+		String bookedId = request.getParameter("bookedId");
+		if (!StringUtil.isOrNotEmpty(openID)
+				|| !StringUtil.isOrNotEmpty(strokeId)
+				|| !StringUtil.isOrNotEmpty(bookedId)) {
+			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS,
+					"参数不完整!");
+		}
+		Map<String, Object> resultMap = itineraryService
+				.passengerIsAgree(strokeId,bookedId);
+		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "请求成功", resultMap);
 	}
 }
