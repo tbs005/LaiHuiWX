@@ -1,6 +1,7 @@
 package com.lhpc.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +49,7 @@ public class StrokeController {
 				return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS,
 						"参数不完整");
 			stroke.setStartCityCode(Integer.parseInt(startCityCode));
+			stroke.setCurrentTime(new Date());
 			List<Stroke> crossCityList = itineraryService
 					.selectCrossCityList(stroke);
 			if (crossCityList.size() > 0) {

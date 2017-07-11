@@ -80,6 +80,9 @@
 		a.start_city_code = #{startCityCode,jdbcType=INTEGER}
 		and
 		a.end_city_code = #{endCityCode,jdbcType=INTEGER}
+		<if test="currentTime != null">
+		and a.start_time &gt;= #{currentTime}
+		</if>
 		limit #{page},#{size}
 	</select>
 	<select id="selectCrossCityCount" resultType="java.lang.Integer"
@@ -89,7 +92,7 @@
 		where start_city_code =
 		#{startCityCode,jdbcType=INTEGER}
 		and end_city_code =
-		#{endCityCode,jdbcType=INTEGER}
+		#{endCityCode,jdbcType=INTEGER} and start_time &gt;= #{currentTime}
 		and is_enable = 1
 	</select>
 	<select id="selectCount" resultType="java.lang.Integer"
