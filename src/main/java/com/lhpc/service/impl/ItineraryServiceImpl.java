@@ -140,6 +140,7 @@ public class ItineraryServiceImpl implements ItineraryService {
 			HttpServletRequest request) {
 		if (ParamVerificationUtil.selectSearchStrokeList(request)) {
 			stroke.setPage(stroke.getPage() * stroke.getSize());
+			stroke.setCurrentTime(new Date());
 			List<Stroke> list = strokeMapper.selectSearchStrokeList(stroke);
 			if (list.size() > 0) {
 				List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
