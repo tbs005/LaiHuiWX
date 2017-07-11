@@ -24,7 +24,7 @@ public class PushInfoUtil {
 	 * @param stroke
 	 * @return
 	 */
-	public static WxTemplate pushPublish(Stroke stroke,User user,String openID){
+	public static WxTemplate pushPublish(Stroke stroke,User user,String openID,String storkeId){
 		Map<String, TemplateData> m = new HashMap<String, TemplateData>();
 		TemplateData first = new TemplateData();
 		first.setColor(ConfigUtil.GREEN);
