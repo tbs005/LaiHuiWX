@@ -42,6 +42,8 @@ public class PassengerServiceImpl implements IPassengerService {
 	@Override
 	public ResponseEntity<String> scheduled(Booked booked) {
 		Stroke stroke = new Stroke();
+		
+		
 
 		try {
 			strokeMapper.update4AccessCount(booked.getStrokeId());
@@ -53,7 +55,7 @@ public class PassengerServiceImpl implements IPassengerService {
 		User user = (User) session.getAttribute("CURRENT_USER");
 		booked.setUserId(user.getUserId());
 		booked.setBookedTime(new Date());
-		List<Booked> bookedList = bookedMapper.selectBystrokeId(user
+		List<Booked> bookedList = bookedMapper.select4UserId(user
 				.getUserId());
 		if (bookedList.size() > 0) {
 			return GsonUtil.getJson(ResponseCodeUtil.BOOKING_REPEAT,
@@ -65,12 +67,14 @@ public class PassengerServiceImpl implements IPassengerService {
 					"该车单座位不足,请重新选择其它车单!");
 		}
 		int count = bookedMapper.insertSelective(booked);
+		
 		if (count == 0) {
 			logger.error("预定行程插入数据失败 ------------------ ");
 			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR,
 					"服务器繁忙,请稍后重试!");
 		}
-
+		Booked booked2 = bookedMapper.selectStrokeBystrokeId(booked.getStrokeId(), 1).get(0);
+		int bookedId = booked2.getBookedId();
 		User driver = new User();
 		try {
 
@@ -82,6 +86,14 @@ public class PassengerServiceImpl implements IPassengerService {
 					"服务器繁忙,请稍后重试!");
 		}
 		map.put("driverMobile", driver.getUserMobile());
+		map.put("strokeId", booked.getStrokeId());
+		map.put("bookedId", bookedId);
+		map.put("userName", user.getUserName());
+		map.put("userMobile", user.getUserMobile());
+		map.put("upAddress", booked2.getUpAddress());
+		map.put("downAddress", booked2.getDownAddress());
+		map.put("bookedSeats", booked2.getBookedSeats());
+
 		return GsonUtil
 				.getJson(ResponseCodeUtil.SUCCESS, "预订成功,请尽快与车主联系!", map);
 	}
@@ -96,7 +108,7 @@ public class PassengerServiceImpl implements IPassengerService {
 			return GsonUtil.getJson(ResponseCodeUtil.SYSTEM_ERROR,
 					"服务器繁忙,请稍后重试!");
 		}
-		booked.setIsEnable(2);
+		booked.setIsEnable(0);
 		booked.setUnbookedTime(new Date());
 		booked.setUnbookedId(user.getUserId());
 		booked.setUnbookedFlag(0);
@@ -110,7 +122,8 @@ public class PassengerServiceImpl implements IPassengerService {
 			driver = userMapper.selectByPrimaryKey(strokeMapper
 					.selectByPrimaryKey(booked.getStrokeId()).getUserId());
 			SendSMSUtil.sendSMS(driver.getUserMobile(),
-					ConfigUtil.UNSUBSCRIBE_TRAVEL, "#name#="+user.getUserName());
+					ConfigUtil.UNSUBSCRIBE_TRAVEL,
+					"#name#=" + user.getUserName());
 		} catch (Exception e) {
 			logger.error("查询车主信息失败,推送失败!--------------------------");
 		}
@@ -118,6 +131,10 @@ public class PassengerServiceImpl implements IPassengerService {
 		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "退订成功!");
 	}
 
-	
+	@Override
+	public Booked selectByPrimaryKey(int bookedId) {
+		return bookedMapper.selectByPrimaryKey(bookedId);
+
+	}
 
 }

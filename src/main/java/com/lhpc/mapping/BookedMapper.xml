@@ -35,7 +35,7 @@
 		where out_trade_no = #{outTradeNo,jdbcType=VARCHAR} and is_enable = 1
 		
 	</select>
-	<select id="selectBystrokeId" resultMap="BaseResultMap">
+	<select id="select4UserId" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from wx_booked

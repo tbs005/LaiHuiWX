@@ -251,7 +251,35 @@ public class ParamVerificationUtil {
 		String price = request.getParameter("price");
 		if (StringUtil.isOrNotEmpty(openID)
 				&& StringUtil.isOrNotEmpty(orderNum)
-				&& StringUtil.isOrNotEmpty(price)&&Double.parseDouble(price)>0) {
+				&& StringUtil.isOrNotEmpty(price)
+				&& Double.parseDouble(price) > 0) {
+			flag = true;
+		}
+		return flag;
+	}
+
+	/**
+	 * 预约行程推送参数验证
+	 * 
+	 * @param openID
+	 * @param bookedId
+	 * @return
+	 */
+	public static boolean pushScheduled(String openID, String bookedId) {
+		boolean flag = false;
+		if (StringUtil.isOrNotEmpty(openID)
+				&& StringUtil.isOrNotEmpty(bookedId)) {
+			flag = true;
+		}
+		return flag;
+	}
+
+	public static boolean pushAggress(String openID, String strokeId,
+			String bookedId) {
+		boolean flag = false;
+		if (StringUtil.isOrNotEmpty(openID)
+				&& StringUtil.isOrNotEmpty(bookedId)
+				&& StringUtil.isOrNotEmpty(bookedId)) {
 			flag = true;
 		}
 		return flag;

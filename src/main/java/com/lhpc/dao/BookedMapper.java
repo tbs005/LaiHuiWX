@@ -21,7 +21,7 @@ public interface BookedMapper {
 
     int updateByPrimaryKey(Booked record);
 
-	List<Booked> selectBystrokeId(@Param("userId")Integer userId);
+	List<Booked> select4UserId(@Param("userId")Integer userId);
 	
 	List<Booked> selectStrokeBystrokeId(@Param("strokeId")Integer strokeId,@Param("isEnable") Integer isEnable);
 	
