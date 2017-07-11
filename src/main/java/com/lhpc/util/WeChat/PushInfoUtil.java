@@ -126,6 +126,10 @@ public class PushInfoUtil {
 		keyword5.setColor(ConfigUtil.BLUE);
 		keyword5.setValue(DateUtil.dateString(stroke.getStartTime()));
 		m.put("keyword5", keyword5);
+		TemplateData remark = new TemplateData();
+		remark.setColor(ConfigUtil.BLUE);
+		remark.setValue("点击【详情】查看车主行程信息。");
+		m.put("remark", remark);
 		WxTemplate temp = new WxTemplate();
 		temp.setUrl("https://www.baidu.com");
 		temp.setTouser(openID);
