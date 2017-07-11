@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import com.lhpc.util.StringUtil;
  */
 @Controller
 @RequestMapping(value = "/wx")
+@Transactional
 public class PersonalCenterController {
 
 	private static Logger log = Logger
@@ -222,7 +224,7 @@ public class PersonalCenterController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/extract/cash",method=RequestMethod.POST)
-	public ResponseEntity<String> extractCash(String openID,String money){
+	public ResponseEntity<String> extractCash(String openID,String money) throws RuntimeException{
 		if (!StringUtil.isOrNotEmpty(openID) || !StringUtil.isOrNotEmpty(money)) {
 			return GsonUtil.getJson(ResponseCodeUtil.PARAMETER_MISS,"参数不完整!");
 		}

@@ -1,7 +1,5 @@
 package com.lhpc.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +59,7 @@ public class PushController {
 			//获取行程信息
 			Stroke stroke = itineraryService.selectByPrimaryKey(Integer.parseInt(strokeId));
 			//设置推送内容
-			WxTemplate temp = PushInfoUtil.pushPublish(stroke,user,openID);
+			WxTemplate temp = PushInfoUtil.pushPublish(stroke,user,openID,strokeId);
 			//推送
 			String jsonString = Send.sendTemplateMessage(accessToken.getAccessToken(), temp);
 			PushStatus pushStatus = GsonUtil.parseJsonWithGson(jsonString, PushStatus.class);

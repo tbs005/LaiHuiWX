@@ -106,7 +106,7 @@ public class PersonalServiceImpl implements IPersonalService {
 	}
 
 	@Override
-	public ResponseEntity<String> extractCash(String money, String openID) {
+	public ResponseEntity<String> extractCash(String money, String openID) throws RuntimeException{
 		User user = userMapper.selectByOpenID(openID);
 		if (user.getWallet() < Double.parseDouble(money)) {
 			return GsonUtil.getJson(ResponseCodeUtil.WALLET_EMPTY,
@@ -122,7 +122,7 @@ public class PersonalServiceImpl implements IPersonalService {
 		extractCash.setCreateTime(new Date());
 		extractCashMapper.insert(extractCash);
 		// TODO 推送
-		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "提现成功!");
+		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "申请提现成功!");
 	}
 
 }
