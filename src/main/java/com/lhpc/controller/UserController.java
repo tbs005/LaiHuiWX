@@ -67,15 +67,17 @@ public class UserController {
 						// 如果是司机,则需要这两个参数
 						if (request.getParameter("userType").equals("1")) {
 							if (ParamVerificationUtil.driverLogin(request)) {
-								User userBean = userService.selectByOpenID(openid);
-								if (userBean!=null) {
-									userBean.setCarType(request.getParameter("carType"));
+								User userBean = userService
+										.selectByOpenID(openid);
+								if (userBean != null) {
+									userBean.setCarType(request
+											.getParameter("carType"));
 									userBean.setCarLicense(request
 											.getParameter("carLicense"));
 									userService.updateByOpenID(userBean);
 									return GsonUtil.getJson(
-											ResponseCodeUtil.SUCCESS,
-											"注册成功",map);
+											ResponseCodeUtil.SUCCESS, "注册成功",
+											map);
 								}
 								user.setCarType(request.getParameter("carType"));
 								user.setCarLicense(request
@@ -87,9 +89,11 @@ public class UserController {
 							}
 						}
 						user.setUserMobile(mobile);
-						if (openid==null||openid.equals("")||openid.length() != 28) {
+						if (openid == null || openid.equals("")
+								|| openid.length() != 28) {
 							return GsonUtil.getJson(
-									ResponseCodeUtil.OPENID_ERROR, "openID格式错误!");
+									ResponseCodeUtil.OPENID_ERROR,
+									"openID格式错误!");
 						}
 						user.setOpenId(openid);
 						user.setUserName(request.getParameter("userName"));
@@ -98,7 +102,7 @@ public class UserController {
 						// 把用户信息插入数据库
 						if (userService.insert(user) == 1)
 							return GsonUtil.getJson(ResponseCodeUtil.SUCCESS,
-									"注册成功",map);
+									"注册成功", map);
 						else
 							return GsonUtil.getJson(
 									ResponseCodeUtil.LOGIN_ERROR, "注册失败");
@@ -123,6 +127,25 @@ public class UserController {
 	}
 
 	/**
+	 * 判断是否登录
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/user/isLogin", method = RequestMethod.POST)
+	public ResponseEntity<String> isLogin(HttpServletRequest request) {
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.set("Access-Control-Allow-Origin", "*");
+		responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
+		String openid = request.getParameter("openID");
+		if (openid == null || openid.equals("") || openid.length() != 28)
+			return GsonUtil.getJson(ResponseCodeUtil.OPENID_ERROR,
+					"openID格式错误!");
+		User user = userService.selectByOpenID(openid);
+		if (user == null)
+			return GsonUtil.getJson(ResponseCodeUtil.NO_LOGIN, "您未注册,请先注册!");
+		return GsonUtil.getJson(ResponseCodeUtil.SUCCESS, "请求成功!");
+	}
+
+	/**
 	 * 未注册
 	 */
 	@ResponseBody
@@ -133,7 +156,7 @@ public class UserController {
 		responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
 		return GsonUtil.getJson(ResponseCodeUtil.NO_LOGIN, "您未注册,请先注册!");
 	}
-	
+
 	/**
 	 * 非法用户
 	 */
@@ -145,7 +168,7 @@ public class UserController {
 		responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
 		return GsonUtil.getJson(ResponseCodeUtil.NO_LOGIN, "非法用户!");
 	}
-	
+
 	/**
 	 * openID错误
 	 */

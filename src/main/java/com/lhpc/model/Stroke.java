@@ -53,7 +53,17 @@ public class Stroke {
     
     private int mark;
     
-    public int getMark() {
+    private Date currentTime;
+
+	public Date getCurrentTime() {
+		return currentTime;
+	}
+
+	public void setCurrentTime(Date currentTime) {
+		this.currentTime = currentTime;
+	}
+
+	public int getMark() {
 		return mark;
 	}
 
