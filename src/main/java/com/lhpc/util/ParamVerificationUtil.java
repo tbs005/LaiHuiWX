@@ -285,4 +285,27 @@ public class ParamVerificationUtil {
 		return flag;
 	}
 
+	public static boolean getPrice(HttpServletRequest request) {
+		boolean flag = false;
+		String startCode = request.getParameter("startCode");
+		String endCode = request.getParameter("endCode");
+		String bookingSeats = request.getParameter("booking_seats");
+		String originLocation = request.getParameter("origin_location");
+		String destinationLocation = request
+				.getParameter("destination_location");
+		if (StringUtil.isOrNotEmpty(startCode)
+				&& StringUtil.isOrNotEmpty(endCode)
+				&& StringUtil.isOrNotEmpty(bookingSeats)
+				) {
+			flag = true;
+		}
+		if (StringUtil.isOrNotEmpty(originLocation)
+				&& StringUtil.isOrNotEmpty(destinationLocation)
+				&& StringUtil.isOrNotEmpty(bookingSeats)
+				) {
+			flag = true;
+		}
+		return flag;
+	}
+
 }
