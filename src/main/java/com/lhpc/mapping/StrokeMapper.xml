@@ -53,7 +53,7 @@
 		<include refid="Base_Column_List" />
 		from wx_stroke
 		where is_enable = 1 and start_city_code =
-		#{startCityCode,jdbcType=INTEGER}
+		#{startCityCode,jdbcType=INTEGER} and start_time &gt;= #{currentTime}
 		group by
 		start_city_code,end_city_code
 	</select>
